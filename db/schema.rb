@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_31_173559) do
+ActiveRecord::Schema.define(version: 2020_11_01_130404) do
 
   create_table "answers", force: :cascade do |t|
     t.float "answer_val"
@@ -31,10 +31,10 @@ ActiveRecord::Schema.define(version: 2020_10_31_173559) do
   end
 
   create_table "clients_segments", force: :cascade do |t|
-    t.integer "clients_id"
-    t.integer "segments_id"
-    t.index ["clients_id"], name: "index_clients_segments_on_clients_id"
-    t.index ["segments_id"], name: "index_clients_segments_on_segments_id"
+    t.integer "client_id"
+    t.integer "segment_id"
+    t.index ["client_id"], name: "index_clients_segments_on_client_id"
+    t.index ["segment_id"], name: "index_clients_segments_on_segment_id"
   end
 
   create_table "clients_surveys", force: :cascade do |t|
@@ -63,10 +63,10 @@ ActiveRecord::Schema.define(version: 2020_10_31_173559) do
   end
 
   create_table "segments_users", force: :cascade do |t|
-    t.integer "segments_id"
-    t.integer "users_id"
-    t.index ["segments_id"], name: "index_segments_users_on_segments_id"
-    t.index ["users_id"], name: "index_segments_users_on_users_id"
+    t.integer "segment_id"
+    t.integer "user_id"
+    t.index ["segment_id"], name: "index_segments_users_on_segment_id"
+    t.index ["user_id"], name: "index_segments_users_on_user_id"
   end
 
   create_table "surveys", force: :cascade do |t|
