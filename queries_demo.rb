@@ -9,11 +9,11 @@ puts 'Looking for survey in which participate most users'
 # GROUP BY s.id
 # );
 
-result = Survey.joins(question_groups: [{questions: :answers}]).group(:id).distinct.count(:user_id).max_by { |k, v| v }
+most_popular_survey_info = Survey.joins(question_groups: [{questions: :answers}]).group(:id).distinct.count(:user_id).max_by { |k, v| v }
 
-result_survey = Survey.find(result[0])
-puts "Result survey(id: #{result_survey.id}, label: #{result_survey.label})"
-puts "with total users count: #{result[1]}"
+most_popular_survey = Survey.find(most_popular_survey_info[0])
+puts "The most popular survey(id: #{most_popular_survey.id}, label: #{most_popular_survey.label})"
+puts "with total participants count: #{most_popular_survey_info[1]}"
 
 puts 'Task #2'
 # long SQL query which gets the most popular among users answer
@@ -21,14 +21,13 @@ puts 'Task #2'
 # FROM users AS u, answers AS a
 # WHERE u.id = a.user_id
 # GROUP BY answer_val; 
-
-(1..Client.count).each do |client_id|
-    client = Client.where(id: client_id).includes(segments: :users)
-    puts "Proccessing client with id: #{client[0].id}, label: #{client[0].label}"
+clients = Client.all.includes(segments: :users)
+clients.each do |client|
+    puts "Proccessing client with id: #{client.id}, label: #{client.label}"
     puts '~~~~~~~~~~~~~~~~~~~'
     puts '~~~~~~~~~~~~~~~~~~~'
 
-    client[0].segments.each do |s| 
+    client.segments.each do |s| 
         puts "Proccessing segment with id: #{s.id}, label: #{s.label}"
 
         user_ids = Array.new

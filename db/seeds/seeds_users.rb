@@ -1,84 +1,18 @@
+require 'faker'
+
 users = Array.new
-[{
-    first_name: 'Tony',
-    last_name: 'Ranks',
-    email: 'TonyRanks@gmail.com',
-    password: '3dc0a15198cf0d9448ac35a8b863b3e2',
-    account_type: 'standart',
-    age: 21,
-    position_age: 1,
-    opt_out: true
-},
-{
-    first_name: 'Camellia',
-    last_name: 'Rees',
-    email: 'CamelliaRees@gmail.com',
-    password: '1c0c5c33e69e3bfd37deaf439afc4248',
-    account_type: 'standart',
-    age: 20,
-    position_age: 3,
-    opt_out: true
-},
-{
-    first_name: 'George',
-    last_name: 'Gilbert',
-    email: 'GeorgeGilbert@gmail.com',
-    password: '1c0c5c33e69e3bfd37deaf439afc4248',
-    account_type: 'standart',
-    age: 20,
-    position_age: 3,
-    opt_out: true
-},
-{
-    first_name: 'Kaylee',
-    last_name: 'Collins',
-    email: 'KayleeCollins@gmail.com',
-    password: '1c0c5c33e69e3bfd37deaf439afc4248',
-    account_type: 'standart',
-    age: 20,
-    position_age: 3,
-    opt_out: true
-},
-{
-    first_name: 'Erick',
-    last_name: 'Skinner',
-    email: 'ErickSkinner@gmail.com',
-    password: '1c0c5c33e69e3bfd37deaf439afc4248',
-    account_type: 'standart',
-    age: 20,
-    position_age: 3,
-    opt_out: true
-},
-{
-    first_name: 'Fred',
-    last_name: 'Bell',
-    email: 'FredBell@gmail.com',
-    password: '1c0c5c33e69e3bfd37deaf439afc4248',
-    account_type: 'standart',
-    age: 20,
-    position_age: 3,
-    opt_out: true
-},
-{
-    first_name: 'Gwen',
-    last_name: 'Preston',
-    email: 'GwenPreston@gmail.com',
-    password: '1c0c5c33e69e3bfd37deaf439afc4248',
-    account_type: 'standart',
-    age: 20,
-    position_age: 3,
-    opt_out: true
-},
-{
-    first_name: 'Russel',
-    last_name: 'Lloyd',
-    email: 'RusselLloyd@gmail.com',
-    password: '1c0c5c33e69e3bfd37deaf439afc4248',
-    account_type: 'standart',
-    age: 20,
-    position_age: 3,
-    opt_out: true
-}].each { |hash| users << User.new(hash) }
+8.times do
+    users << User.new({
+        first_name: Faker::Name.first_name,
+        last_name: Faker::Name.last_name,
+        email: Faker::Internet.email,
+        password: '3dc0a15198cf0d9448ac35a8b863b3e2',
+        account_type: %w(bronze silver gold).sample,
+        age: Faker::Number.within(range: 18..80),
+        position_age: Faker::Number.within(range: 1..100),
+        opt_out: true
+    })
+end
 
 users[0..2].each { |e| e.client = Client.find_by(label: 'BSUIR') }
 users[3].client = Client.find_by(label: 'BSU')
