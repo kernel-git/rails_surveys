@@ -5,7 +5,8 @@ RSpec.describe Segment, type: :model do
     segment = Segment.new(label: 'client_label')
     expect(segment).to be_valid
   end
-  it 'is not valid without a label' do 
+
+  it 'is not valid without a label' do
     segment = Client.new(label: nil)
     segment.valid?
     expect(segment.errors[:label]).to include('can\'t be blank')

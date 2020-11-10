@@ -4,10 +4,13 @@
 
 Rake::Task['db:reset'].invoke
 
-Dir[File.join(Rails.root, "db", "seeds", "*.rb")].sort.each do |seed|
-
-    puts "seeding - #{seed}"
-  
-    load seed
+Dir[File.join(Rails.root, 'db', 'seeds', '*.rb')].sort.each do |seed|
+  load seed
 end
-  
+ClientsSeeds.new.perform
+QuestionGroupsSeeds.new.perform
+QuestionsSeeds.new.perform
+SurveysSeeds.new.perform
+UsersSeeds.new.perform
+SegmentsSeeds.new.perform
+AnswersSeeds.new.perform
