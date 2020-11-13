@@ -43,7 +43,7 @@ class ClientsSeeds
 
     begin
       clients.each(&:save!)
-    rescue StandardError => e
+    rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotSaved => e
       puts '--->EXEPTION DURING SAVE<---'
       puts "Exeption type: #{e.class.name}"
       puts "Exeption message: #{e.message}"
