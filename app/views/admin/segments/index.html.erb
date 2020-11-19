@@ -1,0 +1,21 @@
+<h1>Admin</h1>
+<h2>Segments Listing</h2>
+
+<% unless @segments.empty? %>
+  <table>
+    <thead>
+      <tr>
+        <th>Segment Label</th>
+        <th>Link</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @segments.each do |segment| %>
+        <tr>
+          <td><%= segment.label %></td>
+          <td><%= link_to("Details", admin_segment_url(segment)) %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>

@@ -1,0 +1,63 @@
+<h1>Admin</h1>
+<h2>User Info</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>First name</th>
+      <th>Last name</th>
+      <th>Email</th>
+      <th>Password</th>
+      <th>Account type</th>
+      <th>Age</th>
+      <th>Position age</th>
+      <th>Unsubscribed from new surveys</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><%= @user.first_name %></td>
+      <td><%= @user.last_name %></td>
+      <td><%= @user.email %></td>
+      <td><%= @user.password %></td>
+      <td><%= @user.account_type %></td>
+      <td><%= @user.age %></td>
+      <td><%= @user.position_age %></td>
+      <td><%= @user.opt_out %></td>
+    </tr>
+  </tbody>
+</table>
+
+<h3>User's client</h3>
+<%= link_to admin_client_url(@user.client) do %>
+  <h4><%= @user_client.label %></h4>
+<% end %>
+
+<h3>User's segments</h3>
+<% unless @user_segments.empty? %>
+  <% @user_segments.each do |segment| %>
+    <%= link_to admin_segment_url(segment) do %>
+      <h4><%= segment.label %></h4>
+    <% end %>
+  <% end %>
+<% else %>
+  <h4>Empty</h4>
+<% end %>
+
+<h3>User's answers</h3>
+<% unless @user_answers.empty? %>
+  <% @user_answers.each do |answer| %>
+    <h3>Survey</h3>
+      <%= link_to admin_survey_url(answer.question.question_group.survey) do %>
+        <h4><%= answer.question.question_group.survey.label %></h4>
+      <% end %>
+    <h3>Question</h3>
+    <h4><%= answer.question.question_type %></h4>
+    <h3>Question group</h3>
+    <h4><%= answer.question.question_group.label %></h4>
+    <h3>Answer</h3>
+    <h4><%= answer.answer_val %></h4>
+  <% end %>
+<% else %>
+  <h4>Empty</h4>
+<% end %>

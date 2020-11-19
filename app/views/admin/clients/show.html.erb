@@ -1,0 +1,46 @@
+<h1>Admin</h1>
+<h2>Company Info</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Company Logo</th>
+      <th>Company Name</th>
+      <th>Company Phone</th>
+      <th>Company Email</th>
+      <th>Company Address</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><%= @client.logo_url %></td>
+      <td><%= @client.label %></td>
+      <td><%= @client.phone %></td>
+      <td><%= @client.email %></td>
+      <td><%= @client.address %></td>
+    </tr>
+  </tbody>
+</table>
+
+<h3>Company's users</h3>
+<% unless @clients_users.empty? %>
+  <% @clients_users.each do |user| %>
+    <%= link_to admin_user_url(user) do %>
+      <h4><%= user.first_name %></h4>
+      <h4><%= user.last_name %></h4>
+    <% end %>
+  <% end %>
+<% else %>
+  <h4>Empty</h4>
+<% end %>
+
+<h3>Company's segments</h3>
+<% unless @clients_segments.empty? %>
+  <% @clients_segments.each do |segment| %>
+    <%= link_to admin_segment_url(segment) do %>
+      <h4><%= segment.label %></h4>
+    <% end %>
+  <% end %>
+<% else %>
+  <h4>Empty</h4>
+<% end %>

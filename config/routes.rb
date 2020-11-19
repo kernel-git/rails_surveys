@@ -4,7 +4,7 @@ Rails.application.routes.draw do
       resources :users
       resources :segments
       resources :surveys
-      resources :clients, only: [:index, :show] do
+      resources :clients do
         get 'stats', on: :member
         get 'stats/live', on: :member, action: :live
         get 'stats/historical', on: :member, action: :historical
@@ -21,5 +21,13 @@ Rails.application.routes.draw do
     get 'stats/live', controller: 'clients', action: :live
     get 'stats/historical', controller: 'clients', action: :historical
   end
-
+  scope module: 'anonimous' do
+    get 'login', to: 'static_pages#login', via: :get
+    get 'recover-password', to: 'static_pages#recover_password', via: :get
+    get 'contact-company', to: 'static_pages#recover_password', via: :get
+    get 'contact-support', to: 'static_pages#recover_password', via: :get
+    get 'faq', to: 'static_pages#recover_password', via: :get
+    get 'privacy-policy', to: 'static_pages#recover_password', via: :get
+    get 'not-found-404', to: 'static_pages#not_found_404', via: :get
+  end
 end

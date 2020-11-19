@@ -1,0 +1,36 @@
+<html>
+  <head>
+    <%= content_tag :div, id: "segments_data", data: {segments: @segments_data} do %>
+    <% end %>
+    <%= javascript_pack_tag "admin/users/new.js" %>
+  </head>
+  <body>
+    <h1>Admin</h1>
+    <h2>New User</h2>
+
+    <%= form_with scope: :user, url: admin_users_url(@user), method: :post do |user_form| %>
+      <h4>First name: </h4><%= user_form.text_field :first_name %>
+      <h4>Last name: </h4><%= user_form.text_field :last_name %>
+      <h4>Phone: </h4><%= user_form.text_field :phone %>
+      <h4>Email: </h4><%= user_form.text_field :email %>
+      <h4>Account type: </h4><%= user_form.select(:account_type, %w(bronze silver gold)) %>
+      <h4>Password: </h4><%= user_form.password_field :password %>
+      <h4>Age: </h4><%= user_form.text_field :age %><br>
+      <%= user_form.check_box :opt_out %><div> Unsubscribe from new surveys</div>
+
+      <h3>New user's client</h3>
+      <%= user_form.collection_select(:client_id, Client.all, :id, :label) %>
+
+      <h3>New user's segments</h3>
+      <div id="current_segment_labels"></div>
+      <select id="new_segment_select">
+      </select>
+      <button id="add_selected_segment">Add this segment to user</button>
+      <div id="current_segments_ids"></div>
+
+      <br><br>
+      <%= user_form.submit "Create user" %>
+
+    <% end %>
+  </body>
+</html>

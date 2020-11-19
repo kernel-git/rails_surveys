@@ -1,0 +1,17 @@
+<h1>Admin</h1>
+<h2>Users Listing</h2>
+
+<% unless @users.empty? %>
+  <table>
+      <tr>
+        <th>First name</th>
+        <th>Last name</th>
+        <th>Link</th>
+      </tr>
+      <% @users.each do |user| %>
+          <td><%= user.first_name %></td>
+          <td><%= user.last_name %></td>
+          <td><%= link_to("Details", admin_user_url(user)) %></td>
+      <% end %>
+  </table>
+<% end %>

@@ -1,0 +1,57 @@
+<html>
+  <head>
+    <%= content_tag :div, id: "segments_data", data: {segments: @segments_data} do %>
+    <% end %>
+    <%= javascript_pack_tag "admin/surveys/new.js" %>
+  </head>
+  <body>
+    <h1>Admin</h1>
+    <h2>New Survey</h2>
+
+    <%= form_with scope: :survey, url: admin_surveys_url(@survey), method: :post do |survey_form| %>
+      <h4>Label: </h4><%= survey_form.text_field :label %>
+
+      <h3>Survey's client</h3>
+      <%= survey_form.collection_select(:client_id, Client.all, :id, :label) %>
+      <h3>Question groups</h3>
+      <div id="current_qgroups_wrapper"></div>
+      <button id="add_qgroup">Add new question group</button>
+
+
+      <!-- <div>
+        <h3>Question group</h3>
+        <h4>Label: </h4>
+        <input type="text" name="survey[question_groups[][question_group[label]]]"/>
+        <div>
+          <h3>Question</h3>
+          <h4>Question type: </h4>
+          <input type="text" name="survey[question_groups[][question_group[questions[][question[question_type]]]]]"/>
+        </div>
+        <div>
+          <h3>Question</h3>
+          <h4>Question type: </h4>
+          <input type="text" name="survey[question_groups[][question_group[questions[][question[question_type]]]]]"/>
+        </div>
+      </div>
+      <div>
+        <h3>Question group</h3>
+        <h4>Label: </h4>
+        <input type="text" name="survey[question_groups[][question_group[label]]]"/>
+        <div>
+          <h3>Question</h3>
+          <h4>Question type: </h4>
+          <input type="text" name="survey[question_groups[][question_group[questions[][question[question_type]]]]]"/>
+        </div>
+        <div>
+          <h3>Question</h3>
+          <h4>Question type: </h4>
+          <input type="text" name="survey[question_groups[][question_group[questions[][question[question_type]]]]]"/>
+        </div>
+      </div> -->
+
+      <br><br>
+      <%= survey_form.submit "Create survey" %>
+
+    <% end %>
+  </body>
+</html>

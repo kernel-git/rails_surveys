@@ -1,0 +1,23 @@
+<h1>Admin</h1>
+<h2>Clients Listing</h2>
+
+<% unless @clients.empty? %>
+  <table>
+    <thead>
+      <tr>
+        <th>Company Logo</th>
+        <th>Company Name</th>
+        <th>Link</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @clients.each do |client| %>
+        <tr>
+          <td><%= client.logo_url %></td>
+          <td><%= client.label %></td>
+          <td><%= link_to("Details", admin_client_url(client)) %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>

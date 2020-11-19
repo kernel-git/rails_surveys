@@ -1,0 +1,21 @@
+<h1>Admin</h1>
+<h2>Surveys Listing</h2>
+
+<% unless @surveys.empty? %>
+  <table>
+    <thead>
+      <tr>
+        <th>Survey Label</th>
+        <th>Link</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @surveys.each do |survey| %>
+        <tr>
+          <td><%= survey.label %></td>
+          <td><%= link_to("Details", admin_survey_url(survey)) %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>

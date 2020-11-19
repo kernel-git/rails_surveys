@@ -1,0 +1,26 @@
+<html>
+  <head>
+    <%= content_tag :div, id: "segments_data", data: {segments: @segments_data} do %>
+    <% end %>
+    <%= javascript_pack_tag "admin/users/new.js" %>
+  </head>
+  <body>
+    <h1>Admin</h1>
+    <h2>New Client</h2>
+
+    <%= form_with scope: :client, url: admin_clients_url(@client), method: :post do |client_form| %>
+      <h4>Label: </h4><%= client_form.text_field :first_name %>
+      
+      <h3>New clients's segments</h3>
+      <div id="current_segment_labels"></div>
+      <select id="new_segment_select">
+      </select>
+      <button id="add_selected_segment">Add this segment to user</button>
+      <div id="current_segments_ids"></div>
+
+      <br><br>
+      <%= client_form.submit "Create user" %>
+
+    <% end %>
+  </body>
+</html>
