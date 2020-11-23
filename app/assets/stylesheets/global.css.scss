@@ -1,0 +1,21 @@
+* {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 20px;
+}
+.font {
+  &-large {
+    font-size: 32px;
+  }
+  &-big {
+    font-size: 25px;
+  }
+  &-medium {
+    font-size: 20px;
+  }
+  &-small {
+    font-size: 16px;
+  }
+  &-tiny {
+    font-size: 14px;
+  }
+}

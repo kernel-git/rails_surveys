@@ -1,4 +1,5 @@
 class Admin::UsersController < ApplicationController
+  layout "admin"
   def index
     @users = User.all
   end
@@ -19,7 +20,24 @@ class Admin::UsersController < ApplicationController
     @segments_data = Segment.all.collect { |segment| [segment.id, segment.label] }
   end
   def create
-    puts "Ping from admin/users#create with params: #{params}"
+    @user = User.new({
+      first_name: params[:user][:first_name],
+      last_name: params[:user][:last_name],
+      email: params[:user][:email],
+      account_type: params[:user][:account_type],
+      password: params[:user][:password],
+      age: params[:user][:age],
+      position_age: 1,
+      opt_out: params[:user][:opt_out]
+    })
+    @user.client = Client.find(params[:user][:client_id])
+    @user.segments = Segment.where(id: params[:segments_ids])
+    if @user.save
+      redirect_to(admin_user_url(@user))
+    else
+      puts "User save failed. Error message: #{@user.errors.full_messages}"
+      redirect_to(admin_users_url)
+    end
   end
   def edit
     puts "Ping from admin/users#edit with params: #{params}"

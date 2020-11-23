@@ -1,4 +1,5 @@
 class Admin::SegmentsController < ApplicationController
+  layout 'admin'
   def index
     @segments = Segment.all
   end

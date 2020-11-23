@@ -1,4 +1,5 @@
 class Admin::SurveysController < ApplicationController
+  layout 'admin'
   def index
     @surveys = Survey.all
   end
@@ -18,7 +19,55 @@ class Admin::SurveysController < ApplicationController
     @clients_data = Client.all.collect { |client| [client.id, client.label] }
   end
   def create
-    puts "Ping from admin/surveys#create"
+    @survey = Survey.new(
+      label: params[:survey][:label]
+    )
+    @qgroups = Array.new
+    @questions = Array.new
+    unless @survey.valid?
+      puts "Survey is not valid. Error messages:"
+      @survey.errors.full_messages.each { |e| puts e}
+      return
+    end
+    @survey.clients << Client.find(params[:survey][:client_id])
+
+    p params[:question_groups]
+    params[:question_groups].each do |qgroup_params|
+      @qgroup = QuestionGroup.new(label: qgroup_params[:question_group][:label])
+
+      qgroup_params[:question_group][:questions].each do |question_params|
+        @question = Question.new(
+          question_type: question_params[:question][:question_type],
+          benchmark_val: 1,
+          benchmark_vol: 1
+        )
+        @question.question_group = @qgroup
+        unless @question.valid?
+          puts "Question is not valid. Error messages:"
+          @question.errors.full_messages.each { |e| puts e}
+          return
+        end
+        @questions << @question
+      end
+      @qgroup.survey = @survey
+
+      unless @qgroup.valid?
+        puts "Question group is not valid. Error messages:"
+        @qgroup.errors.full_messages.each { |e| puts e}
+        return
+      end
+      @qgroups << @qgroup
+    end
+    begin 
+      @survey.save!
+      @qgroups.each { |e| e.save! }
+      @questions.each { |e| e.save! }
+    rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotSaved => e
+      puts "Survey save failed. Exception type: #{e.class.name}, exception message: #{e.message}"
+      redirect_to admin_surveys_url 
+    else
+      redirect_to admin_survey_url(@survey)
+    end
   end
   def edit
     puts "Ping from admin/surveys#edit with params: #{params}"

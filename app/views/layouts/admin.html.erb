@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Admin Access</title>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <%= stylesheet_link_tag "admin" %>
+  </head>
+
+  <body>
+    <div class="wrapper">
+      <div class="header">
+        <div class="header__label font-large">
+          Admin
+        </div>
+        <div class="header__sections header-sections">
+          <%= link_to "Surveys", admin_surveys_url, class: "header-sections__section font-big" %>
+          <%= link_to "Users", admin_users_url, class: "header-sections__section font-big" %>
+          <%= link_to "Clients", admin_clients_url, class: "header-sections__section font-big" %>
+          <%= link_to "Segments", admin_segments_url, class: "header-sections__section font-big" %>
+        </div>
+        <div class="header__buttons header-buttons">
+          <a class="header-buttons__button font-medium" href="">Log out</a>
+        </div>
+      </div>
+      <div class="content">
+        <%= yield %>
+      </div>
+      <div class="footer">
+        <div class="footer__text font-small">
+          site design / logo © 2020 boss078, Inc.
+        </div>
+      </div>
+    </div>  
+  </body>
+</html>

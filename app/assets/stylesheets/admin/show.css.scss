@@ -1,0 +1,46 @@
+@import "_variables";
+@import "_mixins";
+
+@include buttons;
+@include highlighting;
+
+.model-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.model-header {
+  margin-left: 10px;
+}
+
+.object-group-wrapper {
+  display: flex;
+  flex-direction: column;
+
+  margin-left: 10px;
+
+  &__label {
+    font-weight: bold;
+  }
+  &__info-wrapper {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+  }
+  &__message {
+    padding: 5px 10px;
+  }
+  &__button {
+    margin: 5px 10px;
+  }
+}
+.info-wrapper {
+  padding: 5px 10px;
+  &__label {
+    font-weight: bold;
+    margin-right: 10px;
+  }
+  &__information {
+    margin-right: 10px;
+  }
+}

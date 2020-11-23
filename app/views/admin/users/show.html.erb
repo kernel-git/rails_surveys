@@ -1,63 +1,124 @@
-<h1>Admin</h1>
-<h2>User Info</h2>
+<div class="model-wrapper">
+  <div class="object-group-wrapper">
+    <div class="object-group-wrapper__label">User Info</div>
+    <div class="colored-group">
+      <div class="object-group-wrapper__info-wrapper info-wrapper">
+        <div class="info-wrapper__label">First name:</div>
+        <div class="info-wrapper__information">
+          <%= @user.first_name %>
+        </div>
+      </div>
+      <div class="object-group-wrapper__info-wrapper info-wrapper">
+        <div class="info-wrapper__label">Last name:</div>
+        <div class="info-wrapper__information">
+          <%= @user.last_name %>
+        </div>
+      </div>
+      <div class="object-group-wrapper__info-wrapper info-wrapper">
+        <div class="info-wrapper__label">Email:</div>
+        <div class="info-wrapper__information">
+          <%= @user.email %>
+        </div>
+      </div>
+      <div class="object-group-wrapper__info-wrapper info-wrapper">
+        <div class="info-wrapper__label">Password:</div>
+        <div class="info-wrapper__information">
+          <%= @user.password %>
+        </div>
+      </div>
+      <div class="object-group-wrapper__info-wrapper info-wrapper">
+        <div class="info-wrapper__label">Account type:</div>
+        <div class="info-wrapper__information">
+          <%= @user.account_type %>
+        </div>
+      </div>
+      <div class="object-group-wrapper__info-wrapper info-wrapper">
+        <div class="info-wrapper__label">Age:</div>
+        <div class="info-wrapper__information">
+          <%= @user.age %>
+        </div>
+      </div>
+      <div class="object-group-wrapper__info-wrapper info-wrapper">
+        <div class="info-wrapper__label">Position age value:</div>
+        <div class="info-wrapper__information">
+          <%= @user.position_age %>
+        </div>
+      </div>
+      <div class="object-group-wrapper__info-wrapper info-wrapper">
+        <div class="info-wrapper__label">Is unsubscribed from new surveys:</div>
+        <div class="info-wrapper__information">
+          <%= @user.opt_out %>
+        </div>
+      </div>
+    </div>
+  </div>
 
-<table>
-  <thead>
-    <tr>
-      <th>First name</th>
-      <th>Last name</th>
-      <th>Email</th>
-      <th>Password</th>
-      <th>Account type</th>
-      <th>Age</th>
-      <th>Position age</th>
-      <th>Unsubscribed from new surveys</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><%= @user.first_name %></td>
-      <td><%= @user.last_name %></td>
-      <td><%= @user.email %></td>
-      <td><%= @user.password %></td>
-      <td><%= @user.account_type %></td>
-      <td><%= @user.age %></td>
-      <td><%= @user.position_age %></td>
-      <td><%= @user.opt_out %></td>
-    </tr>
-  </tbody>
-</table>
+  <div class="object-group-wrapper">
+    <div class="object-group-wrapper__label">User's client</div>
+    <div class="colored-group">
+      <div class="object-group-wrapper__info-wrapper info-wrapper">
+        <div class="info-wrapper__label">Label:</div>
+        <div class="info-wrapper__information">
+          <%= @user_client.label %>
+        </div>
+        <%= link_to "Details", admin_client_url(@user.client), class: "link-button" %>
+      </div>
+    </div>
+  </div>
 
-<h3>User's client</h3>
-<%= link_to admin_client_url(@user.client) do %>
-  <h4><%= @user_client.label %></h4>
-<% end %>
-
-<h3>User's segments</h3>
-<% unless @user_segments.empty? %>
-  <% @user_segments.each do |segment| %>
-    <%= link_to admin_segment_url(segment) do %>
-      <h4><%= segment.label %></h4>
-    <% end %>
-  <% end %>
-<% else %>
-  <h4>Empty</h4>
-<% end %>
-
-<h3>User's answers</h3>
-<% unless @user_answers.empty? %>
-  <% @user_answers.each do |answer| %>
-    <h3>Survey</h3>
-      <%= link_to admin_survey_url(answer.question.question_group.survey) do %>
-        <h4><%= answer.question.question_group.survey.label %></h4>
+  <div class="object-group-wrapper">
+    <div class="object-group-wrapper__label">User's segments</div>
+    <div class="colored-group">
+      <% unless @user_segments.empty? %>
+        <% @user_segments.each do |segment| %>
+          <div class="object-group-wrapper__info-wrapper info-wrapper">
+            <div class="info-wrapper__label">Label:</div>
+            <div class="info-wrapper__information">
+              <%= segment.label %>
+            </div>
+            <%= link_to "Details", admin_segment_url(segment), class: "link-button" %>
+          </div>
+        <% end %>
+      <% else %>
+        <div class="object-group-wrapper__message">Empty</div>
       <% end %>
-    <h3>Question</h3>
-    <h4><%= answer.question.question_type %></h4>
-    <h3>Question group</h3>
-    <h4><%= answer.question.question_group.label %></h4>
-    <h3>Answer</h3>
-    <h4><%= answer.answer_val %></h4>
-  <% end %>
-<% else %>
-  <h4>Empty</h4>
-<% end %>
+    </div>
+  </div>
+
+  <div class="object-group-wrapper">
+    <div class="object-group-wrapper__label">User's answers</div>
+    <% unless @user_answers.empty? %>
+      <% @user_answers.each do |answer| %>
+        <div class="colored-group">
+          <div class="object-group-wrapper__info-wrapper info-wrapper">
+            <div class="info-wrapper__label">Survey:</div>
+            <div class="info-wrapper__information">
+              <%= answer.question.question_group.survey.label %>
+            </div>
+            <%= link_to "Details", admin_survey_url(answer.question.question_group.survey), class: "link-button" %>
+          </div>
+          <div class="object-group-wrapper__info-wrapper info-wrapper">
+            <div class="info-wrapper__label">Question group:</div>
+            <div class="info-wrapper__information">
+              <%= answer.question.question_group.label %>
+            </div>
+          </div>
+          <div class="object-group-wrapper__info-wrapper info-wrapper">
+            <div class="info-wrapper__label">Question:</div>
+            <div class="info-wrapper__information">
+              <%= answer.question.question_type %>
+            </div>
+          </div>
+          <div class="object-group-wrapper__info-wrapper info-wrapper">
+            <div class="info-wrapper__label">Answer:</div>
+            <div class="info-wrapper__information">
+              <%= answer.answer_val %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    <% else %>
+      <div class="object-group-wrapper__message colored-group">Empty</div>
+    <% end %>
+  </div>
+</div>

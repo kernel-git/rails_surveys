@@ -1,51 +1,96 @@
-<h1>Admin</h1>
-<h2>Survey Info</h2>
+<div class="model-wrapper">
+  <div class="object-group-wrapper">
+    <div class="object-group-wrapper__label">Survey Info</div>
+    <div class="colored-group">
+      <div class="object-group-wrapper__info-wrapper info-wrapper">
+        <div class="info-wrapper__label">Label:</div>
+        <div class="info-wrapper__information">
+          <%= @survey.label %>
+        </div>
+      </div>
+    </div>
+  </div>
 
-
-<h3>Survey's clients</h3>
-<% unless @survey_clients.empty? %>
-<% @survey_clients.each do |client| %>
-  <%= link_to admin_client_url(client) do %>
-    <h4><%= client.label %></h4>
-  <% end %>
-<% end %>
-<% else %>
-<h4>Empty</h4>
-<% end %>
-
-<h3>Survey Info:</h3>
-<% unless @survey_question_groups.empty? %>
-  <% @survey_question_groups.each do |question_group| %>
-    <h3>Question group</h3>
-    <h4><%= question_group.label %></h4>
-    <h3>Questions:</h3>
-    <% unless question_group.questions.empty? %>
-      <% question_group.questions.each do |question| %>
-        <h3>Question</h3>
-        <h4><%= question.question_type %></h4>
-        <h3>Answers:</h3>
-        <% unless question.answers.empty? %>
-          <% question.answers.each do |answer| %>
-            <h3>Answer</h3>
-            <h4><%= answer.answer_val %></h4>
-            <h3>User:</h3>
-            <%= link_to admin_user_url(answer.user) do %>
-              <h4>
-                <%= answer.user.first_name %>
-                <%= answer.user.last_name %>
-              </h4>
-            <% end %>
-          <% end %>
-        <% else %>
-          <h4>Empty</h4>
+  <div class="object-group-wrapper"></div>
+    <div class="object-group-wrapper__label">Survey's clients</div>
+    <div class="colored-group">
+      <% unless @survey_clients.empty? %>
+        <% @survey_clients.each do |client| %>
+          <div class="object-group-wrapper__info-wrapper info-wrapper">
+            <div class="info-wrapper__label">Label:</div>
+            <div class="info-wrapper__information">
+              <%= client.label %>
+            </div>
+            <%= link_to "Details", admin_client_url(client), class: "link-button object-group-wrapper__button" %>
+          </div>
         <% end %>
-      
+      <% else %>
+        <div class="object-group-wrapper__message">Empty</div>
       <% end %>
-    <% else %>
-      <h4>Empty</h4>
-    <% end %>
-  
-  <% end %>
-<% else %>
-  <h4>Empty</h4>
-<% end %>
+    </div>
+  </div>
+
+  <div class="object-group-wrapper">
+    <div class="object-group-wrapper__label">Survey content</div>
+    <div class="colored-group">
+      <% unless @survey_question_groups.empty? %>
+        <% @survey_question_groups.each do |question_group| %>
+          <div class="object-group-wrapper__info-wrapper info-wrapper">
+            <div class="info-wrapper__label">Question group:</div>
+            <div class="info-wrapper__information">
+              <%= question_group.label %>
+            </div>
+          </div>
+          <div class="object-group-wrapper__label">Questions:</div>
+          <div class="colored-group colored-group__alt">
+            <% unless question_group.questions.empty? %>
+              <% question_group.questions.each do |question| %>
+                <div class="object-group-wrapper__info-wrapper info-wrapper">
+                  <div class="info-wrapper__label">Question:</div>
+                  <div class="info-wrapper__information">
+                    <%= question.question_type %>
+                  </div>
+                </div>
+                <div class="object-group-wrapper__label">Answers:</div>
+                <div class="colored-group">
+                  <% unless question.answers.empty? %>
+                    <% question.answers.each do |answer| %>
+                      <div class="object-group-wrapper__info-wrapper info-wrapper">
+                        <div class="info-wrapper__label">Answer:</div>
+                        <div class="info-wrapper__information">
+                          <%= answer.answer_val %>
+                        </div>
+                      </div>
+                      <div class="object-group-wrapper__label">Answer's user:</div>
+                      <div class="colored-group colored-group__alt">
+                        <div class="object-group-wrapper__info-wrapper info-wrapper">
+                          <div class="info-wrapper__label">First name:</div>
+                          <div class="info-wrapper__information">
+                            <%= answer.user.first_name %>
+                          </div>
+                        </div>
+                        <div class="object-group-wrapper__info-wrapper info-wrapper">
+                          <div class="info-wrapper__label">Last name:</div>
+                          <div class="info-wrapper__information">
+                            <%= answer.user.last_name %>
+                          </div>
+                        </div>
+                        <%= link_to "Details", admin_user_url(answer.user), class: "link-button object-group-wrapper__button" %>
+                      </div>
+                    <% end %>
+                  <% else %>
+                    <div class="object-group-wrapper__message">Empty</div>
+                  <% end %>
+                </div>
+              <% end %>
+            <% else %>
+              <div class="object-group-wrapper__message">Empty</div>
+            <% end %>
+          </div>
+        <% end %>
+      <% else %>
+        <div class="object-group-wrapper__message">Empty</div>
+      <% end %>
+    </div>
+  </div>
+</div>

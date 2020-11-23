@@ -1,17 +1,20 @@
-<h1>Admin</h1>
-<h2>Users Listing</h2>
-
-<% unless @users.empty? %>
-  <table>
-      <tr>
-        <th>First name</th>
-        <th>Last name</th>
-        <th>Link</th>
-      </tr>
-      <% @users.each do |user| %>
-          <td><%= user.first_name %></td>
-          <td><%= user.last_name %></td>
-          <td><%= link_to("Details", admin_user_url(user)) %></td>
-      <% end %>
-  </table>
-<% end %>
+<div class="listing-wrapper">
+  <div class="listing-wrapper__label">User's listing</div>
+  <% unless @users.empty? %>
+    <% @users.each do |user| %>
+      <div class="listing-wrapper__model-wrapper model-wrapper colored-group">
+        <div class="model-wrapper__model-info model-info">
+          <div class="model-info__label">First name:</div>
+          <div class="model-info__information"><%= user.first_name %></div>
+        </div>
+        <div class="model-wrapper__model-info model-info">
+          <div class="model-info__label">Last name:</div>
+          <div class="model-info__information"><%= user.last_name %></div>
+        </div>
+        <%= link_to("Details", admin_user_url(user), class: "model-wrapper__button link-button") %>
+      </div>
+    <% end %>
+  <% else %>
+    <div class="listiong-wrapper__message">Empty</div>
+  <% end %>
+</div>

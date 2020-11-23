@@ -17,12 +17,13 @@ class SegmentsSeeds
   def perform
     segments = Array.new
 
-    6.times { |index| segments << Segment.new({ label: SEGMENTS[index] }) }
-
     6.times do |index|
+      segment = Segment.new({ label: SEGMENTS[index] })
       Faker::Number.unique.clear
-      rand(1..4).times { segments[index].clients << Client.find_by(label: %w(BSUIR BSU BSTU BSAI BSMU).sample) }
-      rand(1..3).times { segments[index].users << User.find(Faker::Number.unique.within(range: 1..8)) }
+      %w(BSUIR BSU BSTU BSAI BSMU).sample(rand(1..4)).each { |e| segment.clients << Client.find_by(label: e) }
+      rand(1..3).times { segment.users << User.find(Faker::Number.unique.within(range: 1..8)) }
+
+      segments << segment
     end
 
     begin

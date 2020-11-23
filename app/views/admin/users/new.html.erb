@@ -11,7 +11,6 @@
     <%= form_with scope: :user, url: admin_users_url(@user), method: :post do |user_form| %>
       <h4>First name: </h4><%= user_form.text_field :first_name %>
       <h4>Last name: </h4><%= user_form.text_field :last_name %>
-      <h4>Phone: </h4><%= user_form.text_field :phone %>
       <h4>Email: </h4><%= user_form.text_field :email %>
       <h4>Account type: </h4><%= user_form.select(:account_type, %w(bronze silver gold)) %>
       <h4>Password: </h4><%= user_form.password_field :password %>
@@ -25,7 +24,7 @@
       <div id="current_segment_labels"></div>
       <select id="new_segment_select">
       </select>
-      <button id="add_selected_segment">Add this segment to user</button>
+      <h3 id="add_selected_segment">Add this segment to user</h3>
       <div id="current_segments_ids"></div>
 
       <br><br>

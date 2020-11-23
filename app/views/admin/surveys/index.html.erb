@@ -1,21 +1,16 @@
-<h1>Admin</h1>
-<h2>Surveys Listing</h2>
-
-<% unless @surveys.empty? %>
-  <table>
-    <thead>
-      <tr>
-        <th>Survey Label</th>
-        <th>Link</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @surveys.each do |survey| %>
-        <tr>
-          <td><%= survey.label %></td>
-          <td><%= link_to("Details", admin_survey_url(survey)) %></td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
-<% end %>
+<div class="listing-wrapper">
+  <div class="listing-wrapper__label">Survey's listing</div>
+  <% unless @surveys.empty? %>
+    <% @surveys.each do |survey| %>
+      <div class="listing-wrapper__model-wrapper model-wrapper colored-group">
+        <div class="model-wrapper__model-info model-info">
+          <div class="model-info__label">Survey label:</div>
+          <div class="model-info__information"><%= survey.label %></div>
+        </div>
+        <%= link_to("Details", admin_survey_url(survey), class: "model-wrapper__button link-button") %>
+      </div>
+    <% end %>
+  <% else %>
+    <div class="listing-wrapper__message">Empty</div>
+  <% end %>
+</div>

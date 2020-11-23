@@ -14,7 +14,7 @@ $(document).ready(() => {
 
     const newSegmentWrapper = $('<div></div>').attr('id', `segment_${selectedValue}_wrapper`);
     const newSegmentLabel = $('<h4></h4>').text(selectedText);
-    const newSegmentDelete = $('<button></button>')
+    const newSegmentDelete = $('<h3></h3>')
       .attr('id', `segment_${selectedValue}_delete`)
       .text('Delete');
     newSegmentWrapper.append(newSegmentLabel, newSegmentDelete);
@@ -31,7 +31,7 @@ $(document).ready(() => {
 
     const newHiddenInputSegment = $('<input></input>')
       .attr('id', `segment_${selectedValue}`)
-      .attr('name', 'user[segments_ids][]')
+      .attr('name', 'segments_ids[]')
       .attr('type', 'hidden')
       .val(selectedValue);
     $('#current_segments_ids').append(newHiddenInputSegment);

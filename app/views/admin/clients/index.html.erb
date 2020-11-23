@@ -1,23 +1,20 @@
-<h1>Admin</h1>
-<h2>Clients Listing</h2>
-
-<% unless @clients.empty? %>
-  <table>
-    <thead>
-      <tr>
-        <th>Company Logo</th>
-        <th>Company Name</th>
-        <th>Link</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @clients.each do |client| %>
-        <tr>
-          <td><%= client.logo_url %></td>
-          <td><%= client.label %></td>
-          <td><%= link_to("Details", admin_client_url(client)) %></td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
-<% end %>
+<div class="listing-wrapper">
+  <div class="listing-wrapper__label">Client's listing</div>
+  <% unless @clients.empty? %>
+    <% @clients.each do |client| %>
+      <div class="listing-wrapper__model-wrapper model-wrapper colored-group">
+        <div class="model-wrapper__model-info model-info">
+          <div class="model-info__label">Logo URL:</div>
+          <div class="model-info__information"><%= client.logo_url %></div>
+        </div>
+        <div class="model-wrapper__model-info model-info">
+          <div class="model-info__label">Label:</div>
+          <div class="model-info__information"><%= client.label %></div>
+        </div>
+        <%= link_to("Details", admin_client_url(client), class: "model-wrapper__button link-button") %>
+      </div>
+    <% end %>
+  <% else %>
+    <div class="listiong-wrapper__message">Empty</div>
+  <% end %>
+</div>

@@ -17,7 +17,7 @@ function addNewQuestionGroup(qgroup_id) {
     .text('Label');
   const qgroupLabelInput = $('<input/>')
     .attr('type', 'text')
-    .attr('name', 'survey[question_groups[][question_group[label]]]');
+    .attr('name', 'question_groups[][question_group[label]]');
   const questionsLabel = $('<h3></h3>')
     .text('Questions');
   const qgroupQuestionsWrapper = $('<div></div>')
@@ -43,7 +43,7 @@ function addNewQuestion(question_id, qgroup_id) {
     .text('Question type:');
   const questionLabelInput = $('<input/>')
     .attr('type', 'text')
-    .attr('name', 'survey[question_groups[][question_group[questions[][question[question_type]]]]]');
+    .attr('name', 'question_groups[][question_group[questions[][question[question_type]]]]');
   questionWrapper.append(questionHeader, questionLabelHeader, questionLabelInput);
   $(`#questions_${qgroup_id}`).append(questionWrapper);
 }

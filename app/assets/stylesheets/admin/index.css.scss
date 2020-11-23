@@ -1,0 +1,41 @@
+@import "_variables";
+@import "_mixins";
+
+@include buttons;
+@include highlighting;
+
+.listing-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  &__label {
+    font-weight: bold;
+  }
+  &__model-wrapper {
+    display: flex;
+    flex-direction: column;
+  }
+}
+.model-wrapper {
+  margin-left: 10px;
+
+  &__model-info {
+    display: flex;
+  }
+  &__button {
+    margin-left: 10px;
+    margin-bottom: 5px;
+  }
+}
+.model-info { 
+  padding: 5px 10px;
+
+  &__label {
+    font-weight: bold;
+    margin-right: 10px;
+  }
+  &__information {
+    margin-right: 10px;
+  }
+}

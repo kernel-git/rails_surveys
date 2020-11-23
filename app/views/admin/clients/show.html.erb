@@ -1,46 +1,81 @@
-<h1>Admin</h1>
-<h2>Company Info</h2>
+<div class="model-wrapper">
+  <div class="object-group-wrapper">
+    <div class="object-group-wrapper__label">Client Info</div>
+    <div class="colored-group">
+      <div class="object-group-wrapper__info-wrapper info-wrapper">
+        <div class="info-wrapper__label">Logo URL:</div>
+        <div class="info-wrapper__information">
+          <%= @client.logo_url %>
+        </div>
+      </div>
+      <div class="object-group-wrapper__info-wrapper info-wrapper">
+        <div class="info-wrapper__label">Label:</div>
+        <div class="info-wrapper__information">
+          <%= @client.label %>
+        </div>
+      </div>
+      <div class="object-group-wrapper__info-wrapper info-wrapper">
+        <div class="info-wrapper__label">Phone:</div>
+        <div class="info-wrapper__information">
+          <%= @client.phone %>
+        </div>
+      </div>
+      <div class="object-group-wrapper__info-wrapper info-wrapper">
+        <div class="info-wrapper__label">Email:</div>
+        <div class="info-wrapper__information">
+          <%= @client.email %>
+        </div>
+      </div>
+      <div class="object-group-wrapper__info-wrapper info-wrapper">
+        <div class="info-wrapper__label">Address:</div>
+        <div class="info-wrapper__information">
+          <%= @client.address %>
+        </div>
+      </div>
+    </div>
+  </div>
 
-<table>
-  <thead>
-    <tr>
-      <th>Company Logo</th>
-      <th>Company Name</th>
-      <th>Company Phone</th>
-      <th>Company Email</th>
-      <th>Company Address</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><%= @client.logo_url %></td>
-      <td><%= @client.label %></td>
-      <td><%= @client.phone %></td>
-      <td><%= @client.email %></td>
-      <td><%= @client.address %></td>
-    </tr>
-  </tbody>
-</table>
+  <div class="object-group-wrapper">
+    <div class="object-group-wrapper__label">Client's users</div>
+    
+      <% unless @clients_users.empty? %>
+        <% @clients_users.each do |user| %>
+          <div class="colored-group">
+            <div class="object-group-wrapper__info-wrapper info-wrapper">
+              <div class="info-wrapper__label">First name:</div>
+              <div class="info-wrapper__information"><%= user.first_name %></div>
+            </div>
+            <div class="object-group-wrapper__info-wrapper info-wrapper">
+              <div class="info-wrapper__label">Last name:</div>
+              <div class="info-wrapper__information"><%= user.last_name %></div>
+            </div>
+            <%= link_to "Details", admin_user_url(user), class: "link-button object-group-wrapper__button" %>
+          </div>
+        <% end %>
+      <% else %>
+        <div class="colored-group">
+          <div class="object-group-wrapper__message">Empty</div>
+        </div>
+      <% end %>
+  </div>
 
-<h3>Company's users</h3>
-<% unless @clients_users.empty? %>
-  <% @clients_users.each do |user| %>
-    <%= link_to admin_user_url(user) do %>
-      <h4><%= user.first_name %></h4>
-      <h4><%= user.last_name %></h4>
-    <% end %>
-  <% end %>
-<% else %>
-  <h4>Empty</h4>
-<% end %>
-
-<h3>Company's segments</h3>
-<% unless @clients_segments.empty? %>
-  <% @clients_segments.each do |segment| %>
-    <%= link_to admin_segment_url(segment) do %>
-      <h4><%= segment.label %></h4>
-    <% end %>
-  <% end %>
-<% else %>
-  <h4>Empty</h4>
-<% end %>
+  <div class="object-group-wrapper">
+    <div class="object-group-wrapper__label">Client's segments</div>
+    
+      <% unless @clients_segments.empty? %>
+        <% @clients_segments.each do |segment| %>
+          <div class="colored-group">
+            <div class="object-group-wrapper__info-wrapper info-wrapper">
+              <div class="info-wrapper__label">Label:</div>
+              <div class="info-wrapper__information"><%= segment.label %></div>
+            </div>
+            <%= link_to "Details", admin_segment_url(segment), class: "link-button object-group-wrapper__button" %>
+          </div>
+        <% end %>
+      <% else %>
+      <div class="colored-group">
+        <div class="object-group-wrapper__message">Empty</div>
+      </div>
+      <% end %>
+  </div>
+</div>

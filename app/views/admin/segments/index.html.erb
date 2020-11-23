@@ -1,21 +1,16 @@
-<h1>Admin</h1>
-<h2>Segments Listing</h2>
-
-<% unless @segments.empty? %>
-  <table>
-    <thead>
-      <tr>
-        <th>Segment Label</th>
-        <th>Link</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @segments.each do |segment| %>
-        <tr>
-          <td><%= segment.label %></td>
-          <td><%= link_to("Details", admin_segment_url(segment)) %></td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
-<% end %>
+<div class="listing-wrapper">
+  <div class="listing-wrapper__label">Segment's listing</div>
+  <% unless @segments.empty? %>
+    <% @segments.each do |segment| %>
+      <div class="listing-wrapper__model-wrapper model-wrapper colored-group">
+        <div class="model-wrapper__model-info model-info">
+          <div class="model-info__label">Segment label:</div>
+          <div class="model-info__information"><%= segment.label %></div>
+        </div>
+        <%= link_to("Details", admin_segment_url(segment), class: "model-wrapper__button link-button") %>
+      </div>
+    <% end %>
+  <% else %>
+    <div class="listiong-wrapper__message">Empty</div>
+  <% end %>
+</div>
