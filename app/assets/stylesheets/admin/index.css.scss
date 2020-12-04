@@ -1,16 +1,23 @@
 @import "_variables";
 @import "_mixins";
 
-@include buttons;
+@include links;
 @include highlighting;
+@include custom-table;
+@include svg;
 
 .listing-wrapper {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 
-  &__label {
+  width: 90%;
+
+  &__label-wrapper {
+    display: flex;
+    justify-content: space-between;
     font-weight: bold;
+    padding-bottom: 15px;
   }
   &__model-wrapper {
     display: flex;

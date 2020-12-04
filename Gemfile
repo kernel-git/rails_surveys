@@ -40,6 +40,7 @@ group :development, :test do
   gem 'irb', require: false
   gem 'rspec-rails', '>= 3.9.0'
   gem 'jquery-rails'
+  gem 'inline_svg'
 end
 
 group :development do

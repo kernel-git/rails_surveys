@@ -1,26 +1,77 @@
-<html>
-  <head>
-    <%= content_tag :div, id: "segments_data", data: {segments: @segments_data} do %>
-    <% end %>
-    <%= javascript_pack_tag "admin/users/new.js" %>
-  </head>
-  <body>
-    <h1>Admin</h1>
-    <h2>New Client</h2>
+<%= content_tag :div, id: "segments_data", data: {segments: @segments_data} do %>
+<% end %>
 
-    <%= form_with scope: :client, url: admin_clients_url(@client), method: :post do |client_form| %>
-      <h4>Label: </h4><%= client_form.text_field :first_name %>
-      
-      <h3>New clients's segments</h3>
-      <div id="current_segment_labels"></div>
-      <select id="new_segment_select">
-      </select>
-      <button id="add_selected_segment">Add this segment to user</button>
-      <div id="current_segments_ids"></div>
+<%= javascript_pack_tag "admin/clients/new.js" %>
+<%= javascript_pack_tag "admin/table-behavior.js" %>
 
-      <br><br>
-      <%= client_form.submit "Create user" %>
+<%= form_with scope: :client, url: admin_clients_url(@client), method: :post, class: "model-wrapper" do |client_form| %>
+  <div class="model-wrapper__label">New company</div>
+  <div class="model-wrapper__model-group">
+    <div class="model-wrapper__model-info-block">
+      <div class="model-wrapper__model-info-wrapper input-wrapper">
+        <div class="model-info-wrapper__label">Logo url: </div>
+        <div class="model-info-wrapper__info"><%= client_form.text_field :logo_url %></div>
+      </div>
+      <div class="model-wrapper__model-info-wrapper input-wrapper">
+        <div class="model-info-wrapper__label">Label:</div>
+        <div class="model-info-wrapper__info"><%= client_form.text_field :label %></div>
+      </div>
+    </div>
+    <div class="model-wrapper__model-info-block">
+      <div class="model-wrapper__model-info-wrapper input-wrapper">
+        <div class="model-info-wrapper__label">Address:</div>
+        <div class="model-info-wrapper__info"><%= client_form.text_field :address %></div>
+      </div>
+      <div class="model-wrapper__model-info-wrapper input-wrapper">
+        <div class="model-info-wrapper__label">Phone:</div>
+        <div class="model-info-wrapper__info"><%= client_form.text_field :phone %></div>
+      </div>
+      <div class="model-wrapper__model-info-wrapper input-wrapper">
+        <div class="model-info-wrapper__label">Email:</div>
+        <div class="model-info-wrapper__info"><%= client_form.text_field :email %></div>
+      </div>
+    </div>
+  </div>
+  <div class="model-wrapper__model-table-wrapper model-table-wrapper">
+    <div class="model-table-wrapper__label">Companies's segments</div>
+    <div id="listing-table_0" class="model-table-wrapper__table custom-table">
+      <div class="custom-table__table-header-wrapper table-header-wrapper">
+        <div class="table-header-wrapper__table-header-element table-header-element">
+          <div class="table-header-element__label">
+            Label
+          </div>
+        </div>
+      </div>
+      <div id="add-row_0" class="custom-table__table-row-wrapper table-row-wrapper link-div custom-table__message">
+        <%= inline_svg_tag('plus-sign.svg', class: "svg-plus") %>
+      </div>
+    </div>
+  </div>
+  <div id="current-segments-ids" style="display: none;"></div>
 
-    <% end %>
-  </body>
-</html>
+  <%= client_form.submit "Create company" %>
+  
+<% end %>
+
+<div id="modal_0" class="modal-background modal-background--hidden">
+  <div class="modal-content">
+    <div class="modal-content__header-wrapper">
+      <div class="modal-content__header-label">Select segments</div>
+      <div id="modal-close_0" class="modal-content__header-button">
+        <%= inline_svg_tag('cross-sign.svg', class: "svg-cross") %>
+      </div>
+    </div>
+    <div class="modal-content__body">
+      <div id="listing-table_1" class="listing-wrapper__custom-table custom-table">
+        <div class="custom-table__table-header-wrapper table-header-wrapper">
+          <div class="table-header-wrapper__table-header-element table-header-element">
+            <div class="table-header-element__label">
+              Label
+            </div>
+          </div>
+        </div>
+        <!-- Segments data goes here -->
+      </div>
+    </div>
+  </div>
+</div>

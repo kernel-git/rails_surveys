@@ -1,81 +1,102 @@
+<%= javascript_pack_tag "admin/table-behavior.js" %>
+
 <div class="model-wrapper">
-  <div class="object-group-wrapper">
-    <div class="object-group-wrapper__label">Client Info</div>
-    <div class="colored-group">
-      <div class="object-group-wrapper__info-wrapper info-wrapper">
-        <div class="info-wrapper__label">Logo URL:</div>
-        <div class="info-wrapper__information">
-          <%= @client.logo_url %>
-        </div>
+  <div class="model-wrapper__label"><%= @client.label %></div>
+  <div class="model-wrapper__model-group">
+    <div class="model-wrapper__model-info-block">
+      <%= image_tag(@client.logo_url, size: "200x200") %>
+    </div>
+    <div class="model-wrapper__model-info-block">
+      <div class="model-wrapper__model-info-wrapper">
+        <div class="model-info-wrapper__label">Address: </div>
+        <div class="model-info-wrapper__info"><%= @client.address %></div>
       </div>
-      <div class="object-group-wrapper__info-wrapper info-wrapper">
-        <div class="info-wrapper__label">Label:</div>
-        <div class="info-wrapper__information">
-          <%= @client.label %>
-        </div>
+      <div class="model-wrapper__model-info-wrapper">
+        <div class="model-info-wrapper__label">Phone:</div>
+        <div class="model-info-wrapper__info"><%= @client.phone %></div>
       </div>
-      <div class="object-group-wrapper__info-wrapper info-wrapper">
-        <div class="info-wrapper__label">Phone:</div>
-        <div class="info-wrapper__information">
-          <%= @client.phone %>
-        </div>
-      </div>
-      <div class="object-group-wrapper__info-wrapper info-wrapper">
-        <div class="info-wrapper__label">Email:</div>
-        <div class="info-wrapper__information">
-          <%= @client.email %>
-        </div>
-      </div>
-      <div class="object-group-wrapper__info-wrapper info-wrapper">
-        <div class="info-wrapper__label">Address:</div>
-        <div class="info-wrapper__information">
-          <%= @client.address %>
-        </div>
+      <div class="model-wrapper__model-info-wrapper">
+        <div class="model-info-wrapper__label">Email:</div>
+        <div class="model-info-wrapper__info"><%= @client.email %></div>
       </div>
     </div>
   </div>
-
-  <div class="object-group-wrapper">
-    <div class="object-group-wrapper__label">Client's users</div>
-    
+  <div class="model-wrapper__model-table-wrapper model-table-wrapper">
+    <div class="model-table-wrapper__label">Company's users</div>
+    <div id="listing-table_0" class="model-table-wrapper__table custom-table">
+      <div class="custom-table__table-header-wrapper table-header-wrapper">
+        <div class="table-header-wrapper__table-header-element table-header-element">
+          <div class="table-header-element__arrows-wrapper arrows-wrapper">
+            <div id="sort-arrow_up_0_table_0"><%= inline_svg_tag('up-chevron.svg', class: "svg-sorting-arrow") %></div>
+            <div id="sort-arrow_down_0_table_0"><%= inline_svg_tag('down-chevron.svg', class: "svg-sorting-arrow") %></div>
+          </div>
+          <div class="table-header-element__label">
+            First name
+          </div>
+        </div>
+        <div class="table-header-wrapper__table-header-element table-header-element">
+          <div class="table-header-element__arrows-wrapper arrows-wrapper">
+            <div id="sort-arrow_up_1_table_0"><%= inline_svg_tag('up-chevron.svg', class: "svg-sorting-arrow") %></div>
+            <div id="sort-arrow_down_1_table_0"><%= inline_svg_tag('down-chevron.svg', class: "svg-sorting-arrow") %></div>
+          </div>
+          <div class="table-header-element__label">
+            Last name
+          </div>
+        </div>
+        <div class="table-header-wrapper__table-header-element table-header-element">
+          <div class="table-header-element__arrows-wrapper arrows-wrapper">
+            <div id="sort-arrow_up_2_table_0"><%= inline_svg_tag('up-chevron.svg', class: "svg-sorting-arrow") %></div>
+            <div id="sort-arrow_down_2_table_0"><%= inline_svg_tag('down-chevron.svg', class: "svg-sorting-arrow") %></div>
+          </div>
+          <div class="table-header-element__label">
+            Email
+          </div>
+        </div>
+      </div>
       <% unless @clients_users.empty? %>
         <% @clients_users.each do |user| %>
-          <div class="colored-group">
-            <div class="object-group-wrapper__info-wrapper info-wrapper">
-              <div class="info-wrapper__label">First name:</div>
-              <div class="info-wrapper__information"><%= user.first_name %></div>
+          <%= link_to(admin_user_url(user), class: "custom-table__table-row-wrapper table-row-wrapper link-div table-row_0") do %>
+            <div class="table-row-wrapper__information">
+              <%= user.first_name %>
             </div>
-            <div class="object-group-wrapper__info-wrapper info-wrapper">
-              <div class="info-wrapper__label">Last name:</div>
-              <div class="info-wrapper__information"><%= user.last_name %></div>
+            <div class="table-row-wrapper__information">
+              <%= user.last_name %>
             </div>
-            <%= link_to "Details", admin_user_url(user), class: "link-button object-group-wrapper__button" %>
-          </div>
+            <div class="table-row-wrapper__information">
+              <%= user.email %>
+            </div>
+          <% end %>
         <% end %>
       <% else %>
-        <div class="colored-group">
-          <div class="object-group-wrapper__message">Empty</div>
-        </div>
+        <div class="custom-table__message">Empty</div>
       <% end %>
+    </div>
   </div>
-
-  <div class="object-group-wrapper">
-    <div class="object-group-wrapper__label">Client's segments</div>
-    
+  <div class="model-wrapper__model-table-wrapper model-table-wrapper">
+    <div class="model-table-wrapper__label">Company's segments</div>
+    <div id="listing-table_1" class="model-table-wrapper__table custom-table">
+      <div class="custom-table__table-header-wrapper table-header-wrapper">
+        <div class="table-header-wrapper__table-header-element table-header-element">
+          <div class="table-header-element__arrows-wrapper arrows-wrapper">
+            <div id="sort-arrow_up_0_table_1"><%= inline_svg_tag('up-chevron.svg', class: "svg-sorting-arrow") %></div>
+            <div id="sort-arrow_down_0_table_1"><%= inline_svg_tag('down-chevron.svg', class: "svg-sorting-arrow") %></div>
+          </div>
+          <div class="table-header-element__label">
+            Label
+          </div>
+        </div>
+      </div>
       <% unless @clients_segments.empty? %>
         <% @clients_segments.each do |segment| %>
-          <div class="colored-group">
-            <div class="object-group-wrapper__info-wrapper info-wrapper">
-              <div class="info-wrapper__label">Label:</div>
-              <div class="info-wrapper__information"><%= segment.label %></div>
+          <%= link_to(admin_segment_url(segment), class: "custom-table__table-row-wrapper table-row-wrapper link-div table-row_1") do %>
+            <div class="table-row-wrapper__information">
+              <%= segment.label %>
             </div>
-            <%= link_to "Details", admin_segment_url(segment), class: "link-button object-group-wrapper__button" %>
-          </div>
+          <% end %>
         <% end %>
       <% else %>
-      <div class="colored-group">
-        <div class="object-group-wrapper__message">Empty</div>
-      </div>
+        <div class="custom-table__message">Empty</div>
       <% end %>
+    </div>
   </div>
 </div>

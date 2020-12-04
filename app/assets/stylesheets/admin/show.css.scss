@@ -1,14 +1,60 @@
 @import "_variables";
 @import "_mixins";
 
-@include buttons;
+@include links;
 @include highlighting;
+@include svg;
 
 .model-wrapper {
+  width: 90%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+
+  &__label {
+    padding: 20px 0 10px;
+    font-size: 32px;
+  }
+  &__model-group {
+    padding-bottom: 10px;
+
+    display: flex;
+    flex-direction: row;
+  }
+  &__model-info-block {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+  }
+  &__model-info-wrapper {
+    display: flex;
+    align-items: center;
+  }
 }
+.input-wrapper {
+  display: flex;
+  justify-content: space-between;
+}
+.model-info-wrapper {
+  &__label {
+    font-weight: bold;
+  }
+  &__info {
+    margin-left: 10px;
+  }
+}
+.model-table-wrapper {
+  padding: 10px 20px;
+  &__label {
+    padding-bottom: 10px;
+    font-weight: bold;
+  }
+  &__table {
+  padding-bottom: 10px;
+  }
+}
+
 .model-header {
   margin-left: 10px;
 }
@@ -42,5 +88,11 @@
   }
   &__information {
     margin-right: 10px;
+  }
+  &__content {
+    padding: 5px 10px;
+
+    display: flex;
+    flex-direction: column;
   }
 }

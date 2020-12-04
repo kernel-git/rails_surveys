@@ -16,11 +16,21 @@ class Admin::SegmentsController < ApplicationController
   end
   def new
     @segment = Segment.new
-    @users_data = User.all.collect { |user| [user.id, "#{user.first_name} #{user.last_name}"] }
-    @clients_data = Client.all.collect { |client| [client.id, client.label] }
+    @users_data = User.all.collect { |user| [user.id, user.first_name, user.last_name, user.email, user.client.label] }
+    @clients_data = Client.all.collect { |client| [client.id, client.logo_url, client.label, client.email] }
   end
   def create
-    puts "Ping from admin/segments#create"
+    @segment = Segment.new({
+      label: params[:segment][:label]
+    })
+    @segment.clients = Client.where(id: params[:clients_ids])
+    @segment.users = User.where(id: params[:users_ids])
+    if @segment.save
+      redirect_to(admin_segment_url(@segment))
+    else
+      puts "Segment save failed. Error message: #{@segment.errors.full_messages}"
+      redirect_to(admin_segments_url)
+    end
   end
   def edit
     puts "Ping from admin/segments#edit with params: #{params}"

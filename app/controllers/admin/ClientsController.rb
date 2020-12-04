@@ -19,7 +19,20 @@ class Admin::ClientsController < ApplicationController
     @segments_data = Segment.all.collect { |segment| [segment.id, segment.label] }
   end
   def create
-    puts "Ping from admin/clients#create with params: #{params}"
+    @client = Client.new({
+      logo_url: params[:client][:logo_url],
+      label: params[:client][:label],
+      address: params[:client][:address],
+      email: params[:client][:email],
+      phone: params[:client][:phone]
+    })
+    @client.segments = Segment.where(id: params[:segments_ids])
+    if @client.save
+      redirect_to(admin_client_url(@client))
+    else
+      puts "Client save failed. Error message: #{@client.errors.full_messages}"
+      redirect_to(admin_clients_url)
+    end
   end
   def edit
     puts "Ping from admin/clients#edit with params: #{params}"

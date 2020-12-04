@@ -1,35 +1,162 @@
-<html>
-  <head>
-    <%= content_tag :div, id: "segments_data", data: {segments: @segments_data} do %>
-    <% end %>
-    <%= javascript_pack_tag "admin/users/new.js" %>
-  </head>
-  <body>
-    <h1>Admin</h1>
-    <h2>New User</h2>
+<%= content_tag :div, id: "segments_data", data: {segments: @segments_data} do %>
+<% end %>
+<%= content_tag :div, id: "clients_data", data: {clients: @clients_data} do %>
+<% end %>
 
-    <%= form_with scope: :user, url: admin_users_url(@user), method: :post do |user_form| %>
-      <h4>First name: </h4><%= user_form.text_field :first_name %>
-      <h4>Last name: </h4><%= user_form.text_field :last_name %>
-      <h4>Email: </h4><%= user_form.text_field :email %>
-      <h4>Account type: </h4><%= user_form.select(:account_type, %w(bronze silver gold)) %>
-      <h4>Password: </h4><%= user_form.password_field :password %>
-      <h4>Age: </h4><%= user_form.text_field :age %><br>
-      <%= user_form.check_box :opt_out %><div> Unsubscribe from new surveys</div>
+<%= javascript_pack_tag "admin/users/new.js" %>
+<%= javascript_pack_tag "admin/table-behavior.js" %>
 
-      <h3>New user's client</h3>
-      <%= user_form.collection_select(:client_id, Client.all, :id, :label) %>
+<%= form_with scope: :user, url: admin_users_url(@user), method: :post, class: "model-wrapper" do |user_form| %>
+  <div class="model-wrapper__label">New user</div>
+  <div class="model-wrapper__model-group">
+    <div class="model-wrapper__model-info-block">
+      <div class="model-wrapper__model-info-wrapper input-wrapper">
+        <div class="model-info-wrapper__label">First name: </div>
+        <div class="model-info-wrapper__info"><%= user_form.text_field :first_name %></div>
+      </div>
+      <div class="model-wrapper__model-info-wrapper input-wrapper">
+        <div class="model-info-wrapper__label">Last name:</div>
+        <div class="model-info-wrapper__info"><%= user_form.text_field :last_name %></div>
+      </div>
+      <div class="model-wrapper__model-info-wrapper input-wrapper">
+        <div class="model-info-wrapper__label">Age:</div>
+        <div class="model-info-wrapper__info"><%= user_form.text_field :age %></div>
+      </div>
+      <div class="model-wrapper__model-info-wrapper input-wrapper">
+        <div class="model-info-wrapper__label">Email:</div>
+        <div class="model-info-wrapper__info"><%= user_form.text_field :email %></div>
+      </div>
+    </div>
+    <div class="model-wrapper__model-info-block">
+      <div class="model-wrapper__model-info-wrapper input-wrapper">
+        <div class="model-info-wrapper__label">Account type: </div>
+        <div class="model-info-wrapper__info model-info-wrapper__info--selectable"><%= user_form.select(:account_type, %w(bronze silver gold)) %></div>
+      </div>
+      <div class="model-wrapper__model-info-wrapper input-wrapper">
+        <div class="model-info-wrapper__label">Password:</div>
+        <div class="model-info-wrapper__info"><%= user_form.password_field :password %></div>
+      </div>
+      <div class="model-wrapper__model-info-wrapper input-wrapper">
+        <div class="model-info-wrapper__label">Position age:</div>
+        <div class="model-info-wrapper__info"><%= user_form.text_field :position_age %></div>
+      </div>
+        <div class="model-wrapper__model-info-wrapper input-wrapper">
+          <div class="model-info-wrapper__label">Is unsubscribed from new surveys:</div>
+          <div class="model-info-wrapper__info model-info-wrapper__info--selectable"><%= user_form.check_box :opt_out %></div>
+        </div>
+    </div>
+  </div>
+  <div class="model-wrapper__model-table-wrapper model-table-wrapper">
+    <div class="model-table-wrapper__label">User's company</div>
+    <div id="listing-table_0" class="model-table-wrapper__table custom-table">
+      <div class="custom-table__table-header-wrapper table-header-wrapper">
+        <div class="w-10 table-header-wrapper__table-header-element table-header-element">
+          <div class="table-header-element__label">
+            Logo
+          </div>
+        </div>
+        <div class="table-header-wrapper__table-header-element table-header-element">
+          <div class="table-header-element__label">
+            Label
+          </div>
+        </div>
+        <div class="table-header-wrapper__table-header-element table-header-element">
+          <div class="table-header-element__label">
+            Email
+          </div>
+        </div>
+        <div class="w-10 table-header-wrapper__table-header-element table-header-element">
+          <div class="table-header-element__label">
+          </div>
+        </div>
+      </div>
+      <div id="add-row_0" class="custom-table__table-row-wrapper table-row-wrapper link-div custom-table__message">
+        <%= inline_svg_tag('plus-sign.svg', class: "svg-plus") %>
+      </div>
+    </div>
+  </div>
+  <div class="model-wrapper__model-table-wrapper model-table-wrapper">
+    <div class="model-table-wrapper__label">User's segments</div>
+    <div id="listing-table_1" class="model-table-wrapper__table custom-table">
+      <div class="custom-table__table-header-wrapper table-header-wrapper">
+        <div class="table-header-wrapper__table-header-element table-header-element">
+          <div class="table-header-element__label">
+            Label
+          </div>
+        </div>
+      </div>
+      <div id="add-row_1" class="custom-table__table-row-wrapper table-row-wrapper link-div custom-table__message">
+        <%= inline_svg_tag('plus-sign.svg', class: "svg-plus") %>
+      </div>
+    </div>
+    <div id="current_client_id" style="display: none;"></div>
+    <div id="current-segments-ids" style="display: none;"></div>
+  </div>
 
-      <h3>New user's segments</h3>
-      <div id="current_segment_labels"></div>
-      <select id="new_segment_select">
-      </select>
-      <h3 id="add_selected_segment">Add this segment to user</h3>
-      <div id="current_segments_ids"></div>
+  <%= user_form.submit "Create user" %>
+  
+<% end %>
 
-      <br><br>
-      <%= user_form.submit "Create user" %>
+<div id="modal_0" class="modal-background modal-background--hidden">
+  <div class="modal-content">
+    <div class="modal-content__header-wrapper">
+      <div class="modal-content__header-label">Select company</div>
+      <div id="modal-close_0" class="modal-content__header-button">
+        <%= inline_svg_tag('cross-sign.svg', class: "svg-cross") %>
+      </div>
+    </div>
+    <div class="modal-content__body">
+      <div id="listing-table_2" class="listing-wrapper__custom-table custom-table">
+        <div class="custom-table__table-header-wrapper table-header-wrapper">
+          <div class="table-header-wrapper__table-header-element table-header-element w-10">
+            <div class="table-header-element__label">
+              Logo
+            </div>
+          </div>
+          <div class="table-header-wrapper__table-header-element table-header-element">
+            <div class="table-header-element__arrows-wrapper arrows-wrapper">
+              <div id="sort-arrow_up_1_table_2"><%= inline_svg_tag('up-chevron.svg', class: "svg-sorting-arrow") %></div>
+              <div id="sort-arrow_down_1_table_2"><%= inline_svg_tag('down-chevron.svg', class: "svg-sorting-arrow") %></div>
+            </div>
+            <div class="table-header-element__label">
+              Label
+            </div>
+          </div>
+          <div class="table-header-wrapper__table-header-element table-header-element">
+            <div class="table-header-element__arrows-wrapper arrows-wrapper">
+              <div id="sort-arrow_up_2_table_2"><%= inline_svg_tag('up-chevron.svg', class: "svg-sorting-arrow") %></div>
+              <div id="sort-arrow_down_2_table_2"><%= inline_svg_tag('down-chevron.svg', class: "svg-sorting-arrow") %></div>
+            </div>
+            <div class="table-header-element__label">
+              Email
+            </div>
+          </div>
+        </div>
+        <!-- Clients data goes here -->
+      </div>
+    </div>
+  </div>
+</div>
 
-    <% end %>
-  </body>
-</html>
+<div id="modal_1" class="modal-background modal-background--hidden">
+  <div class="modal-content">
+    <div class="modal-content__header-wrapper">
+      <div class="modal-content__header-label">Select segments</div>
+      <div id="modal-close_1" class="modal-content__header-button">
+        <%= inline_svg_tag('cross-sign.svg', class: "svg-cross") %>
+      </div>
+    </div>
+    <div class="modal-content__body">
+      <div id="listing-table_3" class="listing-wrapper__custom-table custom-table">
+        <div class="custom-table__table-header-wrapper table-header-wrapper">
+          <div class="table-header-wrapper__table-header-element table-header-element">
+            <div class="table-header-element__label">
+              Label
+            </div>
+          </div>
+        </div>
+        <!-- Segments data goes here -->
+      </div>
+    </div>
+  </div>
+</div>

@@ -18,6 +18,7 @@ class Admin::UsersController < ApplicationController
   def new
     @user = User.new
     @segments_data = Segment.all.collect { |segment| [segment.id, segment.label] }
+    @clients_data = Client.all.collect { |client| [client.id, client.logo_url, client.label, client.email] }
   end
   def create
     @user = User.new({
@@ -27,10 +28,10 @@ class Admin::UsersController < ApplicationController
       account_type: params[:user][:account_type],
       password: params[:user][:password],
       age: params[:user][:age],
-      position_age: 1,
+      position_age: params[:user][:position_age],
       opt_out: params[:user][:opt_out]
     })
-    @user.client = Client.find(params[:user][:client_id])
+    @user.client = Client.find(params[:client_id])
     @user.segments = Segment.where(id: params[:segments_ids])
     if @user.save
       redirect_to(admin_user_url(@user))

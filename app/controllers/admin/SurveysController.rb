@@ -16,12 +16,16 @@ class Admin::SurveysController < ApplicationController
   end
   def new
     @survey = Survey.new
-    @clients_data = Client.all.collect { |client| [client.id, client.label] }
+    @clients_data = Client.all.collect { |client| [client.id, client.logo_url, client.label, client.email] }
   end
   def create
+    if params[:survey] == nil || params[:question_groups] == nil
+      return
+    end
     @survey = Survey.new(
       label: params[:survey][:label]
     )
+
     @qgroups = Array.new
     @questions = Array.new
     unless @survey.valid?
@@ -29,9 +33,9 @@ class Admin::SurveysController < ApplicationController
       @survey.errors.full_messages.each { |e| puts e}
       return
     end
-    @survey.clients << Client.find(params[:survey][:client_id])
+    @survey.clients << Client.find(params[:client_id])
 
-    p params[:question_groups]
+
     params[:question_groups].each do |qgroup_params|
       @qgroup = QuestionGroup.new(label: qgroup_params[:question_group][:label])
 
@@ -59,6 +63,7 @@ class Admin::SurveysController < ApplicationController
       @qgroups << @qgroup
     end
     begin 
+      puts 'Survey save started'
       @survey.save!
       @qgroups.each { |e| e.save! }
       @questions.each { |e| e.save! }

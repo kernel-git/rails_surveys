@@ -1,4 +1,4 @@
-@mixin buttons {
+@mixin links {
   .link-button {
     display: inline-table;
 
@@ -7,6 +7,21 @@
 
     text-decoration: none;
     background-color: $lavendar-color;
+    color: $light-grey-color;
+    &:hover {
+      background-color: $overcast-color;
+      color: $white-color;
+    }
+  }
+  .link-div {
+    text-decoration: none;
+
+    background-color: $white-color;
+    color: $black-color;
+
+    &:hover {
+      background-color: $neutral-color;
+    }
   }
 }
 
@@ -14,11 +29,149 @@
   .colored-group {
     padding: 15px 10px;
     margin: 5px 0;
-    background-color: $neutral-color;
+    background-color: $light-grey-color;
     border-radius: 20px;
 
-    &__alt {
-      background-color: $paper-color;
+    &__label-wrapper {
+      display: flex;
+      justify-content: space-between;
     }
+    &__label {
+      padding: 20px 0 10px;
+      font-size: 32px;
+    }
+  }
+}
+
+@mixin custom-table {
+
+  .w-10 {
+    width: 10%;
+  }
+  
+  .table-header-wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    background-color: $lavendar-color;
+    border-radius: 10px 10px 0 0;
+
+    &__table-header-element {
+      width: 25%;
+      padding: 15px;
+    }
+  }
+  .table-header-element {
+    display: flex;
+    align-items: center;
+
+    &__arrows-wrapper {
+      margin-right: 5px;
+      
+      font-size: 0px;
+    }
+    &__label {
+      font-weight: bold;
+    }
+  }
+  .table-row-wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    background-color: $white-color;
+    color: $black-color;
+
+    &__information {
+      width: 25%;
+      padding: 10px 15px;
+      word-wrap: break-word;
+    }
+    &__text-input {
+      width: 25%;
+      padding: 5px 10px;
+      margin: 5px 5px;
+    }
+    
+    &:last-of-type {
+      border-radius: 0 0 10px 10px;
+    }
+  }
+  .custom-table {
+    display: flex;
+    flex-direction: column;
+
+    &__message {
+      display: flex;
+      justify-content: center;
+      background-color: $white-color;
+      padding: 10px 15px;
+      border-radius: 0 0 10px 10px;
+      text-align: center;
+    }
+  }
+}
+
+@mixin custom-modal {
+  .modal-background {
+    display: block;
+    &--hidden {
+      display: none;
+    }
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: scroll; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  }
+  .modal-content {
+    background-color: $paper-color;
+    margin: 20% 20%;
+    display: flex;
+    flex-direction: column;
+
+    &__header-wrapper {
+      padding: 5px 10px 5px 15px;
+      background-color: $dusty-color;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    &__header-label {
+      font-weight: bold;
+    }
+    &__header-button {
+      padding: 10px;
+    }
+    &__body {
+      padding: 20px 20px 15px;
+      display: flex;
+      flex-direction: column;
+    }
+  }
+
+}
+
+@mixin svg {
+  .svg-sorting-arrow {
+    display: block;
+    width: 10px;
+    height: 10px;
+  }
+  .svg-plus {
+    justify-self: center;
+    display: inline-grid;
+    width: 40px;
+    height: 40px;
+  }
+  .svg-cross {
+    display: block;
+    width: 25px;
+    height: 25px;
   }
 }
