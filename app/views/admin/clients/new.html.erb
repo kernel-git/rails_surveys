@@ -2,7 +2,7 @@
 <% end %>
 
 <%= javascript_pack_tag "admin/clients/new.js" %>
-<%= javascript_pack_tag "admin/table-behavior.js" %>
+<%= javascript_pack_tag "extra/table-behavior.js" %>
 
 <%= form_with scope: :client, url: admin_clients_url(@client), method: :post, class: "model-wrapper" do |client_form| %>
   <div class="model-wrapper__label">New company</div>

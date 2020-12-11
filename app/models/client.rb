@@ -2,6 +2,5 @@ class Client < ActiveRecord::Base
   has_many :users
   has_and_belongs_to_many :surveys
   has_and_belongs_to_many :segments
-  validates :label, :email, :phone, :address, :logo_url, presence: true
   validates :email, format: { with: /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i, message: 'is not an email' }
 end

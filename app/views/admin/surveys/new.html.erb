@@ -2,7 +2,7 @@
 <% end %>
 
 <%= javascript_pack_tag "admin/surveys/new.js" %>
-<%= javascript_pack_tag "admin/table-behavior.js" %>
+<%= javascript_pack_tag "extra/table-behavior.js" %>
 
 <%= form_with scope: :survey, url: admin_surveys_url(@survey), method: :post, class: "model-wrapper" do |survey_form| %>
   <div class="model-wrapper__label">New survey</div>

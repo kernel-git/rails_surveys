@@ -17,7 +17,7 @@ class UsersSeeds
 
   def perform
     users = Array.new
-    8.times do |index|
+    100.times do |index|
       users << User.new({
         first_name: Faker::Name.first_name,
         last_name: Faker::Name.last_name,
@@ -27,7 +27,7 @@ class UsersSeeds
         age: Faker::Number.within(range: 18..80),
         position_age: Faker::Number.within(range: 1..100),
         opt_out: true,
-        client_id: Client.find_by(label: CLIENTS[index]).id
+        client_id: Client.find_by(label: CLIENTS.sample).id
       })
     end
 

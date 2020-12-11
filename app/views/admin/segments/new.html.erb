@@ -4,7 +4,7 @@
 <% end %>
 
 <%= javascript_pack_tag "admin/segments/new.js" %>
-<%= javascript_pack_tag "admin/table-behavior.js" %>
+<%= javascript_pack_tag "extra/table-behavior.js" %>
 
 <%= form_with scope: :segment, url: admin_segments_url(@segment), method: :post, class: "model-wrapper" do |segment_form| %>
   <div class="model-wrapper__label">New segment</div>

@@ -4,7 +4,7 @@
 <% end %>
 
 <%= javascript_pack_tag "admin/users/new.js" %>
-<%= javascript_pack_tag "admin/table-behavior.js" %>
+<%= javascript_pack_tag "extra/table-behavior.js" %>
 
 <%= form_with scope: :user, url: admin_users_url(@user), method: :post, class: "model-wrapper" do |user_form| %>
   <div class="model-wrapper__label">New user</div>

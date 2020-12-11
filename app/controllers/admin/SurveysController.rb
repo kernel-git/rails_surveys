@@ -1,5 +1,7 @@
 class Admin::SurveysController < ApplicationController
   layout 'admin'
+  before_action :authenticate_administrator!
+
   def index
     @surveys = Survey.all
   end

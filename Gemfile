@@ -7,6 +7,8 @@ ruby '2.7.2'
 gem 'rails', '~> 6.0.3', '>= 6.0.3.4'
 # Use sqlite3 as the database for Active Record
 gem 'sqlite3', '~> 1.4'
+# Use the devise gem as the seccion and account manager for the application
+gem 'devise'
 # Use Puma as the app server
 gem 'puma', '~> 4.1'
 # Use SCSS for stylesheets
@@ -34,13 +36,17 @@ gem 'faker'
 # For autocorrect style mistakes
 gem 'rubocop-rspec', require: false
 
+gem 'jquery-rails'
+
+gem 'kaminari'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
   gem 'irb', require: false
   gem 'rspec-rails', '>= 3.9.0'
-  gem 'jquery-rails'
   gem 'inline_svg'
+  gem 'pry'
 end
 
 group :development do

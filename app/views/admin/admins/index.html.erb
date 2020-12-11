@@ -1,0 +1,44 @@
+<%= javascript_pack_tag "extra/table-behavior.js" %>
+
+<div class="listing-wrapper">
+  <div class="listing-wrapper__label-wrapper">
+    <div class="label-wrapper__label">Company's listing</div>
+    <%= link_to "Add new admin", new_admin_admin_url, class: "link-button label-wrapper__button" %>
+  </div>
+  <div id="listing-table_0" class="listing-wrapper__custom-table custom-table">
+    <div class="custom-table__table-header-wrapper table-header-wrapper">
+      <div class="table-header-wrapper__table-header-element table-header-element">
+        <div class="table-header-element__arrows-wrapper arrows-wrapper">
+          <div id="sort-arrow_up_0_table_0"><%= inline_svg_tag('up-chevron.svg', class: "svg-sorting-arrow") %></div>
+          <div id="sort-arrow_down_0_table_0"><%= inline_svg_tag('down-chevron.svg', class: "svg-sorting-arrow") %></div>
+        </div>
+        <div class="table-header-element__label">
+          Nickname
+        </div>
+      </div>
+      <div class="table-header-wrapper__table-header-element table-header-element">
+        <div class="table-header-element__arrows-wrapper arrows-wrapper">
+          <div id="sort-arrow_up_1_table_0"><%= inline_svg_tag('up-chevron.svg', class: "svg-sorting-arrow") %></div>
+          <div id="sort-arrow_down_1_table_0"><%= inline_svg_tag('down-chevron.svg', class: "svg-sorting-arrow") %></div>
+        </div>
+        <div class="table-header-element__label">
+          Email
+        </div>
+      </div>
+    </div>
+    <% unless @admins.empty? %>
+      <% @admins.each do |admin| %>
+        <%= link_to(admin_admin_url(admin), class: "custom-table__table-row-wrapper table-row-wrapper link-div table-row_0") do %>
+          <div class="table-row-wrapper__information">
+            <%= admin.nickname %>
+          </div>
+          <div class="table-row-wrapper__information">
+            <%= admin.email %>
+          </div>
+        <% end %>
+      <% end %>
+    <% else %>
+      <div class="custom-table__message">Empty</div>
+    <% end %>
+  </div>
+</div>

@@ -1,0 +1,28 @@
+<%= form_with scope: :admin, url: admin_admins_url(@admin), method: :post, class: "model-wrapper" do |admin_form| %>
+  <div class="model-wrapper__label">New administrator</div>
+  <div class="model-wrapper__model-group">
+    <div class="model-wrapper__model-info-block">
+      <div class="model-wrapper__model-info-wrapper input-wrapper">
+        <div class="model-info-wrapper__label">Nickname:</div>
+        <div class="model-info-wrapper__info"><%= admin_form.text_field :nickname %></div>
+      </div>
+      <div class="model-wrapper__model-info-wrapper input-wrapper">
+        <div class="model-info-wrapper__label">Email:</div>
+        <div class="model-info-wrapper__info"><%= admin_form.text_field :email %></div>
+      </div>
+    </div>
+    <div class="model-wrapper__model-info-block">
+      <div class="model-wrapper__model-info-wrapper input-wrapper">
+        <div class="model-info-wrapper__label">Password:</div>
+        <div class="model-info-wrapper__info"><%= admin_form.password_field :password %></div>
+      </div>
+      <div class="model-wrapper__model-info-wrapper input-wrapper">
+        <div class="model-info-wrapper__label">Password confirmation:</div>
+        <div class="model-info-wrapper__info"><%= admin_form.password_field :password_confirmation %></div>
+      </div>
+    </div>
+  </div>
+
+  <%= admin_form.submit "Create administrator" %>
+  
+<% end %>

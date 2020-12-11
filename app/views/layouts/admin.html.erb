@@ -14,15 +14,18 @@
           Admin
         </div>
         <div class="header__sections header-sections">
+          <%= link_to "Administrators", admin_admins_url, class: "header-sections__section font-big" %>
           <%= link_to "Surveys", admin_surveys_url, class: "header-sections__section font-big" %>
           <%= link_to "Users", admin_users_url, class: "header-sections__section font-big" %>
           <%= link_to "Companies", admin_clients_url, class: "header-sections__section font-big" %>
           <%= link_to "Segments", admin_segments_url, class: "header-sections__section font-big" %>
         </div>
         <div class="header__buttons header-buttons">
-          <a class="header-buttons__button font-medium" href="">Log out</a>
+          <%= button_to "Logout", destroy_administrator_session_path, method: :delete, class: "header-buttons__button font-medium" %>
         </div>
       </div>
+      <p class="notice"><%= notice %></p>
+      <p class="alert"><%= alert %></p>
       <div class="content">
         <%= yield %>
       </div>
