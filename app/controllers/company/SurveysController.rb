@@ -2,38 +2,31 @@ class Company::SurveysController < ApplicationController
   layout 'company'
 
   def index
-    @surveys = []
-    Survey.find_each do |survey|
-      survey.clients.each do |client|
-        if client.id == 1 # temporal constant id
-          @surveys << survey
-          break
-        end
-      end
-    end
+    @surveys = Survey.filter_by_client_id(1).page(params[:page]) # temporal constant id
   end
   def show
-    id = Integer(params[:id])
+    puts "params[:id]: #{params[:id]}"
     begin
-      @survey = Survey.includes(:clients, question_groups: [questions: [answers: [:user]]]).find(id)
-      if @survey.clients.find(1) == nil # temporal constant id
-        redirect_to(not_found_404_path)
+      @survey = Survey.includes(:client, question_groups: [questions: [answers: [:user]]]).find(params[:id])
+      if @survey.client.id != 1 # temporal constant id
+        render("company/static_pages/not_found_404")
       end
     rescue ActiveRecord::RecordNotFound => e 
-      redirect_to(not_found_404_path)
+      render("company/static_pages/not_found_404")
     else
       @users_data = []
       @current_assigned_users_ids = []
-      User.find_each do |user|
-        if user.client.id == 1 # temporal constant id
+      User.filter_by_client_id(1).each do |user| # temporal constant id
+        unless SurveyUserRelation.find_by(survey_id: params[:id], user_id: user.id, is_conducted: true)
           @users_data << [user.id, user.first_name, user.last_name, user.email]
-          user.surveys.each do |survey|
-            if survey.id == id
-              @current_assigned_users_ids << user.id
-            end
+        end
+        user.surveys.each do |survey|
+          if survey.id == Integer(params[:id]) && !SurveyUserRelation.find_by(survey_id: params[:id], user_id: user.id).is_conducted
+            @current_assigned_users_ids << user.id
           end
         end
       end
+      @conducted_users = User.filter_conducted_by_survey_id(params[:id]) # temporal constant id
       @survey_question_groups = @survey.question_groups
       p @current_assigned_users_ids  
     end
@@ -98,24 +91,35 @@ class Company::SurveysController < ApplicationController
     end
   end
   def edit
-    puts "Ping from admin/surveys#edit with params: #{params}"
+    puts "Ping from company/surveys#edit with params: #{params}"
   end
   def update
-    puts "Ping from admin/surveys#update with params: #{params}"
+    puts "Ping from company/surveys#update with params: #{params}"
     id = Integer(params[:id])
     begin
-      @survey = Survey.includes(:clients, :users, question_groups: [questions: [answers: [:user]]]).find(id)
-      if @survey.clients.find(1) == nil # temporal constant id
+      @survey = Survey.includes(:client, :users, question_groups: [questions: [answers: [:user]]]).find(id)
+      if @survey.client.id != 1 # temporal constant id
         redirect_to(not_found_404_path)
       end
     rescue ActiveRecord::RecordNotFound => e 
       redirect_to(not_found_404_path)
     else
-      #p params[:users_ids]
+      User.filter_conducted_by_survey_id(@survey.id).each do |user|
+        params[:users_ids] << String(user.id) unless params[:users_ids].include?(String(user.id))
+      end
+      if params[:users_ids] == nil
+        @survey.users.clear
+        return
+      end
       @survey.user_ids = params[:users_ids]
+      params[:users_ids].each do |user_id|
+        relation = SurveyUserRelation.where(survey_id: @survey.id, user_id: user_id).first
+        relation.is_conducted = false if relation.is_conducted != true
+        relation.save
+      end
     end
   end
   def destroy
-    puts "Ping from admin/surveys#destroy with params: #{params}"
+    puts "Ping from company/surveys#destroy with params: #{params}"
   end
 end

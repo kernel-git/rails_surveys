@@ -1,9 +1,9 @@
 class Admin::UsersController < ApplicationController
   layout "admin"
-  before_action :authenticate_administrator!
+  #before_action :authenticate_administrator!
 
   def index
-    @users = User.all
+    @users = User.page(params[:page])
   end
   def show
     id = Integer(params[:id])

@@ -1,4 +1,6 @@
 class User::UsersController < ApplicationController
+  layout 'user'
+  
   def show
     puts "Ping from user/users#show with params: #{params}"
   end

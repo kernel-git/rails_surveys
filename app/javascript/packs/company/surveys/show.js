@@ -56,7 +56,7 @@ $(document).ready(() => {
   users_data.forEach((user_data, index) => {  // filling usersData with html
     const newRow = $('<div></div>')
       .addClass('custom-table__table-row-wrapper table-row-wrapper link-div')
-      .attr('id', `row_${index}_table_3`);
+      .attr('id', `row_${index}_table_0`);
 
     const newFirstName = $('<div></div>')
       .addClass("table-row-wrapper__information")
@@ -107,7 +107,7 @@ function updateUserTables() {
   if (addUserButton == null)
     addUserButton = $('#add-row_0').detach();
   $('#listing-table_0').children('.table-row-wrapper').detach();
-  $('#listing-table_1').children('.table-row-wrapper').detach();
+  $('#listing-table_2').children('.table-row-wrapper').detach();
   $('#current-users-ids').empty();
 
   currentUsersIndexes.forEach((index) => {
@@ -118,7 +118,7 @@ function updateUserTables() {
     $('#listing-table_0').append(addUserButton);
   
   currentModalUsersIndexes.forEach((index) => {
-    $('#listing-table_1').append(modalUsersData[index]);
+    $('#listing-table_2').append(modalUsersData[index]);
   });
 }
 

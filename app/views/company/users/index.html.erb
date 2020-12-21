@@ -49,10 +49,10 @@
           </div>
         <% end %>
       <% end %>
+      <%= paginate @users %>
     <% else %>
       <div class="custom-table__message">Empty</div>
     <% end %>
   </div>
-  <%= paginate @users %>
 </div>
 

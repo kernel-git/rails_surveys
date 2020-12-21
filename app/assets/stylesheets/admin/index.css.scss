@@ -1,10 +1,11 @@
-@import "_variables";
-@import "_mixins";
+@import "../extra/variables.css";
+@import "../extra/_mixins";
 
 @include links;
 @include highlighting;
 @include custom-table;
 @include svg;
+@include pagination;
 
 .listing-wrapper {
   display: flex;

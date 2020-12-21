@@ -1,0 +1,5 @@
+<% unless current_page.last? %>
+  <%= link_to url, rel: 'next', remote: remote, class: "pagination__next" do %>
+    <%= inline_svg_tag('fast-forward.svg', class: "svg-pagination") %>
+  <% end %>
+<% end %>

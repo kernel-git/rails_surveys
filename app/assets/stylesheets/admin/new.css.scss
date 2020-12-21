@@ -1,5 +1,5 @@
-@import "_variables";
-@import "_mixins";
+@import "../extra/variables.css";
+@import "../extra/_mixins";
 
 @include links;
 @include highlighting;

@@ -1,0 +1,45 @@
+<%= javascript_pack_tag "extra/table-behavior.js" %>
+<%= javascript_pack_tag "company/results/show.js" %>
+
+<div class="model-wrapper">
+  <div class="model-wrapper__label"><%= @survey.label %></div>
+
+  <div class="object-group-wrapper">
+    <div class="object-group-wrapper__label">Survey content</div>
+
+    <div class="attempt-wrapper__content-wrapper content-wrapper">
+      <% @survey.question_groups.each_with_index do |question_group, qg_index| %>
+        <div class="qgroup-wrapper" id="qgroup_<%= qg_index %>">
+          <div class="qgroup-wrapper__qgroup-label-wrapper qgroup-label-wrapper">
+            <div class="qgroup-label-wrapper__label font-big">
+              <%= question_group.label %>
+            </div>
+          </div>
+          <% question_group.questions.each do |question| %>
+            <div class="qgroup-wrapper__question-wrapper question-wrapper">
+              <div class="question-wrapper__text">
+                <%= question.question_type %>
+              </div>
+              <div class="question-wrapper__answer-field question-wrapper__answer-field--not-input">
+                <% unless @answers_wrapper[question.id].nil? %>
+                  <%= @answers_wrapper[question.id].answer_val %>
+                <% else %>
+                  Empty
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+      <div class="content-wrapper__content-footer content-footer">
+        <div class="progress__wrapper">
+          <% @survey.question_groups.each_with_index do |question_group, qg_index| %>
+            <div class="progress__element" id="qgroup-button_<%= qg_index %>">
+              <%= qg_index + 1 %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

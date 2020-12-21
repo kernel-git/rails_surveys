@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_09_231714) do
+ActiveRecord::Schema.define(version: 2020_12_18_092017) do
 
   create_table "administrators", force: :cascade do |t|
     t.string "email", default: "", null: false
@@ -54,13 +54,6 @@ ActiveRecord::Schema.define(version: 2020_12_09_231714) do
     t.index ["segment_id"], name: "index_clients_segments_on_segment_id"
   end
 
-  create_table "clients_surveys", force: :cascade do |t|
-    t.integer "client_id"
-    t.integer "survey_id"
-    t.index ["client_id"], name: "index_clients_surveys_on_client_id"
-    t.index ["survey_id"], name: "index_clients_surveys_on_survey_id"
-  end
-
   create_table "question_groups", force: :cascade do |t|
     t.string "label"
     t.integer "survey_id"
@@ -86,17 +79,22 @@ ActiveRecord::Schema.define(version: 2020_12_09_231714) do
     t.index ["user_id"], name: "index_segments_users_on_user_id"
   end
 
+  create_table "survey_user_relations", force: :cascade do |t|
+    t.boolean "is_conducted"
+    t.integer "survey_id"
+    t.integer "user_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["survey_id"], name: "index_survey_user_relations_on_survey_id"
+    t.index ["user_id"], name: "index_survey_user_relations_on_user_id"
+  end
+
   create_table "surveys", force: :cascade do |t|
     t.string "label"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-  end
-
-  create_table "surveys_users", force: :cascade do |t|
-    t.integer "survey_id"
-    t.integer "user_id"
-    t.index ["survey_id"], name: "index_surveys_users_on_survey_id"
-    t.index ["user_id"], name: "index_surveys_users_on_user_id"
+    t.integer "client_id"
+    t.index ["client_id"], name: "index_surveys_on_client_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -112,6 +110,4 @@ ActiveRecord::Schema.define(version: 2020_12_09_231714) do
     t.index ["client_id"], name: "index_users_on_client_id"
   end
 
-  add_foreign_key "surveys_users", "surveys"
-  add_foreign_key "surveys_users", "users"
 end

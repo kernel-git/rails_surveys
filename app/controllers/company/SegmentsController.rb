@@ -2,14 +2,14 @@ class Company::SegmentsController < ApplicationController
   layout 'company'
 
   def index
-    @segments = Segment.all
+    @segments = Segment.all.page(params[:page])
   end
   def show
     id = Integer(params[:id])
     begin
       @segment = Segment.find(id)
     rescue ActiveRecord::RecordNotFound => e 
-      redirect_to(not_found_404_path)
+      render("company/static_pages/not_found_404")
     else
       @segment_users = @segment.users      
     end
@@ -26,10 +26,10 @@ class Company::SegmentsController < ApplicationController
     @segment.clients << Client.find(1) # temporal constant id
     @segment.users = User.where(id: params[:users_ids])
     if @segment.save
-      redirect_to(admin_segment_url(@segment))
+      redirect_to(company_segment_url(@segment))
     else
       puts "Segment save failed. Error message: #{@segment.errors.full_messages}"
-      redirect_to(admin_segments_url)
+      redirect_to(company_segments_url)
     end
   end
   def edit

@@ -1,8 +1,9 @@
 Rails.application.routes.draw do
 
   namespace :admin do
-    root 'static_pages#home'
-    get 'home', to: 'static_pages#home'
+    root 'static_pages#show', page: 'home'
+    get 'static-pages/:page', to: 'static_pages#show'
+
     constraints(id: /[0-9]+/) do # старый стиль
       resources :admins
       resources :users
@@ -12,24 +13,34 @@ Rails.application.routes.draw do
         get 'stats-pages/:stats-id', to: 'stats#show'
       end
     end
+
   end
   namespace :user do
-    root 'static_pages#home'
-    get 'home', to: 'static_pages#home'
-    resources :surveys, only: [:index, :show, :edit, :update], constraints: { id: /[0-9]+/ } # старый стиль
-    resource :profile, controller: 'users', only: [:show, :edit, :update]
+    root 'static_pages#show', page: 'home'
+    get 'static-pages/:page', to: 'static_pages#show'
+
+    resources :surveys, only: [:index], constraints: { id: /[0-9]+/ } do # старый стиль
+      member do
+        get :attempt
+        patch :conduct
+        put :conduct
+      end
+    end
+
   end
   namespace :company do
     root 'static_pages#home' 
     get 'home', to: 'static_pages#home'
-    resources :surveys
-    resources :users
-    resources :segments
+
+    constraints(id: /[0-9]+/) do # старый стиль
+      resources :surveys
+      resources :users
+      resources :segments
+      resources :results, only: [:index, :show]
+    end
   end
 
-  root 'static_pages#show'
+  root 'static_pages#show', page: 'home'
+  get 'static-pages/:page', to: 'static_pages#show'
 
-  get 'static-pages/:id', to: 'static_pages#show'
-
-  # get 'pages/:id', to: 'pages#show' # PagesController: render pages/#{params[:id]}
 end

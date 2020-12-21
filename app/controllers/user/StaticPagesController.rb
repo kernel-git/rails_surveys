@@ -1,5 +1,16 @@
 class User::StaticPagesController < ApplicationController
-  def home
-    puts "Ping from user/static_pages#home"
+  layout 'user'
+
+  STATIC_PAGES = {
+    'home': 'home',
+    'not-found-404': 'not_found_404'
+  }
+
+  def show
+    if STATIC_PAGES[params[:page].to_sym] != nil
+      render "user/static_pages/#{STATIC_PAGES[params[:page].to_sym]}"
+    else
+      render "user/static_pages/#{STATIC_PAGES["not-found-404".to_sym]}"
+    end
   end
 end

@@ -3,7 +3,7 @@
 <div class="model-wrapper">
   <div class="model-wrapper__label"><%= @survey.label %></div>
   <div class="model-wrapper__model-table-wrapper model-table-wrapper">
-    <div class="model-table-wrapper__label">Survey's clients</div>
+    <div class="model-table-wrapper__label">Survey's client</div>
     <div id="listing-table_0" class="model-table-wrapper__table custom-table">
       <div class="custom-table__table-header-wrapper table-header-wrapper">
         <div class="table-header-wrapper__table-header-element table-header-element w-10">
@@ -12,52 +12,34 @@
           </div>
         </div>
         <div class="table-header-wrapper__table-header-element table-header-element ">
-          <div class="table-header-element__arrows-wrapper arrows-wrapper">
-            <div id="sort-arrow_up_1_table_0"><%= inline_svg_tag('up-chevron.svg', class: "svg-sorting-arrow") %></div>
-            <div id="sort-arrow_down_1_table_0"><%= inline_svg_tag('down-chevron.svg', class: "svg-sorting-arrow") %></div>
-          </div>
           <div class="table-header-element__label">
             Label
           </div>
         </div>
         <div class="table-header-wrapper__table-header-element table-header-element">
-          <div class="table-header-element__arrows-wrapper arrows-wrapper">
-            <div id="sort-arrow_up_2_table_0"><%= inline_svg_tag('up-chevron.svg', class: "svg-sorting-arrow") %></div>
-            <div id="sort-arrow_down_2_table_0"><%= inline_svg_tag('down-chevron.svg', class: "svg-sorting-arrow") %></div>
-          </div>
           <div class="table-header-element__label">
             Email
           </div>
         </div>
         <div class="table-header-wrapper__table-header-element table-header-element">
-          <div class="table-header-element__arrows-wrapper arrows-wrapper">
-            <div id="sort-arrow_up_3_table_0"><%= inline_svg_tag('up-chevron.svg', class: "svg-sorting-arrow") %></div>
-            <div id="sort-arrow_down_3_table_0"><%= inline_svg_tag('down-chevron.svg', class: "svg-sorting-arrow") %></div>
-          </div>
           <div class="table-header-element__label">
             Phone
           </div>
         </div>
       </div>
-      <% unless @survey_clients.empty? %>
-        <% @survey_clients.each do |client| %>
-          <%= link_to(admin_client_url(client), class: "custom-table__table-row-wrapper table-row-wrapper link-div table-row_0") do %>
-            <div class="table-row-wrapper__information w-10">
-              <%= image_tag(client.logo_url, size: "75x75") %>
-            </div>
-            <div class="table-row-wrapper__information">
-              <%= client.label %>
-            </div>
-            <div class="table-row-wrapper__information">
-              <%= client.email %>
-            </div>
-            <div class="table-row-wrapper__information">
-              <%= client.phone %>
-            </div>
-          <% end %>
-        <% end %>
-      <% else %>
-        <div class="custom-table__message">Empty</div>
+      <%= link_to(admin_client_url(@survey_client), class: "custom-table__table-row-wrapper table-row-wrapper link-div table-row_0") do %>
+        <div class="table-row-wrapper__information w-10">
+          <%= image_tag(@survey_client.logo_url, size: "75x75") %>
+        </div>
+        <div class="table-row-wrapper__information">
+          <%= @survey_client.label %>
+        </div>
+        <div class="table-row-wrapper__information">
+          <%= @survey_client.email %>
+        </div>
+        <div class="table-row-wrapper__information">
+          <%= @survey_client.phone %>
+        </div>
       <% end %>
     </div>
   </div>

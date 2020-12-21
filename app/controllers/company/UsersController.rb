@@ -2,9 +2,7 @@ class Company::UsersController < ApplicationController
   layout 'company'
 
   def index
-    @users = User.filter_by_client_id(1).page(params[:page])
-
-
+    @users = User.filter_by_client_id(1).page(params[:page]) # temporal constant id
   end
 
   def show
@@ -12,10 +10,10 @@ class Company::UsersController < ApplicationController
     begin
       @user = User.includes(:segments, :client, answers: [question: [question_group: [:survey]]]).find(id)
       if @user.client.id != 1 # temporal constant id
-        redirect_to(not_found_404_path)
+        render("company/static_pages/not_found_404")
       end
     rescue ActiveRecord::RecordNotFound => e
-      redirect_to(not_found_404_path)
+      render("company/static_pages/not_found_404")
     else
       @user_client = @user.client
       @user_segments = @user.segments

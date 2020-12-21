@@ -1,18 +1,18 @@
 class Admin::SurveysController < ApplicationController
   layout 'admin'
-  before_action :authenticate_administrator!
+  #before_action :authenticate_administrator!
 
   def index
-    @surveys = Survey.all
+    @surveys = Survey.all.page(params[:page])
   end
   def show
     id = Integer(params[:id])
     begin
-      @survey = Survey.includes(:clients, question_groups: [questions: [answers: [:user]]]).find(id)
+      @survey = Survey.includes(:client, question_groups: [questions: [answers: [:user]]]).find(id)
     rescue ActiveRecord::RecordNotFound => e 
       redirect_to(not_found_404_path)
     else
-      @survey_clients = @survey.clients
+      @survey_client = @survey.client
       @survey_question_groups = @survey.question_groups      
     end
   end
@@ -35,7 +35,7 @@ class Admin::SurveysController < ApplicationController
       @survey.errors.full_messages.each { |e| puts e}
       return
     end
-    @survey.clients << Client.find(params[:client_id])
+    @survey.client = Client.find(params[:client_id])
 
 
     params[:question_groups].each do |qgroup_params|

@@ -1,0 +1,5 @@
+<% if page.current? %>
+  <%= content_tag :a, page, data: { remote: remote }, rel: page.rel, class: "pagination__page pagination__page--active font-large" %>
+<% else %>
+  <%= link_to page, url, remote: remote, rel: page.rel, class: "pagination__page font-large" %>
+<% end %>

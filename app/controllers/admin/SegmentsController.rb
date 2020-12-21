@@ -1,9 +1,9 @@
 class Admin::SegmentsController < ApplicationController
   layout 'admin'
-  before_action :authenticate_administrator!
+  #before_action :authenticate_administrator!
 
   def index
-    @segments = Segment.all
+    @segments = Segment.all.page(params[:page])
   end
   def show
     id = Integer(params[:id])
