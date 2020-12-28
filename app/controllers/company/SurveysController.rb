@@ -1,14 +1,15 @@
 class Company::SurveysController < ApplicationController
   layout 'company'
+  before_action :authenticate_client!
 
   def index
-    @surveys = Survey.filter_by_client_id(1).page(params[:page]) # temporal constant id
+    @surveys = Survey.filter_by_client_id(current_client.id).page(params[:page])
   end
   def show
     puts "params[:id]: #{params[:id]}"
     begin
       @survey = Survey.includes(:client, question_groups: [questions: [answers: [:user]]]).find(params[:id])
-      if @survey.client.id != 1 # temporal constant id
+      if @survey.client.id != current_client.id
         render("company/static_pages/not_found_404")
       end
     rescue ActiveRecord::RecordNotFound => e 
@@ -16,7 +17,7 @@ class Company::SurveysController < ApplicationController
     else
       @users_data = []
       @current_assigned_users_ids = []
-      User.filter_by_client_id(1).each do |user| # temporal constant id
+      User.filter_by_client_id(current_client.id).each do |user|
         unless SurveyUserRelation.find_by(survey_id: params[:id], user_id: user.id, is_conducted: true)
           @users_data << [user.id, user.first_name, user.last_name, user.email]
         end
@@ -26,7 +27,7 @@ class Company::SurveysController < ApplicationController
           end
         end
       end
-      @conducted_users = User.filter_conducted_by_survey_id(params[:id]) # temporal constant id
+      @conducted_users = User.filter_conducted_by_survey_id(params[:id])
       @survey_question_groups = @survey.question_groups
       p @current_assigned_users_ids  
     end
@@ -49,7 +50,7 @@ class Company::SurveysController < ApplicationController
       @survey.errors.full_messages.each { |e| puts e}
       return
     end
-    @survey.clients << Client.find(1) # temporal constant id
+    @survey.clients << Client.find(current_client.id)
 
 
     params[:question_groups].each do |qgroup_params|
@@ -98,7 +99,7 @@ class Company::SurveysController < ApplicationController
     id = Integer(params[:id])
     begin
       @survey = Survey.includes(:client, :users, question_groups: [questions: [answers: [:user]]]).find(id)
-      if @survey.client.id != 1 # temporal constant id
+      if @survey.client.id != current_client.id
         redirect_to(not_found_404_path)
       end
     rescue ActiveRecord::RecordNotFound => e 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_18_092017) do
+ActiveRecord::Schema.define(version: 2020_12_26_175458) do
 
   create_table "administrators", force: :cascade do |t|
     t.string "email", default: "", null: false
@@ -41,10 +41,20 @@ ActiveRecord::Schema.define(version: 2020_12_18_092017) do
 
   create_table "clients", force: :cascade do |t|
     t.string "label"
-    t.string "email"
     t.string "phone"
     t.text "address"
-    t.string "logo_url"
+    t.string "email", default: "", null: false
+    t.string "encrypted_password", default: "", null: false
+    t.string "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.integer "failed_attempts", default: 0, null: false
+    t.string "unlock_token"
+    t.datetime "locked_at"
+    t.string "logo_url", default: "", null: false
+    t.index ["email"], name: "index_clients_on_email", unique: true
+    t.index ["reset_password_token"], name: "index_clients_on_reset_password_token", unique: true
+    t.index ["unlock_token"], name: "index_clients_on_unlock_token", unique: true
   end
 
   create_table "clients_segments", force: :cascade do |t|
@@ -100,14 +110,23 @@ ActiveRecord::Schema.define(version: 2020_12_18_092017) do
   create_table "users", force: :cascade do |t|
     t.string "first_name"
     t.string "last_name"
-    t.string "email"
-    t.string "password"
     t.string "account_type"
     t.integer "age"
     t.integer "position_age"
     t.boolean "opt_out"
     t.integer "client_id"
+    t.string "email", default: "", null: false
+    t.string "encrypted_password", default: "", null: false
+    t.string "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.integer "failed_attempts", default: 0, null: false
+    t.string "unlock_token"
+    t.datetime "locked_at"
     t.index ["client_id"], name: "index_users_on_client_id"
+    t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+    t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
   end
 
 end

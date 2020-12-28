@@ -1,6 +1,7 @@
 class User::UsersController < ApplicationController
   layout 'user'
-  
+  before_action :authenticate_user!
+
   def show
     puts "Ping from user/users#show with params: #{params}"
   end

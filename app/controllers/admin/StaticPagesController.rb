@@ -1,6 +1,6 @@
 class Admin::StaticPagesController < ApplicationController
   layout 'admin'
-  #before_action :authenticate_administrator!
+  before_action :authenticate_administrator!
 
   STATIC_PAGES = {
     'home': 'home',

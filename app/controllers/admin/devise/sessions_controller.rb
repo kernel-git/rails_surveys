@@ -5,11 +5,13 @@ class Admin::Devise::SessionsController < Devise::SessionsController
 
   # GET /resource/sign_in
   def new
+    print("Ping from admin/devise/session#new")
     super
   end
 
   # POST /resource/sign_in
   def create
+    print("Ping from admin/devise/session#create")
     super
   end
 

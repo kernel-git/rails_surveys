@@ -1,15 +1,16 @@
 class Company::UsersController < ApplicationController
   layout 'company'
+  before_action :authenticate_client!
 
   def index
-    @users = User.filter_by_client_id(1).page(params[:page]) # temporal constant id
+    @users = User.filter_by_client_id(current_client.id).page(params[:page])
   end
 
   def show
     id = params[:id]
     begin
       @user = User.includes(:segments, :client, answers: [question: [question_group: [:survey]]]).find(id)
-      if @user.client.id != 1 # temporal constant id
+      if @user.client.id != current_client.id
         render("company/static_pages/not_found_404")
       end
     rescue ActiveRecord::RecordNotFound => e
@@ -37,7 +38,7 @@ class Company::UsersController < ApplicationController
       position_age: params[:user][:position_age],
       opt_out: params[:user][:opt_out]
     })
-    @user.client = Client.find(1) # temporal id
+    @user.client = Client.find(current_client.id)
     @user.segments = Segment.where(id: params[:segments_ids])
     if @user.save
       redirect_to(company_user_url(@user))

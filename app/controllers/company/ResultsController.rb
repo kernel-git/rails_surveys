@@ -1,8 +1,9 @@
 class Company::ResultsController < ApplicationController
   layout 'company'
+  before_action :authenticate_client!
 
   def index
-    @results = SurveyUserRelation.filter_conducted_by_client_id(1).page(params[:page]) # temporal constant id
+    @results = SurveyUserRelation.filter_conducted_by_client_id(current_client.id).page(params[:page])
   end
   def show
     puts "params[:id]: #{params[:id]}"

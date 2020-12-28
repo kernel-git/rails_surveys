@@ -1,5 +1,27 @@
 Rails.application.routes.draw do
 
+  devise_for :clients, path: 'company', controllers: {
+    confirmations: 'company/devise/confirmations',
+    passwords: 'company/devise/passwords',
+    registrations: 'company/devise/registrations',
+    sessions: 'company/devise/sessions',
+    unlocks: 'company/devise/unlocks'
+  }
+  devise_for :users, path: 'user', controllers: {
+    confirmations: 'user/devise/confirmations',
+    passwords: 'user/devise/passwords',
+    registrations: 'user/devise/registrations',
+    sessions: 'user/devise/sessions',
+    unlocks: 'user/devise/unlocks'
+  }
+  devise_for :administrators, path: 'admin', controllers: {
+    confirmations: 'admin/devise/confirmations',
+    passwords: 'admin/devise/passwords',
+    registrations: 'admin/devise/registrations',
+    sessions: 'admin/devise/sessions',
+    unlocks: 'admin/devise/unlocks'
+  }
+
   namespace :admin do
     root 'static_pages#show', page: 'home'
     get 'static-pages/:page', to: 'static_pages#show'

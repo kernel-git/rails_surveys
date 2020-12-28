@@ -1,5 +1,6 @@
 class Company::StaticPagesController < ApplicationController
   layout 'company'
+  before_action :authenticate_client!
 
   STATIC_PAGES = {
     'home': 'home',

@@ -7,6 +7,7 @@ Rake::Task['db:reset'].invoke
 Dir[File.join(Rails.root, 'db', 'seeds', '*.rb')].sort.each do |seed|
   load seed
 end
+AdminsSeeds.new.perform
 ClientsSeeds.new.perform
 QuestionGroupsSeeds.new.perform
 QuestionsSeeds.new.perform

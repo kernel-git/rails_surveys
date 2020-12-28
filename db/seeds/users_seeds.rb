@@ -21,8 +21,8 @@ class UsersSeeds
       users << User.new({
         first_name: Faker::Name.first_name,
         last_name: Faker::Name.last_name,
-        email: Faker::Internet.email,
-        password: '3dc0a15198cf0d9448ac35a8b863b3e2',
+        email: Faker::Internet.unique.email,
+        password: 11111111,
         account_type: %w(bronze silver gold).sample,
         age: Faker::Number.within(range: 18..80),
         position_age: Faker::Number.within(range: 1..100),

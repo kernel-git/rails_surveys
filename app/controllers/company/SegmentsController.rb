@@ -1,5 +1,6 @@
 class Company::SegmentsController < ApplicationController
   layout 'company'
+  before_action :authenticate_client!
 
   def index
     @segments = Segment.all.page(params[:page])
@@ -23,7 +24,7 @@ class Company::SegmentsController < ApplicationController
     @segment = Segment.new({
       label: params[:segment][:label]
     })
-    @segment.clients << Client.find(1) # temporal constant id
+    @segment.clients << Client.find(current_client.id)
     @segment.users = User.where(id: params[:users_ids])
     if @segment.save
       redirect_to(company_segment_url(@segment))

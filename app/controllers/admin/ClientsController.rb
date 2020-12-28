@@ -1,6 +1,6 @@
 class Admin::ClientsController < ApplicationController
   layout 'admin'
-  #before_action :authenticate_administrator!
+  before_action :authenticate_administrator!
 
   def index
     @clients = Client.all.page(params[:page])

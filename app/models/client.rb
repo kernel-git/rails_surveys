@@ -1,4 +1,8 @@
 class Client < ActiveRecord::Base
+  # Include default devise modules. Others available are:
+  # :confirmable, :timeoutable, :trackable and :omniauthable
+  devise :database_authenticatable, :registerable,
+         :recoverable, :rememberable, :validatable, :lockable
   paginates_per 10
 
   has_many :users

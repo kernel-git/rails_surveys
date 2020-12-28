@@ -1,6 +1,6 @@
 class Admin::StatsController < ApplicationController
   layout 'admin'
-  #before_action :authenticate_administrator!
+  before_action :authenticate_administrator!
 
   STATS_PAGES {
     'stats': 'stats',

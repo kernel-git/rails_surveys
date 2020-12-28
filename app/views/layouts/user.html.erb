@@ -4,20 +4,20 @@
     <title>Employee Access</title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-    <%= stylesheet_link_tag "admin" %>
+    <%= stylesheet_link_tag "user" %>
   </head>
 
   <body>
-    <div class="wrapper">
-      <div class="header">
-        <div class="header__label font-large">
+    <div class="user-wrapper">
+      <div class="user-header">
+        <div class="user-header__label font-large">
           Employee
         </div>
-        <div class="header__sections header-sections">
-          <%= link_to "Surveys", user_surveys_url, class: "header-sections__section font-big" %>
+        <div class="user-header__sections header-sections">
+          <%= link_to "Surveys", user_surveys_url, class: "user-header-sections__section font-big" %>
         </div>
-        <div class="header__buttons header-buttons">
-          <%= button_to "Logout", user_root_url, class: "header-buttons__button font-medium" %>
+        <div class="user-header__buttons user-header-buttons">
+          <%= button_to "Logout", destroy_user_session_url, method: :delete, class: "user-header-buttons__button font-medium" %>
         </div>
       </div>
       <p class="notice"><%= notice %></p>
@@ -25,8 +25,8 @@
       <div class="content">
         <%= yield %>
       </div>
-      <div class="footer">
-        <div class="footer__text font-small">
+      <div class="user-footer">
+        <div class="user-footer__text font-small">
           site design / logo © 2020 boss078, Inc.
         </div>
       </div>

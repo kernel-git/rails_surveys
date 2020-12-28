@@ -1,6 +1,6 @@
 class Admin::SurveysController < ApplicationController
   layout 'admin'
-  #before_action :authenticate_administrator!
+  before_action :authenticate_administrator!
 
   def index
     @surveys = Survey.all.page(params[:page])

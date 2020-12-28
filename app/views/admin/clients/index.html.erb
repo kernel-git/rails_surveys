@@ -44,7 +44,7 @@
       <% @clients.each do |client| %>
         <%= link_to(admin_client_url(client), class: "custom-table__table-row-wrapper table-row-wrapper link-div table-row_0") do %>
           <div class="table-row-wrapper__information w-10">
-            <%= image_tag(client.logo_url, size: "75x75") %>
+            <%= image_tag(client.logo_url, size: "75x75", alt: "Image load failed") %>
           </div>
           <div class="table-row-wrapper__information">
             <%= client.label %>

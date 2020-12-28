@@ -1,5 +1,6 @@
 class User::StaticPagesController < ApplicationController
   layout 'user'
+  before_action :authenticate_user!
 
   STATIC_PAGES = {
     'home': 'home',
