@@ -1,6 +1,6 @@
 class Admin::SegmentsController < ApplicationController
   layout 'admin'
-  before_action :authenticate_administrator!
+  before_action :check_account_type, if: :authenticate_account!
 
   def index
     @segments = Segment.all.page(params[:page])
@@ -12,21 +12,21 @@ class Admin::SegmentsController < ApplicationController
     rescue ActiveRecord::RecordNotFound => e 
       redirect_to(not_found_404_path)
     else
-      @segment_clients = @segment.clients
-      @segment_users = @segment.users      
+      @segment_employers = @segment.employers
+      @segment_employees = @segment.employees     
     end
   end
   def new
     @segment = Segment.new
-    @users_data = User.all.collect { |user| [user.id, user.first_name, user.last_name, user.email, user.client.label] }
-    @clients_data = Client.all.collect { |client| [client.id, client.logo_url, client.label, client.email] }
+    @employees_data = Employee.all.collect { |employee| [employee.id, employee.first_name, employee.last_name, employee.account.email, employee.employer.label] }
+    @employers_data = Employer.all.collect { |employer| [employer.id, employer.logo_url, employer.label, employer.public_email] }
   end
   def create
     @segment = Segment.new({
       label: params[:segment][:label]
     })
-    @segment.clients = Client.where(id: params[:clients_ids])
-    @segment.users = User.where(id: params[:users_ids])
+    @segment.employers = Employer.where(id: params[:employers_ids])
+    @segment.employees = Employee.where(id: params[:employees_ids])
     if @segment.save
       redirect_to(admin_segment_url(@segment))
     else
@@ -42,5 +42,11 @@ class Admin::SegmentsController < ApplicationController
   end
   def destroy
     puts "Ping from admin/segments#destroy with params: #{params}"
+  end
+  
+  protected
+
+  def check_account_type
+    redirect_to(not_found_404_path) unless current_account.account_type == 'administrator'
   end
 end

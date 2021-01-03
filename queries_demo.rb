@@ -21,13 +21,13 @@ puts 'Task #2'
 # FROM users AS u, answers AS a
 # WHERE u.id = a.user_id
 # GROUP BY answer_val;
-clients = Client.all.includes(segments: :users)
-clients.each do |client|
-  puts "Proccessing client with id: #{client.id}, label: #{client.label}"
+employers = Employer.all.includes(segments: :users)
+employers.each do |employer|
+  puts "Proccessing employer with id: #{employer.id}, label: #{employer.label}"
   puts '~~~~~~~~~~~~~~~~~~~'
   puts '~~~~~~~~~~~~~~~~~~~'
 
-  client.segments.each do |s|
+  employer.segments.each do |s|
     puts "Proccessing segment with id: #{s.id}, label: #{s.label}"
 
     user_ids = []

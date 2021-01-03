@@ -1,24 +1,37 @@
 class Admin::SurveysController < ApplicationController
   layout 'admin'
-  before_action :authenticate_administrator!
+  before_action :check_account_type, if: :authenticate_account!
 
   def index
     @surveys = Survey.all.page(params[:page])
   end
   def show
-    id = Integer(params[:id])
+    puts "params[:id]: #{params[:id]}"
     begin
-      @survey = Survey.includes(:client, question_groups: [questions: [answers: [:user]]]).find(id)
+      @survey = Survey.includes(:employer, question_groups: [questions: :options]).find(params[:id])
     rescue ActiveRecord::RecordNotFound => e 
-      redirect_to(not_found_404_path)
+      render("admin/static_pages/not_found_404")
     else
-      @survey_client = @survey.client
-      @survey_question_groups = @survey.question_groups      
+      @employees_data = []
+      @current_assigned_employees_ids = []
+      Employee.filter_by_employer_id(@survey.employer.id).each do |employee|
+        unless SurveyEmployeeRelation.find_by(survey_id: params[:id], employee_id: employee.id, is_conducted: true)
+          @employees_data << [employee.id, employee.first_name, employee.last_name, employee.account.email]
+        end
+        employee.surveys.each do |survey|
+          if survey.id == Integer(params[:id]) && !SurveyEmployeeRelation.find_by(survey_id: params[:id], employee_id: employee.id).is_conducted
+            @current_assigned_employees_ids << employee.id
+          end
+        end
+      end
+      @results = SurveyEmployeeRelation.where(survey_id: params[:id], is_conducted: true).includes(:employee)
+      @survey_question_groups = @survey.question_groups
+      p @current_assigned_employees_ids  
     end
   end
   def new
     @survey = Survey.new
-    @clients_data = Client.all.collect { |client| [client.id, client.logo_url, client.label, client.email] }
+    @employers_data = Employer.all.collect { |employer| [employer.id, employer.logo_url, employer.label, employer.public_email] }
   end
   def create
     if params[:survey] == nil || params[:question_groups] == nil
@@ -30,13 +43,13 @@ class Admin::SurveysController < ApplicationController
 
     @qgroups = Array.new
     @questions = Array.new
+    @survey.employer = Employer.find(params[:employer_id])
+
     unless @survey.valid?
       puts "Survey is not valid. Error messages:"
       @survey.errors.full_messages.each { |e| puts e}
       return
     end
-    @survey.client = Client.find(params[:client_id])
-
 
     params[:question_groups].each do |qgroup_params|
       @qgroup = QuestionGroup.new(label: qgroup_params[:question_group][:label])
@@ -84,5 +97,11 @@ class Admin::SurveysController < ApplicationController
   end
   def destroy
     puts "Ping from admin/surveys#destroy with params: #{params}"
+  end
+
+  protected
+
+  def check_account_type
+    redirect_to(not_found_404_path) unless current_account.account_type == 'administrator'
   end
 end

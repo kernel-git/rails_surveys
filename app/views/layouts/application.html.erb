@@ -15,12 +15,9 @@
           Home
         </div>
         <div class="header__sections header-sections">
-          <%= link_to "Sign up as admin", new_administrator_registration_url, class: "header-sections__section font-big" %>
-          <%= link_to "Log in as admin", new_administrator_session_url, class: "header-sections__section font-big" %>
-          <%= link_to "Sign up as company", new_client_registration_url, class: "header-sections__section font-big" %>
-          <%= link_to "Log in as company", new_client_session_url, class: "header-sections__section font-big" %>
-          <%= link_to "Sign up as user", new_user_registration_url, class: "header-sections__section font-big" %>
-          <%= link_to "Log in as user", new_user_session_url, class: "header-sections__section font-big" %>
+          <%= link_to "Sign up", new_account_registration_url, class: "header-sections__section font-big" %>
+          <%= link_to "Log in", new_account_session_url, class: "header-sections__section font-big" %>
+
         </div>
       </div>
       <p class="notice"><%= notice %></p>

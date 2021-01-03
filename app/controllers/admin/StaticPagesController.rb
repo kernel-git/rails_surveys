@@ -1,6 +1,6 @@
 class Admin::StaticPagesController < ApplicationController
   layout 'admin'
-  before_action :authenticate_administrator!
+  before_action :check_account_type, if: :authenticate_account!
 
   STATIC_PAGES = {
     'home': 'home',
@@ -13,5 +13,11 @@ class Admin::StaticPagesController < ApplicationController
     else
       render "admin/static_pages/#{STATIC_PAGES["not-found-404".to_sym]}"
     end
+  end
+
+  protected
+
+  def check_account_type
+    redirect_to(not_found_404_path) unless current_account.account_type == 'administrator'
   end
 end

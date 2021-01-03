@@ -4,7 +4,7 @@ class StaticPagesController < ApplicationController
     'home': 'home',
     'faq': 'faq',
     'privacy-policy': 'privacy_policy',
-    'contact-company': 'contact_company',
+    'contact-employer': 'contact_employer',
     'contact-support': 'contact_support',
     'not-found-404': 'not_found_404'
   }

@@ -1,4 +1,4 @@
-<%= content_tag :div, id: "clients_data", data: {clients: @clients_data} do %>
+<%= content_tag :div, id: "employers_data", data: {employers: @employers_data} do %>
 <% end %>
 
 <%= javascript_pack_tag "admin/surveys/new.js" %>
@@ -15,7 +15,7 @@
     </div>
   </div>
   <div class="model-wrapper__model-table-wrapper model-table-wrapper">
-    <div class="model-table-wrapper__label">User's company</div>
+    <div class="model-table-wrapper__label">Survey's employer</div>
     <div id="listing-table_0" class="model-table-wrapper__table custom-table">
       <div class="custom-table__table-header-wrapper table-header-wrapper">
         <div class="w-10 table-header-wrapper__table-header-element table-header-element">
@@ -47,7 +47,7 @@
   <div id="current-qgroups-wrapper"></div>
   <button id="add_qgroup">Add new question group</button>
 
-  <div id="current_client_id" style="display: none;"></div>
+  <div id="current_employer_id" style="display: none;"></div>
 
   <%= survey_form.submit "Create survey" %>
   
@@ -56,7 +56,7 @@
 <div id="modal_0" class="modal-background modal-background--hidden">
   <div class="modal-content">
     <div class="modal-content__header-wrapper">
-      <div class="modal-content__header-label">Select company</div>
+      <div class="modal-content__header-label">Select employer</div>
       <div id="modal-close_0" class="modal-content__header-button">
         <%= inline_svg_tag('cross-sign.svg', class: "svg-cross") %>
       </div>
@@ -88,7 +88,7 @@
             </div>
           </div>
         </div>
-        <!-- Clients data goes here -->
+        <!-- Employers data goes here -->
       </div>
     </div>
   </div>

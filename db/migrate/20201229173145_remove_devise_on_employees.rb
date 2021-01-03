@@ -1,0 +1,47 @@
+class RemoveDeviseOnEmployees < ActiveRecord::Migration[6.0]
+  def self.up
+    remove_index :employees, :email
+    remove_index :employees, :reset_password_token
+    remove_index :employees, :unlock_token
+    remove_column :employees, :email
+    remove_column :employees, :encrypted_password
+    remove_column :employees, :reset_password_token
+    remove_column :employees, :reset_password_sent_at
+    remove_column :employees, :failed_attempts
+    remove_column :employees, :unlock_token
+    remove_column :employees, :locked_at
+  end
+  def self.down
+    change_table :employees do |t|
+      ## Database authenticatable
+      t.string :email,              null: false, default: ""
+      t.string :encrypted_password, null: false, default: ""
+
+      ## Recoverable
+      t.string   :reset_password_token
+      t.datetime :reset_password_sent_at
+      
+      ## Trackable
+      # t.integer  :sign_in_count, default: 0, null: false
+      # t.datetime :current_sign_in_atr
+      # t.datetime :last_sign_in_at
+      # t.string   :current_sign_in_ip
+      # t.string   :last_sign_in_ip
+
+      ## Confirmable
+      # t.string   :confirmation_token
+      # t.datetime :confirmed_at
+      # t.datetime :confirmation_sent_at
+      # t.string   :unconfirmed_email # Only if using reconfirmable
+
+      ## Lockable
+      t.integer  :failed_attempts, default: 0, null: false # Only if lock strategy is :failed_attempts
+      t.string   :unlock_token # Only if unlock strategy is :email or :both
+      t.datetime :locked_at
+    end
+    add_index :employees, :email,                unique: true
+    add_index :employees, :reset_password_token, unique: true
+    # add_index :employees, :confirmation_token,   unique: true
+    add_index :employees, :unlock_token,         unique: true
+  end
+end

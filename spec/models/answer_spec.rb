@@ -2,11 +2,11 @@ require 'rails_helper'
 
 RSpec.describe Answer, type: :model do
   it 'is valid with all valid attributes' do
-    user = User.new
+    employee = Employee.new
     question = Question.new
     answer = Answer.new(answer_val: 1.0)
     answer.question = question
-    answer.user = user
+    answer.employee = employee
     expect(answer).to be_valid
   end
 
@@ -16,10 +16,10 @@ RSpec.describe Answer, type: :model do
     expect(answer.errors[:answer_val]).to include('can\'t be blank')
   end
 
-  it 'is not valid without an user' do
+  it 'is not valid without an employee' do
     answer = Answer.new
     answer.valid?
-    expect(answer.errors[:user]).to include('must exist')
+    expect(answer.errors[:employee]).to include('must exist')
   end
 
   it 'is not valid without a question' do

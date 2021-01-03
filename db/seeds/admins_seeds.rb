@@ -4,17 +4,21 @@ class AdminsSeeds
   end
 
   def perform
-    admins = Array.new
-    [{
-      nickname: 'test_admin',
+    admin = Administrator.new({
+      nickname: 'test_admin'
+    })
+    account = Account.new({
+      account_type: 'administrator',
       email: 'test_admin@gmail.com',
       password: '11111111'
-    }].each { |hash| admins << Administrator.new(hash) }
+    })
 
     begin
-      admins.each(&:save!)
+      account.save!
+      admin.account = account
+      admin.save!
     rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotSaved => e
-      puts '--->EXEPTION DURING SAVE<---'
+      puts '--->EXEPTION DURING Admin/Account SAVE<---'
       puts "Exeption type: #{e.class.name}"
       puts "Exeption message: #{e.message}"
       puts '~~~~~~~Stack trace~~~~~~~'

@@ -20,8 +20,8 @@ class SegmentsSeeds
     6.times do |index|
       segment = Segment.new({ label: SEGMENTS[index] })
       Faker::Number.unique.clear
-      %w(BSUIR BSU BSTU BSAI BSMU).sample(rand(1..4)).each { |e| segment.clients << Client.find_by(label: e) }
-      rand(1..3).times { segment.users << User.find(Faker::Number.unique.within(range: 1..8)) }
+      %w(BSUIR BSU BSTU BSAI BSMU).sample(rand(1..4)).each { |e| segment.employers << Employer.find_by(label: e) }
+      rand(1..3).times { segment.employees << Employee.find(Faker::Number.unique.within(range: 1..8)) }
 
       segments << segment
     end

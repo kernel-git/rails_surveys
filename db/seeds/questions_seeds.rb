@@ -31,7 +31,7 @@ class QuestionsSeeds
     'Social: Medical',
     'Social: Medical',
     'Social: Medical'
-].freeze
+  ].freeze
 
   def initialize
   end
@@ -47,9 +47,9 @@ class QuestionsSeeds
       })
     end
 
-    fake_user = User.new
+    fake_employee = Employee.new
     questions.each do |e|
-      e.answers.each { |answ| answ.user = fake_user }
+      e.answers.each { |answ| answ.employee = fake_employee }
       e.answers.each(&:save!)
     end
 

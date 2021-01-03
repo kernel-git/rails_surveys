@@ -7,7 +7,7 @@
 
     text-decoration: none;
     background-color: $lavendar-color;
-    color: $light-grey-color;
+    color: $light-gray-color;
     &:hover {
       background-color: $overcast-color;
       color: $white-color;
@@ -32,7 +32,7 @@
   .colored-group {
     padding: 15px 10px;
     margin: 5px 0;
-    background-color: $light-light-grey-color;
+    background-color: $light-light-gray-color;
     border-radius: 20px;
 
     &__label-wrapper {
@@ -206,7 +206,7 @@
       background-color: $light-green-color;
 
       &--active {
-        color: $dark-grey-color;
+        color: $dark-gray-color;
         background-color: $green-color;
       }
     }

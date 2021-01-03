@@ -26,7 +26,7 @@ class CreateModelsTables < ActiveRecord::Migration[6.0]
       t.timestamps
     end
 
-    create_table :clients do |t|
+    create_table :employers do |t|
       t.string :label
       t.string :email
       t.string :phone
@@ -34,8 +34,8 @@ class CreateModelsTables < ActiveRecord::Migration[6.0]
       t.string :logo_url
     end
 
-    create_table :clients_surveys do |t|
-      t.belongs_to :client
+    create_table :employers_surveys do |t|
+      t.belongs_to :employer
       t.belongs_to :survey
     end
 
@@ -48,15 +48,15 @@ class CreateModelsTables < ActiveRecord::Migration[6.0]
       t.integer :age
       t.integer :position_age
       t.boolean :opt_out
-      t.belongs_to :client
+      t.belongs_to :employer
     end
 
     create_table :segments do |t|
       t.string :label
     end
 
-    create_table :clients_segments do |t|
-      t.belongs_to :clients
+    create_table :employers_segments do |t|
+      t.belongs_to :employers
       t.belongs_to :segments
     end
 

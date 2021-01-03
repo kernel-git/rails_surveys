@@ -2,7 +2,7 @@
 
 <div class="listing-wrapper">
   <div class="listing-wrapper__label-wrapper">
-    <div class="label-wrapper__label">Company's listing</div>
+    <div class="label-wrapper__label">Employer's listing</div>
     <%= link_to "Add new admin", new_admin_admin_url, class: "link-button label-wrapper__button" %>
   </div>
   <div id="listing-table_0" class="listing-wrapper__custom-table custom-table">
@@ -33,7 +33,7 @@
             <%= admin.nickname %>
           </div>
           <div class="table-row-wrapper__information">
-            <%= admin.email %>
+            <%= admin.account.email %>
           </div>
         <% end %>
       <% end %>

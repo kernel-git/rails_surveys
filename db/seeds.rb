@@ -8,10 +8,11 @@ Dir[File.join(Rails.root, 'db', 'seeds', '*.rb')].sort.each do |seed|
   load seed
 end
 AdminsSeeds.new.perform
-ClientsSeeds.new.perform
+EmployersSeeds.new.perform
 QuestionGroupsSeeds.new.perform
 QuestionsSeeds.new.perform
 SurveysSeeds.new.perform
-UsersSeeds.new.perform
+EmployeesSeeds.new.perform
 SegmentsSeeds.new.perform
+OptionsSeeds.new.perform
 AnswersSeeds.new.perform

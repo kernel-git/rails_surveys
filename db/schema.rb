@@ -10,9 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_26_175458) do
+ActiveRecord::Schema.define(version: 2021_01_01_154500) do
 
-  create_table "administrators", force: :cascade do |t|
+  create_table "accounts", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"
@@ -21,47 +21,76 @@ ActiveRecord::Schema.define(version: 2020_12_26_175458) do
     t.integer "failed_attempts", default: 0, null: false
     t.string "unlock_token"
     t.datetime "locked_at"
+    t.integer "administrator_id"
+    t.integer "employer_id"
+    t.integer "employee_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "account_type", default: "employee", null: false
+    t.index ["administrator_id"], name: "index_accounts_on_administrator_id"
+    t.index ["email"], name: "index_accounts_on_email", unique: true
+    t.index ["employee_id"], name: "index_accounts_on_employee_id"
+    t.index ["employer_id"], name: "index_accounts_on_employer_id"
+    t.index ["reset_password_token"], name: "index_accounts_on_reset_password_token", unique: true
+    t.index ["unlock_token"], name: "index_accounts_on_unlock_token", unique: true
+  end
+
+  create_table "administrators", force: :cascade do |t|
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "nickname"
-    t.index ["email"], name: "index_administrators_on_email", unique: true
-    t.index ["reset_password_token"], name: "index_administrators_on_reset_password_token", unique: true
-    t.index ["unlock_token"], name: "index_administrators_on_unlock_token", unique: true
   end
 
   create_table "answers", force: :cascade do |t|
-    t.float "answer_val"
-    t.integer "question_id"
-    t.integer "user_id"
+    t.integer "employee_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["question_id"], name: "index_answers_on_question_id"
-    t.index ["user_id"], name: "index_answers_on_user_id"
+    t.integer "option_id"
+    t.string "additional_text"
+    t.index ["employee_id"], name: "index_answers_on_employee_id"
+    t.index ["option_id"], name: "index_answers_on_option_id"
   end
 
-  create_table "clients", force: :cascade do |t|
+  create_table "employees", force: :cascade do |t|
+    t.string "first_name"
+    t.string "last_name"
+    t.string "account_type"
+    t.integer "age"
+    t.integer "position_age"
+    t.boolean "opt_out"
+    t.integer "employer_id"
+    t.index ["employer_id"], name: "index_employees_on_employer_id"
+  end
+
+  create_table "employees_segments", force: :cascade do |t|
+    t.integer "segment_id"
+    t.integer "employee_id"
+    t.index ["employee_id"], name: "index_employees_segments_on_employee_id"
+    t.index ["segment_id"], name: "index_employees_segments_on_segment_id"
+  end
+
+  create_table "employers", force: :cascade do |t|
     t.string "label"
     t.string "phone"
     t.text "address"
-    t.string "email", default: "", null: false
-    t.string "encrypted_password", default: "", null: false
-    t.string "reset_password_token"
-    t.datetime "reset_password_sent_at"
-    t.datetime "remember_created_at"
-    t.integer "failed_attempts", default: 0, null: false
-    t.string "unlock_token"
-    t.datetime "locked_at"
     t.string "logo_url", default: "", null: false
-    t.index ["email"], name: "index_clients_on_email", unique: true
-    t.index ["reset_password_token"], name: "index_clients_on_reset_password_token", unique: true
-    t.index ["unlock_token"], name: "index_clients_on_unlock_token", unique: true
+    t.string "public_email"
   end
 
-  create_table "clients_segments", force: :cascade do |t|
-    t.integer "client_id"
+  create_table "employers_segments", force: :cascade do |t|
+    t.integer "employer_id"
     t.integer "segment_id"
-    t.index ["client_id"], name: "index_clients_segments_on_client_id"
-    t.index ["segment_id"], name: "index_clients_segments_on_segment_id"
+    t.index ["employer_id"], name: "index_employers_segments_on_employer_id"
+    t.index ["segment_id"], name: "index_employers_segments_on_segment_id"
+  end
+
+  create_table "options", force: :cascade do |t|
+    t.integer "question_id"
+    t.string "text"
+    t.boolean "has_text_field"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["question_id"], name: "index_options_on_question_id"
   end
 
   create_table "question_groups", force: :cascade do |t|
@@ -82,51 +111,22 @@ ActiveRecord::Schema.define(version: 2020_12_26_175458) do
     t.string "label"
   end
 
-  create_table "segments_users", force: :cascade do |t|
-    t.integer "segment_id"
-    t.integer "user_id"
-    t.index ["segment_id"], name: "index_segments_users_on_segment_id"
-    t.index ["user_id"], name: "index_segments_users_on_user_id"
-  end
-
-  create_table "survey_user_relations", force: :cascade do |t|
+  create_table "survey_employee_relations", force: :cascade do |t|
     t.boolean "is_conducted"
     t.integer "survey_id"
-    t.integer "user_id"
+    t.integer "employee_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["survey_id"], name: "index_survey_user_relations_on_survey_id"
-    t.index ["user_id"], name: "index_survey_user_relations_on_user_id"
+    t.index ["employee_id"], name: "index_survey_employee_relations_on_employee_id"
+    t.index ["survey_id"], name: "index_survey_employee_relations_on_survey_id"
   end
 
   create_table "surveys", force: :cascade do |t|
     t.string "label"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.integer "client_id"
-    t.index ["client_id"], name: "index_surveys_on_client_id"
-  end
-
-  create_table "users", force: :cascade do |t|
-    t.string "first_name"
-    t.string "last_name"
-    t.string "account_type"
-    t.integer "age"
-    t.integer "position_age"
-    t.boolean "opt_out"
-    t.integer "client_id"
-    t.string "email", default: "", null: false
-    t.string "encrypted_password", default: "", null: false
-    t.string "reset_password_token"
-    t.datetime "reset_password_sent_at"
-    t.datetime "remember_created_at"
-    t.integer "failed_attempts", default: 0, null: false
-    t.string "unlock_token"
-    t.datetime "locked_at"
-    t.index ["client_id"], name: "index_users_on_client_id"
-    t.index ["email"], name: "index_users_on_email", unique: true
-    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
-    t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
+    t.integer "employer_id"
+    t.index ["employer_id"], name: "index_surveys_on_employer_id"
   end
 
 end

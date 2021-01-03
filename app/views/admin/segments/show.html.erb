@@ -40,20 +40,20 @@
           </div>
         </div>
       </div>
-      <% unless @segment_clients.empty? %>
-        <% @segment_clients.each do |client| %>
-          <%= link_to(admin_client_url(client), class: "custom-table__table-row-wrapper table-row-wrapper link-div table-row_0") do %>
+      <% unless @segment_employers.empty? %>
+        <% @segment_employers.each do |employer| %>
+          <%= link_to(admin_employer_url(employer), class: "custom-table__table-row-wrapper table-row-wrapper link-div table-row_0") do %>
             <div class="table-row-wrapper__information w-10">
-              <%= image_tag(client.logo_url, size: "75x75") %>
+              <%= image_tag(employer.logo_url, size: "75x75") %>
             </div>
             <div class="table-row-wrapper__information">
-              <%= client.label %>
+              <%= employer.label %>
             </div>
             <div class="table-row-wrapper__information">
-              <%= client.email %>
+              <%= employer.public_email %>
             </div>
             <div class="table-row-wrapper__information">
-              <%= client.phone %>
+              <%= employer.phone %>
             </div>
           <% end %>
         <% end %>
@@ -63,7 +63,7 @@
     </div>
   </div>
   <div class="model-wrapper__model-table-wrapper model-table-wrapper">
-    <div class="model-table-wrapper__label">Segment's users</div>
+    <div class="model-table-wrapper__label">Segment's employees</div>
     <div id="listing-table_1" class="model-table-wrapper__table custom-table">
       <div class="custom-table__table-header-wrapper table-header-wrapper">
         <div class="table-header-wrapper__table-header-element table-header-element">
@@ -99,24 +99,24 @@
             <div id="sort-arrow_down_3_table_1"><%= inline_svg_tag('down-chevron.svg', class: "svg-sorting-arrow") %></div>
           </div>
           <div class="table-header-element__label">
-            Company
+            Employer
           </div>
         </div>
       </div>
-      <% unless @segment_users.empty? %>
-        <% @segment_users.each do |user| %>
-          <%= link_to(admin_user_url(user), class: "custom-table__table-row-wrapper table-row-wrapper link-div table-row_1") do %>
+      <% unless @segment_employees.empty? %>
+        <% @segment_employees.each do |employee| %>
+          <%= link_to(admin_employee_url(employee), class: "custom-table__table-row-wrapper table-row-wrapper link-div table-row_1") do %>
             <div class="table-row-wrapper__information">
-              <%= user.first_name %>
+              <%= employee.first_name %>
             </div>
             <div class="table-row-wrapper__information">
-              <%= user.last_name %>
+              <%= employee.last_name %>
             </div>
             <div class="table-row-wrapper__information">
-              <%= user.email %>
+              <%= employee.account.email %>
             </div>
             <div class="table-row-wrapper__information">
-              <%= user.client.label %>
+              <%= employee.employer.label %>
             </div>
           <% end %>
         <% end %>

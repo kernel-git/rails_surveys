@@ -1,29 +1,29 @@
 let free_qgroup_ids = [0]
 let free_question_ids = [0]
 
-let clientsData = [];
-let hiddenClientsData = [];
-let currentClientIndex = null;
-let addClientButton = null;
+let employersData = [];
+let hiddenEmployersData = [];
+let currentEmployerIndex = null;
+let addEmployerButton = null;
 
 
 $(document).ready(() => {
-  let clients_data = $('#clients_data').data('clients');
+  let employers_data = $('#employers_data').data('employers');
 
-  clients_data.forEach((client_data, index) => {  // adding html to client modal
+  employers_data.forEach((employer_data, index) => {  // adding html to employer modal
     const newRow = $('<div></div>')
       .addClass('custom-table__table-row-wrapper table-row-wrapper link-div')
       .attr('id', `row_${index}_table_2`)
       .on('click', () => {
-        console.log('Client modal clicked!')
-        currentClientIndex = index;
-        updateClientTables();
+        console.log('Employer modal clicked!')
+        currentEmployerIndex = index;
+        updateEmployerTables();
         closeModal(0);
       });
     const newLogoWrapper = $('<div></div>')
       .addClass('table-row-wrapper__information')
     const newLogo = $('<img>')
-      .attr('src', client_data[1])
+      .attr('src', employer_data[1])
       .attr('width', '75')
       .attr('height', '75');
 
@@ -31,23 +31,23 @@ $(document).ready(() => {
     
     const newLabel = $('<div></div>')
       .addClass("table-row-wrapper__information")
-      .text(client_data[2]);
+      .text(employer_data[2]);
     const newEmail = $('<div></div>')
       .addClass("table-row-wrapper__information")
-      .text(client_data[3]);
+      .text(employer_data[3]);
 
     newRow.append(newLogoWrapper, newLabel, newEmail);
     $(`#listing-table_1`).append(newRow);
   });
 
-  clients_data.forEach((client_data, index) => {  // filling clientsData with html  
+  employers_data.forEach((employer_data, index) => {  // filling employersData with html  
     const newRow = $('<div></div>')
       .addClass(`custom-table__table-row-wrapper table-row-wrapper`)
       .attr('id', `row_${index}_table_0`);
     const newLogoWrapper = $('<div></div>')
       .addClass('table-row-wrapper__information')
     const newLogo = $('<img>')
-      .attr('src', client_data[1])
+      .attr('src', employer_data[1])
       .attr('width', '75')
       .attr('height', '75');
 
@@ -55,35 +55,35 @@ $(document).ready(() => {
     
     const newLabel = $('<div></div>')
       .addClass("table-row-wrapper__information")
-      .text(client_data[2]);
+      .text(employer_data[2]);
     const newEmail = $('<div></div>')
       .addClass("table-row-wrapper__information")
-      .text(client_data[3]);
+      .text(employer_data[3]);
 
     const newDeleteButton = $('<div></div>')
       .addClass('table-row-wrapper__information link-button')
       .text('Delete')
       .on('click', () => {
-        console.log('Client delete clicked!');
-        currentClientIndex = null;
-        updateClientTables();
+        console.log('Employer delete clicked!');
+        currentEmployerIndex = null;
+        updateEmployerTables();
       });
 
     newRow.append(newLogoWrapper, newLabel, newEmail, newDeleteButton);
-    clientsData.push(newRow)
+    employersData.push(newRow)
   });
 
-  clients_data.forEach((client_data, index) => {  // filling hiddenClientsData with html  
+  employers_data.forEach((employer_data, index) => {  // filling hiddenEmployersData with html  
     const newHiddenInputSegment = $('<input></input>')
-      .attr('id', `client_${client_data[0]}`)
-      .attr('name', 'client_id')
+      .attr('id', `employer_${employer_data[0]}`)
+      .attr('name', 'employer_id')
       .attr('type', 'hidden')
-      .val(client_data[0]);
+      .val(employer_data[0]);
 
-    hiddenClientsData.push($('#current_client_id').append(newHiddenInputSegment));
+    hiddenEmployersData.push($('#current_employer_id').append(newHiddenInputSegment));
   });
 
-  updateClientTables();
+  updateEmployerTables();
 
   $('#add_qgroup').on('click', () => {
     addNewQuestionGroup(free_qgroup_ids[0]);
@@ -101,17 +101,17 @@ $(document).ready(() => {
   });
 });
 
-function updateClientTables() {
-  if (addClientButton == null)
-    addClientButton = $('#add-row_0').detach();
+function updateEmployerTables() {
+  if (addEmployerButton == null)
+    addEmployerButton = $('#add-row_0').detach();
   $('#listing-table_0 .table-row-wrapper').detach();
-  $('#current-client-id').empty();
+  $('#current-employer-id').empty();
 
-  $('#listing-table_0').append(clientsData[currentClientIndex]);
-  if (currentClientIndex == null)
-    $('#listing-table_0').append(addClientButton);
+  $('#listing-table_0').append(employersData[currentEmployerIndex]);
+  if (currentEmployerIndex == null)
+    $('#listing-table_0').append(addEmployerButton);
 
-  $('#current-client-id').append(hiddenClientsData[currentClientIndex]);
+  $('#current-employer-id').append(hiddenEmployersData[currentEmployerIndex]);
 }
 
 function openModal(modalId) {
@@ -182,7 +182,7 @@ function addNewQuestionGroup(qgroup_id) {
   headerElem2.append(headerLabel2);
   headerWrapper.append(headerElem1, headerElem2);
 
-  let addButton = addClientButton.clone();
+  let addButton = addEmployerButton.clone();
   addButton
     .attr('id', `add-row_${qgroup_id + 2}`)
     .on('click', () => {

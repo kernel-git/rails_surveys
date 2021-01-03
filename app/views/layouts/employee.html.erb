@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Employee Access</title>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <%= stylesheet_link_tag "employee" %>
+  </head>
+
+  <body>
+    <div class="employee-wrapper">
+      <div class="employee-header">
+        <%= link_to "Employee", employee_root_url, class: "employee-header__label font-large" %>
+        <div class="employee-header__sections header-sections">
+          <%= link_to "Surveys", employee_surveys_url, class: "employee-header-sections__section font-big" %>
+        </div>
+        <div class="employee-header__buttons employee-header-buttons">
+          <%= button_to "Logout", destroy_account_session_url, method: :delete, class: "employee-header-buttons__button font-medium" %>
+        </div>
+      </div>
+      <p class="notice"><%= notice %></p>
+      <p class="alert"><%= alert %></p>
+      <div class="content">
+        <%= yield %>
+      </div>
+      <div class="employee-footer">
+        <div class="employee-footer__text font-small">
+          site design / logo © 2020 boss078, Inc.
+        </div>
+      </div>
+    </div>  
+  </body>
+</html>

@@ -25,6 +25,8 @@ body {
     padding: 15px;
 
     background-color: $lavendar-color;
+    color: $white-color;
+    text-decoration: none;
   }
   &__sections {
     align-self: flex-end;
@@ -48,7 +50,7 @@ body {
     color: $white-color;
     &:hover {
       background-color: $lavendar-color;
-      color: $light-grey-color;
+      color: $light-gray-color;
     }
   }
 }

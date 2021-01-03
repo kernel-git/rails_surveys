@@ -1,0 +1,44 @@
+<%= javascript_pack_tag "extra/table-behavior.js" %>
+
+<div class="listing-wrapper">
+  <div class="listing-wrapper__label-wrapper">
+    <div class="label-wrapper__label">Result's listing</div>
+  </div>
+  <div id="listing-table_0" class="listing-wrapper__custom-table custom-table">
+    <div class="custom-table__table-header-wrapper table-header-wrapper">
+      <div class="table-header-wrapper__table-header-element table-header-element">
+        <div class="table-header-element__arrows-wrapper arrows-wrapper">
+          <div id="sort-arrow_up_0_table_0"><%= inline_svg_tag('up-chevron.svg', class: "svg-sorting-arrow") %></div>
+          <div id="sort-arrow_down_0_table_0"><%= inline_svg_tag('down-chevron.svg', class: "svg-sorting-arrow") %></div>
+        </div>
+        <div class="table-header-element__label">
+          Survey
+        </div>
+      </div>
+      <div class="table-header-wrapper__table-header-element table-header-element">
+        <div class="table-header-element__arrows-wrapper arrows-wrapper">
+          <div id="sort-arrow_up_1_table_0"><%= inline_svg_tag('up-chevron.svg', class: "svg-sorting-arrow") %></div>
+          <div id="sort-arrow_down_1_table_0"><%= inline_svg_tag('down-chevron.svg', class: "svg-sorting-arrow") %></div>
+        </div>
+        <div class="table-header-element__label">
+          Employee
+        </div>
+      </div>
+    </div>
+    <% unless @results.empty? %>
+      <% @results.each do |result| %>
+        <%= link_to(admin_result_url(result), class: "custom-table__table-row-wrapper table-row-wrapper link-div table-row_0") do %>
+          <div class="table-row-wrapper__information">
+            <%= result.survey.label %>
+          </div>
+          <div class="table-row-wrapper__information">
+            <%= result.employee.first_name %> <%= result.employee.last_name %>
+          </div>
+        <% end %>
+      <% end %>
+      <%= paginate @results %>
+    <% else %>
+      <div class="custom-table__message">Empty</div>
+    <% end %>
+  </div>
+</div>

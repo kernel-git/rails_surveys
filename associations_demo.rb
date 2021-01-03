@@ -4,16 +4,16 @@ def print_object_info(object)
   puts '~~~~~~~~~~~~~~'
 end
 
-Client.all.each do |client|
-  puts '----> Client Info'
-  print_object_info(client)
-  puts 'Client\'s surveys info'
-  client.surveys.each { |survey| print_object_info(survey) }
-  puts 'Empty' if client.surveys.empty?
+Employer.all.each do |employer|
+  puts '----> Employer Info'
+  print_object_info(employer)
+  puts 'Employer\'s surveys info'
+  employer.surveys.each { |survey| print_object_info(survey) }
+  puts 'Empty' if employer.surveys.empty?
 
-  puts 'Client\'s segments info'
-  client.segments.each { |segment| print_object_info(segment) }
-  puts 'Empty' if client.segments.empty?
+  puts 'Employer\'s segments info'
+  employer.segments.each { |segment| print_object_info(segment) }
+  puts 'Empty' if employer.segments.empty?
 end
 
 Segment.all.each do |segment|
@@ -23,9 +23,9 @@ Segment.all.each do |segment|
   segment.users.each { |user| print_object_info(user) }
   puts 'Empty' if segment.users.empty?
 
-  puts 'Segment\'s clients info'
-  segment.clients.each { |client| print_object_info(client) }
-  puts 'Empty' if segment.clients.empty?
+  puts 'Segment\'s employers info'
+  segment.employers.each { |employer| print_object_info(employer) }
+  puts 'Empty' if segment.employers.empty?
 end
 
 random_survey = Survey.all[rand(Survey.all.length)]
