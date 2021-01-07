@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Employee Access</title>
+    <title>Surveys Project: Employee</title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
     <%= stylesheet_link_tag "employee" %>
@@ -13,6 +13,7 @@
         <%= link_to "Employee", employee_root_url, class: "employee-header__label font-large" %>
         <div class="employee-header__sections header-sections">
           <%= link_to "Surveys", employee_surveys_url, class: "employee-header-sections__section font-big" %>
+          <%= link_to "Results", employee_results_url, class: "employee-header-sections__section font-big" %>
         </div>
         <div class="employee-header__buttons employee-header-buttons">
           <%= button_to "Logout", destroy_account_session_url, method: :delete, class: "employee-header-buttons__button font-medium" %>

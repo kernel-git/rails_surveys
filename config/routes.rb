@@ -39,6 +39,7 @@ Rails.application.routes.draw do
         post :conduct
       end
     end
+    resources :results, only: [:index, :show], constraints: { id: /[0-9]+/ } # старый стиль
 
   end
   namespace :employer do

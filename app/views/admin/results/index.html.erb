@@ -27,7 +27,7 @@
     </div>
     <% unless @results.empty? %>
       <% @results.each do |result| %>
-        <%= link_to(admin_result_url(result), class: "custom-table__table-row-wrapper table-row-wrapper link-div table-row_0") do %>
+        <%= link_to(employee_result_url(result), class: "custom-table__table-row-wrapper table-row-wrapper link-div table-row_0") do %>
           <div class="table-row-wrapper__information">
             <%= result.survey.label %>
           </div>

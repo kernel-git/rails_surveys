@@ -2,7 +2,7 @@
 
 <div class="listing-wrapper">
   <div class="listing-wrapper__label-wrapper">
-    <div class="label-wrapper__label">Avaible surveys</div>
+    <div class="label-wrapper__label">Completed surveys</div>
   </div>
   <div id="listing-table_0" class="listing-wrapper__custom-table custom-table">
     <div class="custom-table__table-header-wrapper table-header-wrapper">
@@ -12,19 +12,19 @@
           <div id="sort-arrow_down_0_table_0"><%= inline_svg_tag('down-chevron.svg', class: "svg-sorting-arrow") %></div>
         </div>
         <div class="table-header-element__label">
-          Label
+          Survey
         </div>
       </div>
     </div>
-    <% unless @avaible_surveys.empty? %>
-      <% @avaible_surveys.each do |survey| %>
-        <%= link_to(attempt_employee_survey_url(survey), class: "custom-table__table-row-wrapper table-row-wrapper link-div table-row_0") do %>
+    <% unless @results.empty? %>
+      <% @results.each do |result| %>
+        <%= link_to(employee_result_url(result.id), class: "custom-table__table-row-wrapper table-row-wrapper link-div table-row_0") do %>
           <div class="table-row-wrapper__information">
-            <%= survey.label %>
+            <%= result.label %>
           </div>
         <% end %>
       <% end %>
-      <%= paginate @avaible_surveys %>
+      <%= paginate @results %>
     <% else %>
       <div class="custom-table__message">Empty</div>
     <% end %>

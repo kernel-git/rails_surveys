@@ -53,39 +53,43 @@
 
   <div class="object-group-wrapper">
     <div class="object-group-wrapper__label">Survey content</div>
-    <% unless @survey.question_groups.empty? %>
-      <% @survey.question_groups.each do |question_group| %>
-        <div class="colored-group">
-          <div class="object-group-wrapper__info-wrapper info-wrapper">
-            <div class="info-wrapper__label">Question group:</div>
-            <div class="info-wrapper__information">
+    <div class="attempt-wrapper__content-wrapper content-wrapper">
+      <% @survey.question_groups.each_with_index do |question_group, qg_index| %>
+        <div class="qgroup-wrapper" id="qgroup_<%= qg_index %>">
+          <div class="qgroup-wrapper__qgroup-label-wrapper qgroup-label-wrapper">
+            <div class="qgroup-label-wrapper__label font-big">
               <%= question_group.label %>
             </div>
           </div>
-          <div class="info-wrapper__content">
-            <% unless question_group.questions.empty? %>
-              <% question_group.questions.each do |question| %>
-                <div class="object-group-wrapper__info-wrapper info-wrapper">
-                  <div class="info-wrapper__label">Question:</div>
-                  <div class="info-wrapper__information">
-                    <%= question.question_type %>
+          <% question_group.questions.each do |question| %>
+            <div class="qgroup-wrapper__question-wrapper question-wrapper">
+              <div class="question-wrapper__text font-big">
+                <%= question.question_type %>
+              </div>
+              <% question.options.each do |option| %>
+                <div class="question-wrapper__answer-option-wrapper answer-option-wrapper">
+                  <div class="answer-option-wrapper__label-wrapper">
+                    <div class="answer-option-wrapper__label">
+                      <%= option.text %>
+                    </div>
+                    
                   </div>
                 </div>
-                <% question.options.each do |option| %>
-                  <div class="info-wrapper__option">
-                    <%= option.text %>
-                  </div>
-                <% end %>
               <% end %>
-            <% else %>
-              <div class="object-group-wrapper__message">Empty</div>
-            <% end %>
-          </div>
+            </div>
+          <% end %>
         </div>
       <% end %>
-    <% else %>
-      <div class="object-group-wrapper__message">Empty</div>
-    <% end %>
+      <div class="content-wrapper__content-footer content-footer">
+        <div class="progress__wrapper">
+          <% @survey.question_groups.each_with_index do |question_group, qg_index| %>
+            <div class="progress__element" id="qgroup-button_<%= qg_index %>">
+              <%= qg_index + 1 %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
   </div>
 
   <%= form_with scope: :survey, url: employer_survey_url(@survey), method: :put do |survey_form| %>

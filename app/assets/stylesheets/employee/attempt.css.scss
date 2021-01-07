@@ -62,6 +62,19 @@
     flex-direction: column;
     padding: 10px 20px;
   }
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  &__header-label-wrapper {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
+  &__header-label-text {
+    padding-right: 10px;
+  }
 }
 
 .answer-option-wrapper {
