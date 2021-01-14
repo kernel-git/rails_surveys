@@ -1,50 +1,49 @@
 require 'rails_helper'
 
-RSpec.describe Employer, type: :model do
-  it 'is valid with all valid attributes' do
-    employer = Employer.new(
-      label: 'employer_label',
-      email: 'ShepardCommander@gmail.com',
-      phone: '88005553535',
-      address: 'Something here',
-      logo_url: 'nope'
-    )
-    expect(employer).to be_valid
+describe Employer, 'validation' do
+  subject do
+    FactoryBot.create(:employer,
+                      account_id: FactoryBot.create(:account, account_type: 'employer').id)
   end
 
-  it 'is not valid without a label' do
-    employer = Employer.new(label: nil)
-    employer.valid?
-    expect(employer.errors[:label]).to include('can\'t be blank')
+  context 'with valid attributes' do
+    it { is_expected.to be_valid }
   end
 
-  it 'is not valid without an email' do
-    employer = Employer.new(email: nil)
-    employer.valid?
-    expect(employer.errors[:email]).to include('can\'t be blank')
-  end
+  context 'without an attribute' do
+    it { is_expected.to validate_presence_of(:label) }
+    it { is_expected.to validate_presence_of(:public_email) }
+    it { is_expected.to validate_presence_of(:phone) }
+    it { is_expected.to validate_presence_of(:address) }
+    it { is_expected.to validate_presence_of(:logo_url) }
 
-  it 'is not valid without a phone' do
-    employer = Employer.new(phone: nil)
-    employer.valid?
-    expect(employer.errors[:phone]).to include('can\'t be blank')
-  end
-
-  it 'is not valid without an address' do
-    employer = Employer.new(address: nil)
-    employer.valid?
-    expect(employer.errors[:address]).to include('can\'t be blank')
-  end
-
-  it 'is not valid without a logo url' do
-    employer = Employer.new(logo_url: nil)
-    employer.valid?
-    expect(employer.errors[:logo_url]).to include('can\'t be blank')
+    it { is_expected.to validate_presence_of(:account_id) }
   end
 
   it 'is not valid with invalid email' do
-    employer = Employer.new(email: 'ShepardCommandergmail.com')
-    employer.valid?
-    expect(employer.errors[:email]).to include('is not an email')
+    subject.public_email = 'invalid one'
+    subject.valid?
+    expect(subject.errors[:public_email]).to include('is not an email')
   end
+end
+
+describe Employer, 'association' do
+  it { is_expected.to belong_to(:account) }
+  it { is_expected.to have_many(:employees) }
+  it { is_expected.to have_many(:surveys) }
+  it { is_expected.to have_and_belong_to_many(:segments) }
+end
+
+describe Employer, 'column_specification' do
+  it { is_expected.to have_db_column(:label).of_type(:string) }
+  it { is_expected.to have_db_column(:phone).of_type(:string) }
+  it { is_expected.to have_db_column(:address).of_type(:text) }
+  it { is_expected.to have_db_column(:logo_url).of_type(:string).with_options(default: '', null: false) }
+  it { is_expected.to have_db_column(:public_email).of_type(:string) }
+
+  it { is_expected.to have_db_column(:created_at).of_type(:datetime) }
+  it { is_expected.to have_db_column(:updated_at).of_type(:datetime) }
+  it { is_expected.to have_db_column(:account_id).of_type(:integer) }
+
+  it { is_expected.to have_db_index(:account_id) }
 end

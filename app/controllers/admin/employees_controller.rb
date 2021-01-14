@@ -1,10 +1,11 @@
 class Admin::EmployeesController < ApplicationController
-  layout "admin"
+  layout 'admin'
   before_action :check_account_type, if: :authenticate_account!
 
   def index
     @employees = Employee.page(params[:page])
   end
+
   def show
     id = Integer(params[:id])
     begin
@@ -17,25 +18,27 @@ class Admin::EmployeesController < ApplicationController
       @employee_answers = @employee.answers
     end
   end
+
   def new
     @employee = Employee.new
     @segments_data = Segment.all.collect { |segment| [segment.id, segment.label] }
     @employers_data = Employer.all.collect { |employer| [employer.id, employer.logo_url, employer.label, employer.public_email] }
   end
+
   def create
     @employee = Employee.new({
-      first_name: params[:employee][:first_name],
-      last_name: params[:employee][:last_name],
-      account_type: params[:employee][:account_type],
-      age: params[:employee][:age],
-      position_age: params[:employee][:position_age],
-      opt_out: params[:employee][:opt_out]
-    })
+                               first_name: params[:employee][:first_name],
+                               last_name: params[:employee][:last_name],
+                               account_type: params[:employee][:account_type],
+                               age: params[:employee][:age],
+                               position_age: params[:employee][:position_age],
+                               opt_out: params[:employee][:opt_out]
+                             })
     @account = Account.new({
-      account_type: 'employee',
-      email: params[:employee][:email],
-      password: params[:employee][:password]
-    })
+                             account_type: 'employee',
+                             email: params[:employee][:email],
+                             password: params[:employee][:password]
+                           })
     @employee.account = @account
     @employee.employer = Employer.find(params[:employer_id])
     @employee.segments = Segment.where(id: params[:segments_ids])
@@ -51,12 +54,15 @@ class Admin::EmployeesController < ApplicationController
       redirect_to(admin_employees_url)
     end
   end
+
   def edit
     puts "Ping from admin/employees#edit with params: #{params}"
   end
+
   def update
     puts "Ping from admin/employees#update with params: #{params}"
   end
+
   def destroy
     puts "Ping from admin/employees#destroy with params: #{params}"
   end

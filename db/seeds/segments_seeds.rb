@@ -1,7 +1,6 @@
 require 'faker'
 
 class SegmentsSeeds
-
   SEGMENTS = [
     'Teacher',
     'Technical',
@@ -11,16 +10,15 @@ class SegmentsSeeds
     'Ph D Student'
   ].freeze
 
-  def initialize
-  end
+  def initialize; end
 
   def perform
-    segments = Array.new
+    segments = []
 
     6.times do |index|
       segment = Segment.new({ label: SEGMENTS[index] })
       Faker::Number.unique.clear
-      %w(BSUIR BSU BSTU BSAI BSMU).sample(rand(1..4)).each { |e| segment.employers << Employer.find_by(label: e) }
+      %w[BSUIR BSU BSTU BSAI BSMU].sample(rand(1..4)).each { |e| segment.employers << Employer.find_by(label: e) }
       rand(1..3).times { segment.employees << Employee.find(Faker::Number.unique.within(range: 1..8)) }
 
       segments << segment

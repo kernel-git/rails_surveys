@@ -1,7 +1,7 @@
 class Administrator < ApplicationRecord
   paginates_per 20
 
-  validates :nickname, presence: true
+  validates :nickname, :account_id, presence: true
 
-  has_one :account
+  belongs_to :account
 end

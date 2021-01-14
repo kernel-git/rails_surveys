@@ -10,11 +10,9 @@ class Employer::EmployeesController < ApplicationController
     id = params[:id]
     begin
       @employee = Employee.includes(:segments, :employer, answers: [question: [question_group: [:survey]]]).find(id)
-      if @employee.employer.id != current_account.employer.id
-        render("employer/static_pages/not_found_404")
-      end
+      render('employer/static_pages/not_found_404') if @employee.employer.id != current_account.employer.id
     rescue ActiveRecord::RecordNotFound => e
-      render("employer/static_pages/not_found_404")
+      render('employer/static_pages/not_found_404')
     else
       @employee_employer = @employee.employer
       @employee_segments = @employee.segments
@@ -29,15 +27,15 @@ class Employer::EmployeesController < ApplicationController
 
   def create
     @employee = Employee.new({
-      first_name: params[:employee][:first_name],
-      last_name: params[:employee][:last_name],
-      email: params[:employee][:email],
-      account_type: params[:employee][:account_type],
-      password: params[:employee][:password],
-      age: params[:employee][:age],
-      position_age: params[:employee][:position_age],
-      opt_out: params[:employee][:opt_out]
-    })
+                               first_name: params[:employee][:first_name],
+                               last_name: params[:employee][:last_name],
+                               email: params[:employee][:email],
+                               account_type: params[:employee][:account_type],
+                               password: params[:employee][:password],
+                               age: params[:employee][:age],
+                               position_age: params[:employee][:position_age],
+                               opt_out: params[:employee][:opt_out]
+                             })
     @employee.employer = Employer.find(current_account.employer.id)
     @employee.segments = Segment.where(id: params[:segments_ids])
     if @employee.save

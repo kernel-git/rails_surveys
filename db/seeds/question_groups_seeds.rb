@@ -1,31 +1,34 @@
 class QuestionGroupsSeeds
-
-  def initialize
-  end
+  def initialize; end
 
   def perform
-    question_groups = Array.new
+    question_groups = []
     [{
       label: 'University: Science'
     },
-    {
-      label: 'University: Culture'
-    },
-    {
-      label: 'University: Development'
-    },
-    {
-      label: 'Social: Culture'
-    },
-    {
-      label: 'Social: Freedom'
-    },
-    {
-      label: 'Social: Medical'
-    }].each { |hash| question_groups << QuestionGroup.new(hash) }
+     {
+       label: 'University: Culture'
+     },
+     {
+       label: 'University: Development'
+     },
+     {
+       label: 'Social: Culture'
+     },
+     {
+       label: 'Social: Freedom'
+     },
+     {
+       label: 'Social: Medical'
+     }].each { |hash| question_groups << QuestionGroup.new(hash) }
 
-    fake_survey = Survey.new
-    question_groups.each { |e| e.survey = fake_survey }
+    question_groups[0].survey = Survey.find(1)
+    question_groups[1].survey = Survey.find(1)
+    question_groups[2].survey = Survey.find(1)
+
+    question_groups[3].survey = Survey.find(2)
+    question_groups[4].survey = Survey.find(2)
+    question_groups[5].survey = Survey.find(2)
 
     begin
       question_groups.each(&:save!)

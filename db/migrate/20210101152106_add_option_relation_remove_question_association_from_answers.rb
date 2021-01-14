@@ -8,6 +8,7 @@ class AddOptionRelationRemoveQuestionAssociationFromAnswers < ActiveRecord::Migr
       t.string :additional_text
     end
   end
+
   def self.down
     remove_index :answers, :option_id
     remove_column :answers, :option_id

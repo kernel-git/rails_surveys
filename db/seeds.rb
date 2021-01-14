@@ -9,9 +9,9 @@ Dir[File.join(Rails.root, 'db', 'seeds', '*.rb')].sort.each do |seed|
 end
 AdminsSeeds.new.perform
 EmployersSeeds.new.perform
+SurveysSeeds.new.perform
 QuestionGroupsSeeds.new.perform
 QuestionsSeeds.new.perform
-SurveysSeeds.new.perform
 EmployeesSeeds.new.perform
 SegmentsSeeds.new.perform
 OptionsSeeds.new.perform

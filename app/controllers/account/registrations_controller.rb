@@ -7,7 +7,7 @@ class Account::RegistrationsController < Devise::RegistrationsController
   # GET /resource/sign_up
   def new
     @account = Account.new
-    @employers_data = Employer.all.collect { |employer| [ employer.id, employer.logo_url, employer.label, employer.public_email ] }
+    @employers_data = Employer.all.collect { |employer| [employer.id, employer.logo_url, employer.label, employer.public_email] }
     super
   end
 
@@ -18,18 +18,18 @@ class Account::RegistrationsController < Devise::RegistrationsController
     params[:account][:account_type] = 'employee'
     params[:employee][:position_age] = 1
     @employee = Employee.new({
-      first_name: params[:employee][:first_name],
-      last_name: params[:employee][:last_name],
-      account_type: params[:employee][:account_type],
-      age: params[:employee][:age],
-      position_age: params[:employee][:position_age],
-      opt_out: params[:employee][:opt_out]
-    })
+                               first_name: params[:employee][:first_name],
+                               last_name: params[:employee][:last_name],
+                               account_type: params[:employee][:account_type],
+                               age: params[:employee][:age],
+                               position_age: params[:employee][:position_age],
+                               opt_out: params[:employee][:opt_out]
+                             })
     @account = Account.new({
-      account_type: 'employee',
-      email: params[:account][:email],
-      password: params[:account][:password]
-    })
+                             account_type: 'employee',
+                             email: params[:account][:email],
+                             password: params[:account][:password]
+                           })
     @employee.account = @account
     puts params[:employee][:employer_id]
     employer = Employer.find(params[:employee][:employer_id])
@@ -79,8 +79,8 @@ class Account::RegistrationsController < Devise::RegistrationsController
     when 'employer'
       devise_parameter_sanitizer.permit(:sign_up, keys: [:nickname])
     when 'employee'
-      devise_parameter_sanitizer.permit(:sign_up, keys: [:first_name, :last_name, 
-          :age, :position_age, :employer_id])
+      devise_parameter_sanitizer.permit(:sign_up, keys: %i[first_name last_name
+                                                           age position_age employer_id])
     end
   end
 

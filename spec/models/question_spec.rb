@@ -1,38 +1,40 @@
 require 'rails_helper'
 
-RSpec.describe Question, type: :model do
-  it 'is valid with all valid attributes' do
-    question_group = QuestionGroup.new
-    question = Question.new(
-      question_type: 'simple',
-      benchmark_val: 1,
-      benchmark_vol: 1
-    )
-    question.question_group = question_group
-    expect(question).to be_valid
+describe Question, 'validation' do
+  subject do
+    FactoryBot.create(:question,
+                      question_group_id: FactoryBot.create(:question_group,
+                                                           survey_id: FactoryBot.create(:survey,
+                                                                                        employer_id: FactoryBot.create(:employer,
+                                                                                                                       account_id: FactoryBot.create(:account, account_type: 'employer').id).id).id).id)
   end
 
-  it 'is not valid without a question type' do
-    question = Question.new(question_type: nil)
-    question.valid?
-    expect(question.errors[:question_type]).to include('can\'t be blank')
+  context 'with valid attributes' do
+    it { is_expected.to be_valid }
   end
 
-  it 'is not valid without a benchmark val' do
-    question = Question.new(benchmark_val: nil)
-    question.valid?
-    expect(question.errors[:benchmark_val]).to include('can\'t be blank')
-  end
+  context 'without an attribute' do
+    it { is_expected.to validate_presence_of(:question_type) }
+    it { is_expected.to validate_presence_of(:benchmark_val) }
+    it { is_expected.to validate_presence_of(:benchmark_vol) }
 
-  it 'is not valid without a benchmark vol' do
-    question = Question.new(benchmark_vol: nil)
-    question.valid?
-    expect(question.errors[:benchmark_vol]).to include('can\'t be blank')
+    it { is_expected.to validate_presence_of(:question_group_id) }
   end
+end
 
-  it 'is not valid without a question group' do
-    question = Question.new
-    question.valid?
-    expect(question.errors[:question_group]).to include('must exist')
-  end
+describe Question, 'association' do
+  it { is_expected.to belong_to(:question_group) }
+  it { is_expected.to have_many(:options) }
+end
+
+describe Question, 'column_specification' do
+  it { is_expected.to have_db_column(:question_type).of_type(:string) }
+  it { is_expected.to have_db_column(:benchmark_val).of_type(:integer) }
+  it { is_expected.to have_db_column(:benchmark_vol).of_type(:integer) }
+
+  it { is_expected.to have_db_column(:created_at).of_type(:datetime) }
+  it { is_expected.to have_db_column(:updated_at).of_type(:datetime) }
+  it { is_expected.to have_db_column(:question_group_id).of_type(:integer) }
+
+  it { is_expected.to have_db_index(:question_group_id) }
 end

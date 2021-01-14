@@ -12,7 +12,7 @@ RSpec.describe 'Routing to profile as employee' do
       controller: 'employee/employees',
       action: 'edit'
     )
-  end  
+  end
   it 'routes /profile to employee/employees#update' do
     expect(put: '/profile').to route_to(
       controller: 'employee/employees',

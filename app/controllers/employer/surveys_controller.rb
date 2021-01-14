@@ -5,15 +5,14 @@ class Employer::SurveysController < ApplicationController
   def index
     @surveys = Survey.filter_by_employer_id(current_account.employer.id).page(params[:page])
   end
+
   def show
     puts "params[:id]: #{params[:id]}"
     begin
       @survey = Survey.includes(:employer, question_groups: [questions: :options]).find(params[:id])
-      if @survey.employer.id != current_account.employer.id
-        render("employer/static_pages/not_found_404")
-      end
-    rescue ActiveRecord::RecordNotFound => e 
-      render("employer/static_pages/not_found_404")
+      render('employer/static_pages/not_found_404') if @survey.employer.id != current_account.employer.id
+    rescue ActiveRecord::RecordNotFound => e
+      render('employer/static_pages/not_found_404')
     else
       @employees_data = []
       @current_assigned_employees_ids = []
@@ -29,32 +28,33 @@ class Employer::SurveysController < ApplicationController
       end
       @results = SurveyEmployeeRelation.where(survey_id: params[:id], is_conducted: true).includes(:employee)
       @survey_question_groups = @survey.question_groups
-      p @current_assigned_employees_ids  
+      p @current_assigned_employees_ids
     end
   end
+
   def new
     @survey = Survey.new
     @employer = current_account.employer
   end
+
   def create
-    if params[:survey] == nil || params[:question_groups] == nil
-      return
-    end
+    return if params[:survey].nil? || params[:question_groups].nil?
+
     @survey = Survey.new(
       label: params[:survey][:label]
     )
 
-    @qgroups = Array.new
-    @questions = Array.new
-    @options = Array.new
+    @qgroups = []
+    @questions = []
+    @options = []
 
     @survey.employer = current_account.employer
 
     unless @survey.valid?
-      puts "Survey is not valid. Error messages:"
-      @survey.errors.full_messages.each { |e| puts e}
+      puts 'Survey is not valid. Error messages:'
+      @survey.errors.full_messages.each { |e| puts e }
       return
-    end 
+    end
 
     params[:question_groups].each do |qgroup_params|
       @qgroup = QuestionGroup.new(label: qgroup_params[:label])
@@ -68,18 +68,18 @@ class Employer::SurveysController < ApplicationController
         @question.question_group = @qgroup
         question_params[:options].each do |option_params|
           @option = Option.new(text: option_params[:label])
-          @option.has_text_field = option_params[:with_text_field] == 'on' ? true: false
+          @option.has_text_field = option_params[:with_text_field] == 'on'
           @option.question = @question
           unless @option.valid?
-            puts "Option is not valid. Error messages:"
-            @option.errors.full_messages.each { |e| puts e}
+            puts 'Option is not valid. Error messages:'
+            @option.errors.full_messages.each { |e| puts e }
             return
           end
           @options << @option
         end
         unless @question.valid?
-          puts "Question is not valid. Error messages:"
-          @question.errors.full_messages.each { |e| puts e}
+          puts 'Question is not valid. Error messages:'
+          @question.errors.full_messages.each { |e| puts e }
           return
         end
         @questions << @question
@@ -87,13 +87,13 @@ class Employer::SurveysController < ApplicationController
       @qgroup.survey = @survey
 
       unless @qgroup.valid?
-        puts "Question group is not valid. Error messages:"
-        @qgroup.errors.full_messages.each { |e| puts e}
+        puts 'Question group is not valid. Error messages:'
+        @qgroup.errors.full_messages.each { |e| puts e }
         return
       end
       @qgroups << @qgroup
     end
-    begin 
+    begin
       puts 'Survey save started'
       @survey.save!
       @qgroups.each { |e| e.save! }
@@ -101,29 +101,29 @@ class Employer::SurveysController < ApplicationController
       @options.each { |e| e.save! }
     rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotSaved => e
       puts "Survey save failed. Exception type: #{e.class.name}, exception message: #{e.message}"
-      redirect_to employer_surveys_url 
+      redirect_to employer_surveys_url
     else
       redirect_to comapny_survey_url(@survey)
     end
   end
+
   def edit
     puts "Ping from employer/surveys#edit with params: #{params}"
   end
+
   def update
     puts "Ping from employer/surveys#update with params: #{params}"
     id = Integer(params[:id])
     begin
       @survey = Survey.includes(:employer, :employees, question_groups: [questions: :options]).find(id)
-      if @survey.employer.id != current_account.employer.id
-        redirect_to(not_found_404_path)
-      end
-    rescue ActiveRecord::RecordNotFound => e 
+      redirect_to(not_found_404_path) if @survey.employer.id != current_account.employer.id
+    rescue ActiveRecord::RecordNotFound => e
       redirect_to(not_found_404_path)
     else
       Employee.filter_conducted_by_survey_id(@survey.id).each do |employee|
         params[:employees_ids] << String(employee.id) unless params[:employees_ids].include?(String(employee.id))
       end
-      if params[:employees_ids] == nil
+      if params[:employees_ids].nil?
         @survey.employees.clear
         return
       end
@@ -135,6 +135,7 @@ class Employer::SurveysController < ApplicationController
       end
     end
   end
+
   def destroy
     puts "Ping from employer/surveys#destroy with params: #{params}"
   end

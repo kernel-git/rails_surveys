@@ -1,17 +1,15 @@
 class AdminsSeeds
-
-  def initialize
-  end
+  def initialize; end
 
   def perform
     admin = Administrator.new({
-      nickname: 'test_admin'
-    })
+                                nickname: 'test_admin'
+                              })
     account = Account.new({
-      account_type: 'administrator',
-      email: 'test_admin@gmail.com',
-      password: '11111111'
-    })
+                            account_type: 'administrator',
+                            email: 'test_admin@gmail.com',
+                            password: '11111111'
+                          })
 
     begin
       account.save!
@@ -25,6 +23,5 @@ class AdminsSeeds
       e.backtrace.each { |line| puts line }
       puts '~~~~~~~~~~~~~~~~~~~~~~~~~'
     end
-
   end
 end

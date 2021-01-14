@@ -4,7 +4,7 @@ class CreateOptions < ActiveRecord::Migration[6.0]
       t.belongs_to :question
       t.string :text
       t.boolean :has_text_field
-      
+
       t.timestamps
     end
   end

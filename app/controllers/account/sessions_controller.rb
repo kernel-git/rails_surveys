@@ -18,7 +18,7 @@ class Account::SessionsController < Devise::SessionsController
   #   super
   # end
 
-  def after_sign_in_path_for(resource)
+  def after_sign_in_path_for(_resource)
     case current_account.account_type
     when 'administrator'
       admin_root_url
@@ -27,7 +27,7 @@ class Account::SessionsController < Devise::SessionsController
     when 'employee'
       employee_root_url
     end
-  end  
+  end
 
   # protected
 

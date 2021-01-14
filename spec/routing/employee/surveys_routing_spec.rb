@@ -20,7 +20,7 @@ RSpec.describe 'Routing to surveys as employee' do
       action: 'edit',
       id: '1'
     )
-  end  
+  end
   it 'routes /surveys/1 to employee/surveys#update' do
     expect(put: '/surveys/1').to route_to(
       controller: 'employee/surveys',

@@ -9,6 +9,7 @@ class AddIsCompletedToSurveyUserConnection < ActiveRecord::Migration[6.0]
       t.timestamps
     end
   end
+
   def down
     drop_table :survey_user_relations
     create_table :surveys_users do |t|

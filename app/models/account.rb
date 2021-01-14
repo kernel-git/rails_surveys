@@ -3,8 +3,8 @@ class Account < ApplicationRecord
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
-  
-  belongs_to :administrator, optional: true
-  belongs_to :employer, optional: true
-  belongs_to :employee, optional: true
+
+  has_one :administrator
+  has_one :employer
+  has_one :employee
 end

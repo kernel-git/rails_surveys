@@ -1,14 +1,27 @@
 require 'rails_helper'
 
-RSpec.describe Segment, type: :model do
-  it 'is valid with all valid attributes' do
-    segment = Segment.new(label: 'employer_label')
-    expect(segment).to be_valid
+describe Segment, 'validation' do
+  subject do
+    FactoryBot.create(:segment)
   end
 
-  it 'is not valid without a label' do
-    segment = Employer.new(label: nil)
-    segment.valid?
-    expect(segment.errors[:label]).to include('can\'t be blank')
+  context 'with valid attributes' do
+    it { is_expected.to be_valid }
   end
+
+  context 'without an attribute' do
+    it { is_expected.to validate_presence_of(:label) }
+  end
+end
+
+describe Segment, 'association' do
+  it { is_expected.to have_and_belong_to_many(:employees) }
+  it { is_expected.to have_and_belong_to_many(:employers) }
+end
+
+describe Segment, 'column_specification' do
+  it { is_expected.to have_db_column(:label).of_type(:string) }
+
+  it { is_expected.to have_db_column(:created_at).of_type(:datetime) }
+  it { is_expected.to have_db_column(:updated_at).of_type(:datetime) }
 end

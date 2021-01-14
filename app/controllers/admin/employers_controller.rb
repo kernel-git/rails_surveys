@@ -5,38 +5,41 @@ class Admin::EmployersController < ApplicationController
   def index
     @employers = Employer.all.page(params[:page])
   end
+
   def show
     id = Integer(params[:id])
     begin
       @employer = Employer.find(id)
-    rescue ActiveRecord::RecordNotFound => e 
+    rescue ActiveRecord::RecordNotFound => e
       redirect_to(not_found_404_path)
     else
       @employers_employees = @employer.employees
       @employers_segments = @employer.segments
     end
   end
+
   def new
     @employer = Employer.new
     @segments_data = Segment.all.collect { |segment| [segment.id, segment.label] }
   end
+
   def create
     unless params[:employer][:logo_url].start_with?('http://')
       params[:employer][:logo_url] = 'http://' + params[:employer][:logo_url]
     end
     @employer = Employer.new({
-      logo_url: params[:employer][:logo_url],
-      label: params[:employer][:label],
-      address: params[:employer][:address],
-      public_email: params[:employer][:public_email],
-      phone: params[:employer][:phone]
-    })
+                               logo_url: params[:employer][:logo_url],
+                               label: params[:employer][:label],
+                               address: params[:employer][:address],
+                               public_email: params[:employer][:public_email],
+                               phone: params[:employer][:phone]
+                             })
     @employer.segments = Segment.where(id: params[:segments_ids])
     @account = Account.new({
-      account_type: 'employer',
-      email: params[:employer][:email],
-      password: params[:employer][:password],
-    })
+                             account_type: 'employer',
+                             email: params[:employer][:email],
+                             password: params[:employer][:password]
+                           })
     if @employer.valid? && @account.valid?
       begin
         @account.save!
@@ -58,23 +61,29 @@ class Admin::EmployersController < ApplicationController
       redirect_to(admin_employers_url)
     end
   end
+
   def edit
     puts "Ping from admin/employers#edit with params: #{params}"
   end
+
   def update
     puts "Ping from admin/employers#update with params: #{params}"
   end
+
   def destroy
     puts "Ping from admin/employers#destroy with params: #{params}"
-  end 
+  end
+
   def stats
-    puts "Ping from admin/employers#stats"
+    puts 'Ping from admin/employers#stats'
   end
+
   def live
-    puts "Ping from admin/employers#live"
+    puts 'Ping from admin/employers#live'
   end
+
   def historical
-    puts "Ping from admin/employers#historical"
+    puts 'Ping from admin/employers#historical'
   end
 
   protected
@@ -82,5 +91,4 @@ class Admin::EmployersController < ApplicationController
   def check_account_type
     redirect_to(not_found_404_path) unless current_account.account_type == 'administrator'
   end
-
 end

@@ -1,10 +1,7 @@
 require 'faker'
 
 class AnswersSeeds
-  def initialize
-  end
+  def initialize; end
 
-  def perform
-    
-  end
+  def perform; end
 end

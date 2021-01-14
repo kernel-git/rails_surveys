@@ -5,27 +5,30 @@ class Admin::AdminsController < ApplicationController
   def index
     @admins = Administrator.all.page(params[:page])
   end
+
   def show
     id = Integer(params[:id])
     begin
       @admin = Administrator.find(id)
-    rescue ActiveRecord::RecordNotFound => e 
+    rescue ActiveRecord::RecordNotFound => e
       redirect_to(not_found_404_path)
     end
   end
+
   def new
     @admin = Administrator.new
   end
+
   def create
     @admin = Administrator.new({
-      nickname: params[:admin][:nickname]
-    })
+                                 nickname: params[:admin][:nickname]
+                               })
     @account = Account.new({
-      account_type: 'administrator',
-      email: params[:admin][:email],
-      password: params[:admin][:password],
-      password_confirmation: params[:admin][:password_confirmation]
-    })
+                             account_type: 'administrator',
+                             email: params[:admin][:email],
+                             password: params[:admin][:password],
+                             password_confirmation: params[:admin][:password_confirmation]
+                           })
     if @admin.valid? && @account.valid?
       begin
         @account.save!
@@ -44,15 +47,18 @@ class Admin::AdminsController < ApplicationController
       end
     end
   end
+
   def edit
     puts "Ping from admin/admins#edit with params: #{params}"
   end
+
   def update
     puts "Ping from admin/admins#update with params: #{params}"
   end
+
   def destroy
     puts "Ping from admin/admins#destroy with params: #{params}"
-  end 
+  end
 
   protected
 

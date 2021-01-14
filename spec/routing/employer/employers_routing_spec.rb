@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe 'Routing to employers as employer' do
-
   it 'routes /employer/profile to employer/employers#show' do
     expect(get: '/employer/profile').to route_to(
       controller: 'employer/employers',

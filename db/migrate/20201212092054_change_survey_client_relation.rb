@@ -5,6 +5,7 @@ class ChangeSurveyEmployerRelation < ActiveRecord::Migration[6.0]
       t.belongs_to :employer
     end
   end
+
   def down
     remove_column :surveys, :employer_id
     create_table :employers_surveys do |t|

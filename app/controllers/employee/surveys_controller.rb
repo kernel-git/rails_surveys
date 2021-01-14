@@ -1,12 +1,13 @@
 class Employee::SurveysController < ApplicationController
   layout 'employee'
   before_action :check_account_type, if: :authenticate_account!
-  
+
   def index
     current_employee = current_account.employee
     @avaible_surveys = Survey.filter_avaible_by_assigned_employee_id(current_employee.id).page(params[:page])
     @conducted_surveys = Survey.filter_conducted_by_assigned_employee_id(current_employee.id)
   end
+
   def attempt
     current_employee = current_account.employee
     @survey = Survey.filter_avaible_by_assigned_employee_id(current_employee.id).find(params[:id])
@@ -32,33 +33,34 @@ class Employee::SurveysController < ApplicationController
       @qgroups_data << qgroup_data
     end
   end
+
   def conduct
     puts params
     current_employee = current_account.employee
     answers = []
-    params[:answers].each do |question_id, answer_data|
+    params[:answers].each do |_question_id, answer_data|
       new_answer = Answer.new
-      option = Option.find(answer_data["option_data"])
+      option = Option.find(answer_data['option_data'])
       new_answer.option = option
-      new_answer.additional_text = answer_data["additional_text"] if option.has_text_field
+      new_answer.additional_text = answer_data['additional_text'] if option.has_text_field
       new_answer.employee = Employee.find(current_employee.id)
       unless new_answer.valid?
-        puts "Answer is not valid. Error messages:"
-        new_answer.errors.full_messages.each { |e| puts e}
+        puts 'Answer is not valid. Error messages:'
+        new_answer.errors.full_messages.each { |e| puts e }
         return
       end
       answers << new_answer
     end
-    begin 
+    begin
       answers.each(&:save!)
     rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotSaved => e
       puts "Answer save failed. Exception type: #{e.class.name}, exception message: #{e.message}"
-      redirect_to employee_surveys_url 
+      redirect_to employee_surveys_url
     else
       relation = SurveyEmployeeRelation.where(survey_id: params[:id], employee_id: current_employee.id).first
       relation.is_conducted = true
       relation.save
-      
+
       redirect_to employee_surveys_url
     end
   end
@@ -68,5 +70,4 @@ class Employee::SurveysController < ApplicationController
   def check_account_type
     redirect_to(not_found_404_path) unless current_account.account_type == 'employee'
   end
-
 end

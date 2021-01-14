@@ -64,5 +64,4 @@ Rails.application.configure do
 
   config.sass.preferred_syntax = :sass
   config.assets.css_compressor = :sass
-
 end

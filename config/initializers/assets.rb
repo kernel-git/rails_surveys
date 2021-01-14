@@ -14,4 +14,4 @@ Rails.application.config.assets.paths << Rails.root.join('node_modules')
 # Rails.application.config.assets.precompile += %w( admin.js admin.css )
 
 Rails.application.config.assets.css_compressor = :sass
-Rails.application.config.assets.precompile += %w( .svg )
+Rails.application.config.assets.precompile += %w[.svg]
