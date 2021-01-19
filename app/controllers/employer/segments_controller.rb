@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Employer::SegmentsController < ApplicationController
   layout 'employer'
   before_action :check_account_type, if: :authenticate_account!
@@ -7,46 +9,52 @@ class Employer::SegmentsController < ApplicationController
   end
 
   def show
-    id = Integer(params[:id])
-    begin
-      @segment = Segment.find(id)
-    rescue ActiveRecord::RecordNotFound => e
-      render('employer/static_pages/not_found_404')
-    else
-      @segment_employees = @segment.employees
-    end
+    id = params.require(:id)
+    @segment = Segment.includes(:employees).find(id)
+    rescue ActiveRecord::RecordNotFound, ActionController::ParameterMissing => e
+      log_exception(e)
+      redirect_to(employer_static_pages_url, page: 'not-found-404')
   end
 
   def new
     @segment = Segment.new
-    @employees_data = Employee.all.collect { |employee| [employee.id, employee.first_name, employee.last_name, employee.account.email, employee.employer.label] }
-    @employers_data = Employer.all.collect { |employer| [employer.id, employer.logo_url, employer.label, employer.public_email] }
-  end
-
-  def create
-    @segment = Segment.new({
-                             label: params[:segment][:label]
-                           })
-    @segment.employers << Employer.find(current_account.employer.id)
-    @segment.employees = Employee.where(id: params[:employees_ids])
-    if @segment.save
-      redirect_to(employer_segment_url(@segment))
-    else
-      puts "Segment save failed. Error message: #{@segment.errors.full_messages}"
-      redirect_to(employer_segments_url)
+    @employees_data = Employee.filter_by_employer_id(current_account.employer.id).collect do |employee|
+      [employee.id,
+      employee.first_name,\
+      employee.last_name,
+      employee.account.email] 
     end
   end
 
+  def create
+    permitted_params = params.permit(segment: :label, employees_ids: [])
+    logger.debug permitted_params
+    segment = Segment.new({
+                            label: permitted_params[:segment][:label]
+                          })
+    segment.employers << current_account.employer
+    segment.employees = Employee.where(id: permitted_params[:employees_ids])
+
+    segment.save!
+    rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotSaved, ActionController::ParameterMissing => e
+      log_exception(e)
+      flash.alert = ('Segment creation failed. Check logs...')
+      redirect_to(employer_segments_url)
+    else
+      flash.notice('Segment created successfully')
+      redirect_to(employer_segment_url(segment))
+  end
+
   def edit
-    puts "Ping from admin/segments#edit with params: #{params}"
+    Rails.logger.debug "Ping from admin/segments#edit with params: #{params}"
   end
 
   def update
-    puts "Ping from admin/segments#update with params: #{params}"
+    Rails.logger.debug "Ping from admin/segments#update with params: #{params}"
   end
 
   def destroy
-    puts "Ping from admin/segments#destroy with params: #{params}"
+    Rails.logger.debug "Ping from admin/segments#destroy with params: #{params}"
   end
 
   protected

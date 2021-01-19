@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddIsCompletedToSurveyUserConnection < ActiveRecord::Migration[6.0]
   def up
     drop_table :surveys_users

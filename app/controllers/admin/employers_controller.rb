@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Admin::EmployersController < ApplicationController
   layout 'admin'
   before_action :check_account_type, if: :authenticate_account!
@@ -11,6 +13,7 @@ class Admin::EmployersController < ApplicationController
     begin
       @employer = Employer.find(id)
     rescue ActiveRecord::RecordNotFound => e
+      log_exception(e)
       redirect_to(not_found_404_path)
     else
       @employers_employees = @employer.employees
@@ -25,65 +28,53 @@ class Admin::EmployersController < ApplicationController
 
   def create
     unless params[:employer][:logo_url].start_with?('http://')
-      params[:employer][:logo_url] = 'http://' + params[:employer][:logo_url]
+      params[:employer][:logo_url] = "http://#{params[:employer][:logo_url]}"
     end
-    @employer = Employer.new({
-                               logo_url: params[:employer][:logo_url],
-                               label: params[:employer][:label],
-                               address: params[:employer][:address],
-                               public_email: params[:employer][:public_email],
-                               phone: params[:employer][:phone]
-                             })
-    @employer.segments = Segment.where(id: params[:segments_ids])
-    @account = Account.new({
-                             account_type: 'employer',
-                             email: params[:employer][:email],
-                             password: params[:employer][:password]
-                           })
-    if @employer.valid? && @account.valid?
-      begin
-        @account.save!
-        @employer.account = @account
-        @employer.save!
-      rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotSaved => e
-        puts '--->EXEPTION DURING Employer/Account SAVE<---'
-        puts "Exeption type: #{e.class.name}"
-        puts "Exeption message: #{e.message}"
-        puts '~~~~~~~Stack trace~~~~~~~'
-        e.backtrace.each { |line| puts line }
-        puts '~~~~~~~~~~~~~~~~~~~~~~~~~'
-        redirect_to(admin_employers_url)
-      else
-        redirect_to(admin_employer_url(@employer))
-      end
-    else
-      puts "Employer save failed. Error message: #{@employer.errors.full_messages}"
-      redirect_to(admin_employers_url)
-    end
+    employer = Employer.new({
+                              logo_url: params[:employer][:logo_url],
+                              label: params[:employer][:label],
+                              address: params[:employer][:address],
+                              public_email: params[:employer][:public_email],
+                              phone: params[:employer][:phone]
+                            })
+    employer.segments = Segment.where(id: params[:segments_ids])
+    employer.build_account(
+      account_type: 'employer',
+      email: params[:employer][:email],
+      password: params[:employer][:password]
+    )
+    employer.save!
+  rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotSaved => e
+    log_exception(e)
+    flash.alert = ('Employer creation failed. Check logs...')
+    redirect_to(admin_employers_url)
+  else
+    flash.info('Employer created successfully')
+    redirect_to(admin_employer_url(employer))
   end
 
   def edit
-    puts "Ping from admin/employers#edit with params: #{params}"
+    Rails.logger.debug "Ping from admin/employers#edit with params: #{params}"
   end
 
   def update
-    puts "Ping from admin/employers#update with params: #{params}"
+    Rails.logger.debug "Ping from admin/employers#update with params: #{params}"
   end
 
   def destroy
-    puts "Ping from admin/employers#destroy with params: #{params}"
+    Rails.logger.debug "Ping from admin/employers#destroy with params: #{params}"
   end
 
   def stats
-    puts 'Ping from admin/employers#stats'
+    Rails.logger.debug 'Ping from admin/employers#stats'
   end
 
   def live
-    puts 'Ping from admin/employers#live'
+    Rails.logger.debug 'Ping from admin/employers#live'
   end
 
   def historical
-    puts 'Ping from admin/employers#historical'
+    Rails.logger.debug 'Ping from admin/employers#historical'
   end
 
   protected

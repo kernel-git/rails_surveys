@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Employer::EmployeesController < ApplicationController
   layout 'employer'
   before_action :check_account_type, if: :authenticate_account!
@@ -7,17 +9,14 @@ class Employer::EmployeesController < ApplicationController
   end
 
   def show
-    id = params[:id]
-    begin
-      @employee = Employee.includes(:segments, :employer, answers: [question: [question_group: [:survey]]]).find(id)
-      render('employer/static_pages/not_found_404') if @employee.employer.id != current_account.employer.id
-    rescue ActiveRecord::RecordNotFound => e
-      render('employer/static_pages/not_found_404')
-    else
-      @employee_employer = @employee.employer
-      @employee_segments = @employee.segments
-      @employee_answers = @employee.answers
+    id = params.require(:id)
+    @employee = Employee.includes(:segments, :employer, survey_employee_relations: :survey).find(id)
+    if @employee.employer.id != current_account.employer.id
+      redirect_to(employer_static_pages_url, page: 'not-found-404')
     end
+    rescue ActiveRecord::RecordNotFound, ActionController::ParameterMissing => e
+      log_exception(e)
+      redirect_to(employer_static_pages_url, page: 'not-found-404')
   end
 
   def new
@@ -26,36 +25,52 @@ class Employer::EmployeesController < ApplicationController
   end
 
   def create
-    @employee = Employee.new({
-                               first_name: params[:employee][:first_name],
-                               last_name: params[:employee][:last_name],
-                               email: params[:employee][:email],
-                               account_type: params[:employee][:account_type],
-                               password: params[:employee][:password],
-                               age: params[:employee][:age],
-                               position_age: params[:employee][:position_age],
-                               opt_out: params[:employee][:opt_out]
-                             })
-    @employee.employer = Employer.find(current_account.employer.id)
-    @employee.segments = Segment.where(id: params[:segments_ids])
-    if @employee.save
-      redirect_to(employer_employee_url(@employee))
-    else
-      puts "Employee save failed. Error message: #{@employee.errors.full_messages}"
-      redirect_to(employer_employees_url)
-    end
+    employee_params = params.require(:employee).permit(
+      :first_name, :last_name, :age, :email, 
+      :account_type, :password, :position_age, :opt_out
+    )
+    segments_ids = params.require(:segments_ids)
+
+    account = Account.new({
+      account_type: 'employee',
+      email: employee_params[:email],
+      password: employee_params[:password]
+    })
+    account.build_employee(
+      first_name: employee_params[:first_name],
+      last_name: employee_params[:last_name],
+      account_type: employee_params[:account_type],
+      age: employee_params[:age],
+      position_age: employee_params[:position_age],
+      opt_out: employee_params[:opt_out]
+    )
+
+    logger.debug account
+    logger.debug account.employee
+
+    account.employee.employer = current_account.employer
+    account.employee.segments = Segment.where(id: segments_ids)
+
+    account.save!
+  rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotSaved => e
+    log_exception(e)
+    flash.alert = 'Employee creation failed. Check logs...'
+    redirect_to(employer_employees_url)
+  else
+    flash.notice = 'Employee created successfully'
+    redirect_to(employer_employee_url(account.employee))
   end
 
   def edit
-    puts "Ping from admin/employees#edit with params: #{params}"
+    Rails.logger.debug "Ping from admin/employees#edit with params: #{params}"
   end
 
   def update
-    puts "Ping from admin/employees#update with params: #{params}"
+    Rails.logger.debug "Ping from admin/employees#update with params: #{params}"
   end
 
   def destroy
-    puts "Ping from admin/employees#destroy with params: #{params}"
+    Rails.logger.debug "Ping from admin/employees#destroy with params: #{params}"
   end
 
   protected

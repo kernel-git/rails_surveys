@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 class QuestionGroup < ActiveRecord::Base
   has_many :questions
   belongs_to :survey
-  validates :label, :survey_id, presence: true
+  validates_presence_of :label, :survey
 end

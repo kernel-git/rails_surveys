@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddOptionRelationRemoveQuestionAssociationFromAnswers < ActiveRecord::Migration[6.0]
   def self.up
     remove_index :answers, :question_id

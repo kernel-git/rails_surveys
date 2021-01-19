@@ -50,8 +50,8 @@
           </div>
         </div>
       </div>
-      <% unless @employee_segments.empty? %>
-        <% @employee_segments.each do |segment| %>
+      <% unless @employee.segments.empty? %>
+        <% @employee.segments.each do |segment| %>
           <%= link_to(admin_segment_url(segment), class: "custom-table__table-row-wrapper table-row-wrapper link-div table-row_0") do %>
             <div class="table-row-wrapper__information">
               <%= segment.label %>
@@ -64,36 +64,9 @@
     </div>
   </div>
   <div class="model-wrapper__model-table-wrapper model-table-wrapper">
-    <div class="model-table-wrapper__label">Employees's answers</div>
+    <div class="model-table-wrapper__label">Assigned for this employee surveys</div>
     <div id="listing-table_1" class="model-table-wrapper__table custom-table">
       <div class="custom-table__table-header-wrapper table-header-wrapper">
-        <div class="table-header-wrapper__table-header-element table-header-element">
-          <div class="table-header-element__arrows-wrapper arrows-wrapper">
-            <div id="sort-arrow_up_0_table_1"><%= inline_svg_tag('up-chevron.svg', class: "svg-sorting-arrow") %></div>
-            <div id="sort-arrow_down_0_table_1"><%= inline_svg_tag('down-chevron.svg', class: "svg-sorting-arrow") %></div>
-          </div>
-          <div class="table-header-element__label">
-            Answer
-          </div>
-        </div>
-        <div class="table-header-wrapper__table-header-element table-header-element">
-          <div class="table-header-element__arrows-wrapper arrows-wrapper">
-            <div id="sort-arrow_up_1_table_1"><%= inline_svg_tag('up-chevron.svg', class: "svg-sorting-arrow") %></div>
-            <div id="sort-arrow_down_1_table_1"><%= inline_svg_tag('down-chevron.svg', class: "svg-sorting-arrow") %></div>
-          </div>
-          <div class="table-header-element__label">
-            Question
-          </div>
-        </div>
-        <div class="table-header-wrapper__table-header-element table-header-element">
-          <div class="table-header-element__arrows-wrapper arrows-wrapper">
-            <div id="sort-arrow_up_2_table_1"><%= inline_svg_tag('up-chevron.svg', class: "svg-sorting-arrow") %></div>
-            <div id="sort-arrow_down_2_table_1"><%= inline_svg_tag('down-chevron.svg', class: "svg-sorting-arrow") %></div>
-          </div>
-          <div class="table-header-element__label">
-            Question group
-          </div>
-        </div>
         <div class="table-header-wrapper__table-header-element table-header-element">
           <div class="table-header-element__arrows-wrapper arrows-wrapper">
             <div id="sort-arrow_up_3_table_1"><%= inline_svg_tag('up-chevron.svg', class: "svg-sorting-arrow") %></div>
@@ -104,21 +77,11 @@
           </div>
         </div>
       </div>
-      <% unless @employee_answers.empty? %>
-      
-        <% @employee_answers.each do |answer| %>
+      <% unless SurveyEmployeeRelation.filter_avaible_by_employee_id(@employee.id).empty? %>
+        <% SurveyEmployeeRelation.filter_avaible_by_employee_id(@employee.id).each do |relation| %>
           <div class="custom-table__table-row-wrapper table-row-wrapper table-row_1 ">
             <div class="table-row-wrapper__information">
-              <%= answer.answer_val %>
-            </div>
-            <div class="table-row-wrapper__information">
-              <%= answer.question.question_type %>
-            </div>
-            <div class="table-row-wrapper__information">
-              <%= answer.question.question_group.label %>
-            </div>
-            <div class="table-row-wrapper__information">
-              <%= answer.question.question_group.survey.label %>
+              <%= relation.survey.label %>
             </div>
           </div>
         <% end %>
@@ -127,5 +90,31 @@
       <% end %>
     </div>
   </div>
-  
+  <div class="model-wrapper__model-table-wrapper model-table-wrapper">
+    <div class="model-table-wrapper__label">Completed surveys by this employee</div>
+    <div id="listing-table_1" class="model-table-wrapper__table custom-table">
+      <div class="custom-table__table-header-wrapper table-header-wrapper">
+        <div class="table-header-wrapper__table-header-element table-header-element">
+          <div class="table-header-element__arrows-wrapper arrows-wrapper">
+            <div id="sort-arrow_up_3_table_1"><%= inline_svg_tag('up-chevron.svg', class: "svg-sorting-arrow") %></div>
+            <div id="sort-arrow_down_3_table_1"><%= inline_svg_tag('down-chevron.svg', class: "svg-sorting-arrow") %></div>
+          </div>
+          <div class="table-header-element__label">
+            Survey
+          </div>
+        </div>
+      </div>
+      <% unless SurveyEmployeeRelation.filter_conducted_by_employee_id(@employee.id).empty? %>
+        <% SurveyEmployeeRelation.filter_conducted_by_employee_id(@employee.id).each do |relation| %>
+          <%= link_to(employer_result_url(relation), class: "custom-table__table-row-wrapper table-row-wrapper link-div table-row_1") do %>
+            <div class="table-row-wrapper__information">
+              <%= relation.survey.label %>
+            </div>
+          <% end %>
+        <% end %>
+      <% else %>
+        <div class="custom-table__message">Empty</div>
+      <% end %>
+    </div>
+  </div>
 </div>

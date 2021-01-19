@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Employee < ActiveRecord::Base
   paginates_per 20
 

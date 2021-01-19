@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AdminsSeeds
   def initialize; end
 
@@ -16,12 +18,7 @@ class AdminsSeeds
       admin.account = account
       admin.save!
     rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotSaved => e
-      puts '--->EXEPTION DURING Admin/Account SAVE<---'
-      puts "Exeption type: #{e.class.name}"
-      puts "Exeption message: #{e.message}"
-      puts '~~~~~~~Stack trace~~~~~~~'
-      e.backtrace.each { |line| puts line }
-      puts '~~~~~~~~~~~~~~~~~~~~~~~~~'
+      log_exception(e)
     end
   end
 end

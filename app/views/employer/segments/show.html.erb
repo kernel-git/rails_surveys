@@ -34,8 +34,8 @@
           </div>
         </div>
       </div>
-      <% unless @segment_employees.empty? %>
-        <% @segment_employees.each do |employee| %>
+      <% unless @segment.employees.empty? %>
+        <% @segment.employees.each do |employee| %>
           <%= link_to(employer_employee_url(employee), class: "custom-table__table-row-wrapper table-row-wrapper link-div table-row_1") do %>
             <div class="table-row-wrapper__information">
               <%= employee.first_name %>

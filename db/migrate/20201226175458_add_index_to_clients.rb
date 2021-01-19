@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddIndexToEmployers < ActiveRecord::Migration[6.0]
   def change
     remove_column :employers, :logo_url

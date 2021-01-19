@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :survey_employee_relation do
     is_conducted { [true, false].sample }

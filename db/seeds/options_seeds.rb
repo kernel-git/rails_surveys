@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class OptionsSeeds
   QUESTIONS = %w[
     science_in_university_one
@@ -44,51 +46,24 @@ class OptionsSeeds
     social_medical_three
     social_medical_three
   ].freeze
-  OPTIONS = [
-    Faker::Lorem.sentence,
-    Faker::Lorem.sentence,
-    'Other',
-    Faker::Lorem.sentence,
-    Faker::Lorem.sentence,
-    Faker::Lorem.sentence,
-    'Other',
-    Faker::Lorem.sentence,
-    Faker::Lorem.sentence,
-    'Other',
-    Faker::Lorem.sentence,
-    Faker::Lorem.sentence,
-    Faker::Lorem.sentence,
-    Faker::Lorem.sentence,
-    Faker::Lorem.sentence,
-    Faker::Lorem.sentence,
-    'Other',
-    Faker::Lorem.sentence,
-    Faker::Lorem.sentence,
-    Faker::Lorem.sentence,
-    Faker::Lorem.sentence,
-    Faker::Lorem.sentence,
-    'Other',
-    Faker::Lorem.sentence,
-    Faker::Lorem.sentence,
-    Faker::Lorem.sentence,
-    Faker::Lorem.sentence,
-    Faker::Lorem.sentence,
-    Faker::Lorem.sentence,
-    Faker::Lorem.sentence,
-    Faker::Lorem.sentence,
-    'Other',
-    Faker::Lorem.sentence,
-    Faker::Lorem.sentence,
-    Faker::Lorem.sentence,
-    Faker::Lorem.sentence,
-    'Other',
-    Faker::Lorem.sentence,
-    Faker::Lorem.sentence,
-    Faker::Lorem.sentence,
-    'Other',
-    Faker::Lorem.sentence,
-    Faker::Lorem.sentence
-  ].freeze
+  OPTIONS = [].freeze
+  2.times { OPTIONS << Faker::Lorem.sentence }
+  OPTIONS << 'Other'
+  3.times { OPTIONS << Faker::Lorem.sentence }
+  OPTIONS << 'Other'
+  2.times { OPTIONS << Faker::Lorem.sentence }
+  OPTIONS << 'Other'
+  6.times { OPTIONS << Faker::Lorem.sentence }
+  OPTIONS << 'Other'
+  5.times { OPTIONS << Faker::Lorem.sentence }
+  OPTIONS << 'Other'
+  8.times { OPTIONS << Faker::Lorem.sentence }
+  OPTIONS << 'Other'
+  4.times { OPTIONS << Faker::Lorem.sentence }
+  OPTIONS << 'Other'
+  3.times { OPTIONS << Faker::Lorem.sentence }
+  OPTIONS << 'Other'
+  2.times { OPTIONS << Faker::Lorem.sentence }
 
   def initialize; end
 
@@ -106,12 +81,7 @@ class OptionsSeeds
     begin
       options.each(&:save!)
     rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotSaved => e
-      puts '--->EXEPTION DURING SAVE<---'
-      puts "Exeption type: #{e.class.name}"
-      puts "Exeption message: #{e.message}"
-      puts '~~~~~~~Stack trace~~~~~~~'
-      e.backtrace.each { |line| puts line }
-      puts '~~~~~~~~~~~~~~~~~~~~~~~~~'
+      log_exception(e)
     end
   end
 end

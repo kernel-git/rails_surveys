@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Admin::AdminsController < ApplicationController
   layout 'admin'
   before_action :check_account_type, if: :authenticate_account!
@@ -7,12 +9,10 @@ class Admin::AdminsController < ApplicationController
   end
 
   def show
-    id = Integer(params[:id])
-    begin
-      @admin = Administrator.find(id)
-    rescue ActiveRecord::RecordNotFound => e
-      redirect_to(not_found_404_path)
-    end
+    @admin = Administrator.find(params[:id])
+  rescue ActiveRecord::RecordNotFound => e
+    log_exception(e)
+    redirect_to(not_found_404_path)
   end
 
   def new
@@ -20,44 +20,35 @@ class Admin::AdminsController < ApplicationController
   end
 
   def create
-    @admin = Administrator.new({
-                                 nickname: params[:admin][:nickname]
-                               })
-    @account = Account.new({
-                             account_type: 'administrator',
-                             email: params[:admin][:email],
-                             password: params[:admin][:password],
-                             password_confirmation: params[:admin][:password_confirmation]
-                           })
-    if @admin.valid? && @account.valid?
-      begin
-        @account.save!
-        @admin.account = @account
-        @admin.save!
-      rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotSaved => e
-        puts '--->EXEPTION DURING Admin/Account SAVE<---'
-        puts "Exeption type: #{e.class.name}"
-        puts "Exeption message: #{e.message}"
-        puts '~~~~~~~Stack trace~~~~~~~'
-        e.backtrace.each { |line| puts line }
-        puts '~~~~~~~~~~~~~~~~~~~~~~~~~'
-        redirect_to(admin_admins_url)
-      else
-        redirect_to(admin_admin_url(@admin))
-      end
-    end
+    admin = Administrator.new({
+                                nickname: params[:admin][:nickname]
+                              })
+    admin.build_account(
+      account_type: 'administrator',
+      email: params[:admin][:email],
+      password: params[:admin][:password],
+      password_confirmation: params[:admin][:password_confirmation]
+    )
+    admin.save!
+  rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotSaved => e
+    log_exception(e)
+    flash.alert = 'Administrator creation failed. Check logs...'
+    redirect_to(admin_admins_url)
+  else
+    flash.notice = 'Administrator created successfully'
+    redirect_to(admin_admin_url(@admin))
   end
 
   def edit
-    puts "Ping from admin/admins#edit with params: #{params}"
+    Rails.logger.debug "Ping from admin/admins#edit with params: #{params}"
   end
 
   def update
-    puts "Ping from admin/admins#update with params: #{params}"
+    Rails.logger.debug "Ping from admin/admins#update with params: #{params}"
   end
 
   def destroy
-    puts "Ping from admin/admins#destroy with params: #{params}"
+    Rails.logger.debug "Ping from admin/admins#destroy with params: #{params}"
   end
 
   protected

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ChangeSurveyEmployerRelation < ActiveRecord::Migration[6.0]
   def up
     drop_table :employers_surveys

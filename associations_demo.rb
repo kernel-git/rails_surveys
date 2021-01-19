@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 def print_object_info(object)
   puts "#{object.class.name} Model"
   object.class.column_names.each { |e| puts "#{e.capitalize}: #{object.send(e)}" }

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Rails.application.routes.draw do
   devise_for :accounts, path: 'account', controllers: {
     confirmations: 'account/confirmations',
@@ -40,15 +42,14 @@ Rails.application.routes.draw do
     resources :results, only: %i[index show], constraints: { id: /[0-9]+/ } # старый стиль
   end
   namespace :employer do
-    root 'static_pages#home'
-    get 'home', to: 'static_pages#home'
-
     constraints(id: /[0-9]+/) do # старый стиль
       resources :surveys
       resources :employees
       resources :segments
-      resources :results, only: %i[index show]
+      resources :results
     end
+    root 'static_pages#show', page: 'home'
+    get '/:page', to: 'static_pages#show', as: 'static_pages'
   end
 
   root 'static_pages#show', page: 'home'

@@ -1,16 +1,17 @@
+# frozen_string_literal: true
+
 class Employee::SurveysController < ApplicationController
   layout 'employee'
   before_action :check_account_type, if: :authenticate_account!
 
   def index
     current_employee = current_account.employee
-    @avaible_surveys = Survey.filter_avaible_by_assigned_employee_id(current_employee.id).page(params[:page])
-    @conducted_surveys = Survey.filter_conducted_by_assigned_employee_id(current_employee.id)
+    @avaible_surveys = Survey.filter_avaible_by_assigned_employee_id(current_account.employee.id).page(params[:page])
+    @conducted_surveys = Survey.filter_conducted_by_assigned_employee_id(current_account.employee.id)
   end
 
   def attempt
-    current_employee = current_account.employee
-    @survey = Survey.filter_avaible_by_assigned_employee_id(current_employee.id).find(params[:id])
+    @survey = Survey.filter_avaible_by_assigned_employee_id(current_account.employee.id).find(params[:id])
     @answer = Answer.new
     @qgroup = QuestionGroup.new
     @qgroups_data = []
@@ -35,7 +36,6 @@ class Employee::SurveysController < ApplicationController
   end
 
   def conduct
-    puts params
     current_employee = current_account.employee
     answers = []
     params[:answers].each do |_question_id, answer_data|
@@ -45,8 +45,8 @@ class Employee::SurveysController < ApplicationController
       new_answer.additional_text = answer_data['additional_text'] if option.has_text_field
       new_answer.employee = Employee.find(current_employee.id)
       unless new_answer.valid?
-        puts 'Answer is not valid. Error messages:'
-        new_answer.errors.full_messages.each { |e| puts e }
+        Rails.logger.error 'Answer is not valid. Error messages:'
+        new_answer.errors.full_messages.each { |e| Rails.logger.error e }
         return
       end
       answers << new_answer
@@ -54,13 +54,15 @@ class Employee::SurveysController < ApplicationController
     begin
       answers.each(&:save!)
     rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotSaved => e
-      puts "Answer save failed. Exception type: #{e.class.name}, exception message: #{e.message}"
+      log_exception(e)
+      flash.alert = 'Attempt save failed. Check logs...'
       redirect_to employee_surveys_url
     else
       relation = SurveyEmployeeRelation.where(survey_id: params[:id], employee_id: current_employee.id).first
       relation.is_conducted = true
       relation.save
 
+      flash.notice = 'Attempt saved successfully'
       redirect_to employee_surveys_url
     end
   end

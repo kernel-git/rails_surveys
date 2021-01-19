@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'faker'
 
 class EmployeesSeeds
@@ -40,12 +42,7 @@ class EmployeesSeeds
         employees[index].save!
       end
     rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotSaved => e
-      puts '--->EXEPTION DURING Employee/Account SAVE<---'
-      puts "Exeption type: #{e.class.name}"
-      puts "Exeption message: #{e.message}"
-      puts '~~~~~~~Stack trace~~~~~~~'
-      e.backtrace.each { |line| puts line }
-      puts '~~~~~~~~~~~~~~~~~~~~~~~~~'
+      log_exception(e)
     end
   end
 end

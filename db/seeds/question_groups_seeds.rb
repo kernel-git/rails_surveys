@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class QuestionGroupsSeeds
   def initialize; end
 
@@ -33,12 +35,7 @@ class QuestionGroupsSeeds
     begin
       question_groups.each(&:save!)
     rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotSaved => e
-      puts '--->EXEPTION DURING SAVE<---'
-      puts "Exeption type: #{e.class.name}"
-      puts "Exeption message: #{e.message}"
-      puts '~~~~~~~Stack trace~~~~~~~'
-      e.backtrace.each { |line| puts line }
-      puts '~~~~~~~~~~~~~~~~~~~~~~~~~'
+      log_exception(e)
     end
   end
 end

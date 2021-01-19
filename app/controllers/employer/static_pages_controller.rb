@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Employer::StaticPagesController < ApplicationController
   layout 'employer'
   before_action :check_account_type, if: :authenticate_account!
@@ -8,11 +10,16 @@ class Employer::StaticPagesController < ApplicationController
   }.freeze
 
   def show
-    if !STATIC_PAGES[params[:id]].nil?
-      render "employer/static_pages/#{STATIC_PAGES[params[:id].to_sym]}"
+    page = params.require(:page)
+    rescue ActionController::ParameterMissing => e
+      log_exception(e)
+      render "employer/#{STATIC_PAGES['not-found-404'.to_sym]}"
     else
-      render "employer/static_pages/#{STATIC_PAGES['not-found-404'.to_sym]}"
-    end
+      if STATIC_PAGES[page.to_sym].nil?
+        render "employer/#{STATIC_PAGES['not-found-404'.to_sym]}"
+      else
+        render "employer/#{STATIC_PAGES[page.to_sym]}"
+      end
   end
 
   protected

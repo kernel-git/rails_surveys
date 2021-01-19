@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class RemoveDeviseOnEmployers < ActiveRecord::Migration[6.0]
   def self.up
     remove_index :employers, :email

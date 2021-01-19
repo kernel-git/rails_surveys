@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Admin::SurveysController < ApplicationController
   layout 'admin'
   before_action :check_account_type, if: :authenticate_account!
@@ -7,28 +9,26 @@ class Admin::SurveysController < ApplicationController
   end
 
   def show
-    puts "params[:id]: #{params[:id]}"
-    begin
-      @survey = Survey.includes(:employer, question_groups: [questions: :options]).find(params[:id])
-    rescue ActiveRecord::RecordNotFound => e
-      render('admin/static_pages/not_found_404')
-    else
-      @employees_data = []
-      @current_assigned_employees_ids = []
-      Employee.filter_by_employer_id(@survey.employer.id).each do |employee|
-        unless SurveyEmployeeRelation.find_by(survey_id: params[:id], employee_id: employee.id, is_conducted: true)
-          @employees_data << [employee.id, employee.first_name, employee.last_name, employee.account.email]
-        end
-        employee.surveys.each do |survey|
-          if survey.id == Integer(params[:id]) && !SurveyEmployeeRelation.find_by(survey_id: params[:id], employee_id: employee.id).is_conducted
-            @current_assigned_employees_ids << employee.id
-          end
+    @survey = Survey.includes(:employer, question_groups: [questions: :options]).find(Integer(params[:id]))
+  rescue ActiveRecord::RecordNotFound => e
+    log_exception(e)
+    render('admin/static_pages/not_found_404')
+  else
+    Rails.logger.info('Survey found!')
+    @employees_data = []
+    @current_assigned_employees_ids = []
+    Employee.filter_by_employer_id(@survey.employer.id).each do |employee|
+      unless SurveyEmployeeRelation.find_by(survey_id: params[:id], employee_id: employee.id, is_conducted: true)
+        @employees_data << [employee.id, employee.first_name, employee.last_name, employee.account.email]
+      end
+      employee.surveys.each do |survey|
+        if survey.id == Integer(params[:id]) && !SurveyEmployeeRelation.find_by(survey_id: params[:id], employee_id: employee.id).is_conducted
+          @current_assigned_employees_ids << employee.id
         end
       end
-      @results = SurveyEmployeeRelation.where(survey_id: params[:id], is_conducted: true).includes(:employee)
-      @survey_question_groups = @survey.question_groups
-      p @current_assigned_employees_ids
     end
+    @results = SurveyEmployeeRelation.where(survey_id: params[:id], is_conducted: true).includes(:employee)
+    @survey_question_groups = @survey.question_groups
   end
 
   def new
@@ -37,7 +37,7 @@ class Admin::SurveysController < ApplicationController
   end
 
   def create
-    return if params[:survey].nil? || params[:question_groups].nil?
+    return true if params[:survey].nil? || params[:question_groups].nil?
 
     @survey = Survey.new(
       label: params[:survey][:label]
@@ -50,9 +50,9 @@ class Admin::SurveysController < ApplicationController
     @survey.employer = Employer.find(params[:employer_id])
 
     unless @survey.valid?
-      puts 'Survey is not valid. Error messages:'
-      @survey.errors.full_messages.each { |e| puts e }
-      return
+      Rails.logger.error 'Survey is not valid. Error messages:'
+      @survey.errors.full_messages.each { |e| Rails.logger.error e }
+      return true
     end
 
     params[:question_groups].each do |qgroup_params|
@@ -70,52 +70,53 @@ class Admin::SurveysController < ApplicationController
           @option.has_text_field = option_params[:with_text_field] == 'on'
           @option.question = @question
           unless @option.valid?
-            puts 'Option is not valid. Error messages:'
-            @option.errors.full_messages.each { |e| puts e }
-            return
+            Rails.logger.error 'Option is not valid. Error messages:'
+            @option.errors.full_messages.each { |e| Rails.logger.error e }
+            return true
           end
           @options << @option
         end
         unless @question.valid?
-          puts 'Question is not valid. Error messages:'
-          @question.errors.full_messages.each { |e| puts e }
-          return
+          Rails.logger.error 'Question is not valid. Error messages:'
+          @question.errors.full_messages.each { |e| Rails.logger.error e }
+          return true
         end
         @questions << @question
       end
       @qgroup.survey = @survey
 
       unless @qgroup.valid?
-        puts 'Question group is not valid. Error messages:'
-        @qgroup.errors.full_messages.each { |e| puts e }
-        return
+        Rails.logger.error 'Question group is not valid. Error messages:'
+        @qgroup.errors.full_messages.each { |e| Rails.logger.error e }
+        return true
       end
       @qgroups << @qgroup
     end
     begin
-      puts 'Survey save started'
       @survey.save!
-      @qgroups.each { |e| e.save! }
-      @questions.each { |e| e.save! }
-      @options.each { |e| e.save! }
+      @qgroups.each(&:save!)
+      @questions.each(&:save!)
+      @options.each(&:save!)
     rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotSaved => e
-      puts "Survey save failed. Exception type: #{e.class.name}, exception message: #{e.message}"
+      log_exception(e)
+      flash.alert = 'Survey creation failed. Check logs...'
       redirect_to admin_surveys_url
     else
+      flash.notice = 'Survey created successfully'
       redirect_to admin_survey_url(@survey)
     end
   end
 
   def edit
-    puts "Ping from admin/surveys#edit with params: #{params}"
+    Rails.logger.debug "Ping from admin/surveys#edit with params: #{params}"
   end
 
   def update
-    puts "Ping from admin/surveys#update with params: #{params}"
+    Rails.logger.debug "Ping from admin/surveys#update with params: #{params}"
   end
 
   def destroy
-    puts "Ping from admin/surveys#destroy with params: #{params}"
+    Rails.logger.debug "Ping from admin/surveys#destroy with params: #{params}"
   end
 
   protected

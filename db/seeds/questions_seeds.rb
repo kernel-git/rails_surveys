@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class QuestionsSeeds
   QUESTIONS = %w[
     science_in_university_one
@@ -48,12 +50,7 @@ class QuestionsSeeds
     begin
       questions.each(&:save!)
     rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotSaved => e
-      puts '--->EXEPTION DURING SAVE<---'
-      puts "Exeption type: #{e.class.name}"
-      puts "Exeption message: #{e.message}"
-      puts '~~~~~~~Stack trace~~~~~~~'
-      e.backtrace.each { |line| puts line }
-      puts '~~~~~~~~~~~~~~~~~~~~~~~~~'
+      log_exception(e)
     end
   end
 end

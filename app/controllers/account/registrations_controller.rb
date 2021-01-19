@@ -7,42 +7,36 @@ class Account::RegistrationsController < Devise::RegistrationsController
   # GET /resource/sign_up
   def new
     @account = Account.new
-    @employers_data = Employer.all.collect { |employer| [employer.id, employer.logo_url, employer.label, employer.public_email] }
+    @employers_data = Employer.all.collect do |employer|
+      [employer.id, employer.logo_url, employer.label, employer.public_email]
+    end
     super
   end
 
   # POST /resource
   def create
-    puts 'ping from account/registrations#create'
-    puts params
-    params[:account][:account_type] = 'employee'
-    params[:employee][:position_age] = 1
-    @employee = Employee.new({
-                               first_name: params[:employee][:first_name],
-                               last_name: params[:employee][:last_name],
-                               account_type: params[:employee][:account_type],
-                               age: params[:employee][:age],
-                               position_age: params[:employee][:position_age],
-                               opt_out: params[:employee][:opt_out]
-                             })
-    @account = Account.new({
-                             account_type: 'employee',
-                             email: params[:account][:email],
-                             password: params[:account][:password]
-                           })
-    @employee.account = @account
-    puts params[:employee][:employer_id]
-    employer = Employer.find(params[:employee][:employer_id])
-    puts @employee.valid?
-    @employee.employer = employer
-    puts @employee.valid?
-    if @employee.valid? && @account.valid?
-      @employee.save
-      super
-    else
-      puts "Employee/Account is not valid. Error message: #{@employee.errors.full_messages} #{@account.errors.full_messages}"
-      redirect_to(account_root)
-    end
+    employee = Employee.new({
+                              first_name: params[:employee][:first_name],
+                              last_name: params[:employee][:last_name],
+                              account_type: 'employee',
+                              age: params[:employee][:age],
+                              position_age: 1,
+                              opt_out: params[:employee][:opt_out]
+                            })
+    employee.build_account(
+      account_type: 'employee',
+      email: params[:account][:email],
+      password: params[:account][:password]
+    )
+    employee.employer = Employer.find(params[:employee][:employer_id])
+    employee.save!
+    super
+  rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotSaved, ActiveRecord::RecordNotFound => e
+    log_exception(e)
+    flash.alert = 'Employee creation failed. Check logs...'
+    redirect_to(account_root)
+  else
+    flash.notice = 'Employee created successfully'
   end
 
   # GET /resource/edit
@@ -79,8 +73,7 @@ class Account::RegistrationsController < Devise::RegistrationsController
     when 'employer'
       devise_parameter_sanitizer.permit(:sign_up, keys: [:nickname])
     when 'employee'
-      devise_parameter_sanitizer.permit(:sign_up, keys: %i[first_name last_name
-                                                           age position_age employer_id])
+      devise_parameter_sanitizer.permit(:sign_up, keys: %i[first_name last_name age position_age employer_id])
     end
   end
 

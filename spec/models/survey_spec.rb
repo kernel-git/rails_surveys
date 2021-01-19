@@ -1,10 +1,14 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe Survey, 'validation' do
   subject do
     FactoryBot.create(:survey,
-                      employer_id: FactoryBot.create(:employer,
-                                                     account_id: FactoryBot.create(:account, account_type: 'employer').id).id)
+      employer_id: FactoryBot.create(:employer,
+        account_id: FactoryBot.create(:account, account_type: 'employer')
+      .id)
+    .id)
   end
 
   context 'with valid attributes' do
@@ -74,31 +78,41 @@ describe Survey, '.filter_avaible_by_assigned_employee_id' do
 
   before(:each) do
     employee1 = FactoryBot.create(:employee,
-                                  employer_id: FactoryBot.create(:employer,
-                                                                 account_id: FactoryBot.create(:account, account_type: 'employer').id).id,
-                                  account_id: FactoryBot.create(:account, account_type: 'employee').id)
+      employer_id: FactoryBot.create(:employer,
+        account_id: FactoryBot.create(:account, account_type: 'employer').id
+      ).id,
+      account_id: FactoryBot.create(:account, account_type: 'employee').id
+    )
     employee1_id = employee1.id
     employee2 = FactoryBot.create(:employee,
-                                  employer_id: FactoryBot.create(:employer,
-                                                                 account_id: FactoryBot.create(:account, account_type: 'employer').id).id,
-                                  account_id: FactoryBot.create(:account, account_type: 'employee').id)
+      employer_id: FactoryBot.create(:employer,
+        account_id: FactoryBot.create(:account, account_type: 'employer').id
+      ).id,
+      account_id: FactoryBot.create(:account, account_type: 'employee').id
+    )
     employee2_id = employee2.id
 
     3.times do
       FactoryBot.create(:survey_employee_relation,
-                        survey_id: FactoryBot.create(:survey,
-                                                     employer_id: FactoryBot.create(:employer,
-                                                                                    account_id: FactoryBot.create(:account, account_type: 'employer').id).id).id,
-                        employee_id: employee1_id,
-                        is_conducted: false)
+        survey_id: FactoryBot.create(:survey,
+          employer_id: FactoryBot.create(:employer,
+            account_id: FactoryBot.create(:account, account_type: 'employer').id
+          ).id
+        ).id,
+        employee_id: employee1_id,
+        is_conducted: false
+      )
     end
     4.times do
       FactoryBot.create(:survey_employee_relation,
-                        survey_id: FactoryBot.create(:survey,
-                                                     employer_id: FactoryBot.create(:employer,
-                                                                                    account_id: FactoryBot.create(:account, account_type: 'employer').id).id).id,
-                        employee_id: employee2_id,
-                        is_conducted: false)
+        survey_id: FactoryBot.create(:survey,
+          employer_id: FactoryBot.create(:employer,
+            account_id: FactoryBot.create(:account, account_type: 'employer').id
+          ).id
+        ).id,
+        employee_id: employee2_id,
+        is_conducted: false
+      )
     end
   end
 
@@ -121,32 +135,40 @@ describe Survey, '.filter_conducted_by_assigned_employee_id' do
   employee2_id = 0
 
   before(:each) do
-    employee1 = FactoryBot.create(:employee,
-                                  employer_id: FactoryBot.create(:employer,
-                                                                 account_id: FactoryBot.create(:account, account_type: 'employer').id).id,
-                                  account_id: FactoryBot.create(:account, account_type: 'employee').id)
-    employee1_id = employee1.id
-    employee2 = FactoryBot.create(:employee,
-                                  employer_id: FactoryBot.create(:employer,
-                                                                 account_id: FactoryBot.create(:account, account_type: 'employer').id).id,
-                                  account_id: FactoryBot.create(:account, account_type: 'employee').id)
-    employee2_id = employee2.id
+    employee1_id = FactoryBot.create(:employee,
+      employer_id: FactoryBot.create(:employer,
+        account_id: FactoryBot.create(:account, account_type: 'employer').id
+      ).id,
+      account_id: FactoryBot.create(:account, account_type: 'employee').id
+    ).id
+    employee2_id = FactoryBot.create(:employee,
+      employer_id: FactoryBot.create(:employer,
+        account_id: FactoryBot.create(:account, account_type: 'employer').id
+      ).id,
+      account_id: FactoryBot.create(:account, account_type: 'employee').id
+    ).id
 
     4.times do
       FactoryBot.create(:survey_employee_relation,
-                        survey_id: FactoryBot.create(:survey,
-                                                     employer_id: FactoryBot.create(:employer,
-                                                                                    account_id: FactoryBot.create(:account, account_type: 'employer').id).id).id,
-                        employee_id: employee1_id,
-                        is_conducted: true)
+        survey_id: FactoryBot.create(:survey,
+          employer_id: FactoryBot.create(:employer,
+            account_id: FactoryBot.create(:account, account_type: 'employer').id
+          ).id
+        ).id,
+        employee_id: employee1_id,
+        is_conducted: true
+      )
     end
     2.times do
       FactoryBot.create(:survey_employee_relation,
-                        survey_id: FactoryBot.create(:survey,
-                                                     employer_id: FactoryBot.create(:employer,
-                                                                                    account_id: FactoryBot.create(:account, account_type: 'employer').id).id).id,
-                        employee_id: employee2_id,
-                        is_conducted: true)
+        survey_id: FactoryBot.create(:survey,
+          employer_id: FactoryBot.create(:employer,
+            account_id: FactoryBot.create(:account, account_type: 'employer').id
+          ).id
+        ).id,
+        employee_id: employee2_id,
+        is_conducted: true
+      )
     end
   end
 

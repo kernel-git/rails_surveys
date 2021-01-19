@@ -1,4 +1,8 @@
+# frozen_string_literal: true
+
 class ApplicationController < ActionController::Base
+  include LoggerExtension
+
   # before_action :configure_permitted_parameters, if: :devise_controller?, only:
 
   # def configure_permitted_parameters
@@ -14,7 +18,7 @@ class ApplicationController < ActionController::Base
   # end
 
   # def after_sign_in_path_for(resource)
-  #   puts resource_name
+  #   Rails.logger.debug resource_name
   #   case resource_name
   #   when :administrator
   #     admin_root_url

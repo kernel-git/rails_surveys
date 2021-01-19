@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-RSpec.describe 'Routing to employers as admin' do
+RSpec.describe 'Route to employers as admin' do
   it 'routes /admin/employers to admin/employers#index' do
     expect(get: '/admin/employers').to route_to(
       controller: 'admin/employers',

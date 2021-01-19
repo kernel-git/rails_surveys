@@ -1,11 +1,16 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe QuestionGroup, 'validation' do
   subject do
     FactoryBot.create(:question_group,
-                      survey_id: FactoryBot.create(:survey,
-                                                   employer_id: FactoryBot.create(:employer,
-                                                                                  account_id: FactoryBot.create(:account, account_type: 'employer').id).id).id)
+      survey_id: FactoryBot.create(:survey,
+        employer_id: FactoryBot.create(:employer,
+          account_id: FactoryBot.create(:account, account_type: 'employer').id
+        ).id
+      ).id
+    )
   end
 
   context 'with valid attributes' do

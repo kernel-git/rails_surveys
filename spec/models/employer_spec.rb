@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe Employer, 'validation' do
   subject do
     FactoryBot.create(:employer,
-                      account_id: FactoryBot.create(:account, account_type: 'employer').id)
+      account_id: FactoryBot.create(:account, account_type: 'employer').id)
   end
 
   context 'with valid attributes' do

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class RenameForeignKeys < ActiveRecord::Migration[6.0]
   def change
     rename_column :segments_employees, :user_id, :employee_id

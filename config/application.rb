@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative 'boot'
 
 require 'rails/all'
@@ -15,5 +17,15 @@ module RailsSurveys
     # Application configuration can go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded after loading
     # the framework and any gems in your application.
+
+    # Set up logger
+    # Rails.logger = Logger.new(STDOUT)
+    Rails.logger = ActiveSupport::Logger.new("log/#{Rails.env}.log")
+    config.colorize_logging = false
+
+    # Auto load modules in /lib
+    config.eager_load_paths += %W(
+      #{config.root}/lib/logger_extension
+    )  
   end
 end

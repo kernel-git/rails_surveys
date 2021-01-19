@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class StaticPagesController < ApplicationController
   STATIC_PAGES = {
     'home': 'home',
@@ -9,10 +11,15 @@ class StaticPagesController < ApplicationController
   }.freeze
 
   def show
-    if !STATIC_PAGES[params[:page].to_sym].nil?
-      render "static_pages/#{STATIC_PAGES[params[:page].to_sym]}"
+    page = params.require(:page)
+    rescue ActionController::ParameterMissing => e
+      log_exception(e)
+      render "/#{STATIC_PAGES['not-found-404'.to_sym]}"
     else
-      render "static_pages/#{STATIC_PAGES['not-found-404'.to_sym]}"
-    end
+      if STATIC_PAGES[params[:page].to_sym].nil?
+        render "/#{STATIC_PAGES['not-found-404'.to_sym]}"
+      else
+        render "/#{STATIC_PAGES[params[:page].to_sym]}"
+      end
   end
 end

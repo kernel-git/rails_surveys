@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Admin::StaticPagesController < ApplicationController
   layout 'admin'
   before_action :check_account_type, if: :authenticate_account!
@@ -8,10 +10,10 @@ class Admin::StaticPagesController < ApplicationController
   }.freeze
 
   def show
-    if !STATIC_PAGES[params[:page].to_sym].nil?
-      render "admin/static_pages/#{STATIC_PAGES[params[:page].to_sym]}"
-    else
+    if STATIC_PAGES[params[:page].to_sym].nil?
       render "admin/static_pages/#{STATIC_PAGES['not-found-404'.to_sym]}"
+    else
+      render "admin/static_pages/#{STATIC_PAGES[params[:page].to_sym]}"
     end
   end
 

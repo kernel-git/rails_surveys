@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Admin::SegmentsController < ApplicationController
   layout 'admin'
   before_action :check_account_type, if: :authenticate_account!
@@ -11,6 +13,7 @@ class Admin::SegmentsController < ApplicationController
     begin
       @segment = Segment.find(id)
     rescue ActiveRecord::RecordNotFound => e
+      log_exception(e)
       redirect_to(not_found_404_path)
     else
       @segment_employers = @segment.employers
@@ -20,8 +23,23 @@ class Admin::SegmentsController < ApplicationController
 
   def new
     @segment = Segment.new
-    @employees_data = Employee.all.collect { |employee| [employee.id, employee.first_name, employee.last_name, employee.account.email, employee.employer.label] }
-    @employers_data = Employer.all.collect { |employer| [employer.id, employer.logo_url, employer.label, employer.public_email] }
+    @employees_data = Employee.all.collect do |employee|
+      [
+        employee.id,
+        employee.first_name,
+        employee.last_name,
+        employee.account.email,
+        employee.employer.label
+      ]
+    end
+    @employers_data = Employer.all.collect do |employer|
+      [
+        employer.id,
+        employer.logo_url,
+        employer.label,
+        employer.public_email
+      ]
+    end
   end
 
   def create
@@ -30,24 +48,26 @@ class Admin::SegmentsController < ApplicationController
                            })
     @segment.employers = Employer.where(id: params[:employers_ids])
     @segment.employees = Employee.where(id: params[:employees_ids])
-    if @segment.save
-      redirect_to(admin_segment_url(@segment))
-    else
-      puts "Segment save failed. Error message: #{@segment.errors.full_messages}"
-      redirect_to(admin_segments_url)
-    end
+    @segment.save!
+  rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotSaved => e
+    log_exception(e)
+    flash.alert = ('Segment creation failed. Check logs...')
+    redirect_to(admin_segments_url)
+  else
+    flash.info('Segment created successfully')
+    redirect_to(admin_segment_url(@segment))
   end
 
   def edit
-    puts "Ping from admin/segments#edit with params: #{params}"
+    Rails.logger.debug "Ping from admin/segments#edit with params: #{params}"
   end
 
   def update
-    puts "Ping from admin/segments#update with params: #{params}"
+    Rails.logger.debug "Ping from admin/segments#update with params: #{params}"
   end
 
   def destroy
-    puts "Ping from admin/segments#destroy with params: #{params}"
+    Rails.logger.debug "Ping from admin/segments#destroy with params: #{params}"
   end
 
   protected
