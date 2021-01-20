@@ -14,6 +14,10 @@ class Employee::SurveysController < ApplicationController
     @survey = Survey.filter_avaible_by_assigned_employee_id(current_account.employee.id).find(params[:id])
     @answer = Answer.new
     @qgroup = QuestionGroup.new
+    @text_field_id = 0
+    @option_radio_value = 0
+    @question_id = 0
+
     @qgroups_data = []
     @survey.question_groups.each do |qgroup|
       qgroup_data = []
@@ -36,40 +40,46 @@ class Employee::SurveysController < ApplicationController
   end
 
   def conduct
-    current_employee = current_account.employee
-    answers = []
-    params[:answers].each do |_question_id, answer_data|
-      new_answer = Answer.new
-      option = Option.find(answer_data['option_data'])
-      new_answer.option = option
-      new_answer.additional_text = answer_data['additional_text'] if option.has_text_field
-      new_answer.employee = Employee.find(current_employee.id)
-      unless new_answer.valid?
-        Rails.logger.error 'Answer is not valid. Error messages:'
-        new_answer.errors.full_messages.each { |e| Rails.logger.error e }
-        return
+      permitted_params = params.permit(
+        :id,
+        answers: [
+          [
+            :option_data,
+            :additional_text
+          ]
+        ]
+      )
+      logger.debug permitted_params
+      current_employee = current_account.employee
+      answers = []
+      permitted_params[:answers].each do |_question_id, answer_data|
+        new_answer = Answer.new
+        option = Option.find(answer_data['option_data'])
+        new_answer.additional_text = answer_data['additional_text'] if option.has_text_field
+        new_answer.employee = Employee.find(current_account.employee.id)
+        new_answer.option = option
+
+        unless new_answer.valid?
+          raise ActiveRecord::RecordInvalid, new_answer.errors.full_messages
+        end
+        answers << new_answer
       end
-      answers << new_answer
-    end
-    begin
       answers.each(&:save!)
-    rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotSaved => e
+      relation = SurveyEmployeeRelation.where(survey_id: params[:id], employee_id: current_employee.id).first
+      relation.is_conducted = true
+      relation.save
+    rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotSaved, ActionController::ParameterMissing => e
       log_exception(e)
       flash.alert = 'Attempt save failed. Check logs...'
       redirect_to employee_surveys_url
     else
-      relation = SurveyEmployeeRelation.where(survey_id: params[:id], employee_id: current_employee.id).first
-      relation.is_conducted = true
-      relation.save
-
       flash.notice = 'Attempt saved successfully'
       redirect_to employee_surveys_url
-    end
   end
 
   protected
 
   def check_account_type
-    redirect_to(not_found_404_path) unless current_account.account_type == 'employee'
+    redirect_to(static_pages_url(page: 'not-found-404')) unless current_account.account_type == 'employee'
   end
 end

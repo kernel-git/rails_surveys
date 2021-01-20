@@ -22,15 +22,15 @@
               </div>
               <% question.options.each do |option| %>
                 <div class="question-wrapper__answer-option-wrapper answer-option-wrapper">
-                  <% if !@answers_data[question.id.to_s.to_sym].nil? && option.id == @answers_data[question.id.to_s.to_sym][0] %>
+                  <% if !@answers[question.id.to_s.to_sym].empty? && option.id == @answers[question.id.to_s.to_sym][0].option.id %>
                     <div class="answer-option-wrapper__label-wrapper">
                       <div class="answer-option-wrapper__label answer-option-wrapper__label--chosen">
                         <%= option.text %>
                       </div>
                     </div>
-                    <% unless @answers_data[question.id.to_s.to_sym][1].nil? %>
+                    <% if option.has_text_field %>
                       <div class="answer-option-wrapper__text-field answer-option-wrapper__text-field--active">
-                        <%= @answers_data[question.id.to_s.to_sym][1] %>
+                        <%= @answers[question.id.to_s.to_sym][0].additional_text %>
                       </div>
                     <% end %>
                   <% else %>

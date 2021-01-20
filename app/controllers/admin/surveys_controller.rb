@@ -9,101 +9,92 @@ class Admin::SurveysController < ApplicationController
   end
 
   def show
-    @survey = Survey.includes(:employer, question_groups: [questions: :options]).find(Integer(params[:id]))
-  rescue ActiveRecord::RecordNotFound => e
-    log_exception(e)
-    render('admin/static_pages/not_found_404')
-  else
-    Rails.logger.info('Survey found!')
-    @employees_data = []
-    @current_assigned_employees_ids = []
-    Employee.filter_by_employer_id(@survey.employer.id).each do |employee|
-      unless SurveyEmployeeRelation.find_by(survey_id: params[:id], employee_id: employee.id, is_conducted: true)
-        @employees_data << [employee.id, employee.first_name, employee.last_name, employee.account.email]
-      end
-      employee.surveys.each do |survey|
-        if survey.id == Integer(params[:id]) && !SurveyEmployeeRelation.find_by(survey_id: params[:id], employee_id: employee.id).is_conducted
-          @current_assigned_employees_ids << employee.id
+      id = params.require(:id)
+      @survey = Survey.includes(:employer, question_groups: [questions: :options]).find(id)
+    rescue ActiveRecord::RecordNotFound, ActionController::ParameterMissing => e
+      log_exception(e)
+      redirect_to(admin_static_pages_url(page: 'not-found-404'))
+    else
+      @employees_data = []
+      @employees = []
+      @current_assigned_employees_ids = []
+      Employee.filter_by_employer_id(@survey.employer.id).each do |employee|
+        unless SurveyEmployeeRelation.find_by(survey_id: params[:id], employee_id: employee.id, is_conducted: true)
+          @employees_data << [
+            employee.id,
+            employee.first_name,
+            employee.last_name,
+            employee.account.email,
+            employee.employer.label
+          ]
+        end
+        employee.surveys.each do |survey|
+          if survey.id == Integer(params[:id]) && !SurveyEmployeeRelation.find_by(survey_id: params[:id], employee_id: employee.id).is_conducted
+            @current_assigned_employees_ids << employee.id
+          end
         end
       end
-    end
-    @results = SurveyEmployeeRelation.where(survey_id: params[:id], is_conducted: true).includes(:employee)
-    @survey_question_groups = @survey.question_groups
+      @results = SurveyEmployeeRelation.where(survey_id: params[:id], is_conducted: true).includes(:employee)
   end
 
   def new
     @survey = Survey.new
-    @employers_data = Employer.all.collect { |employer| [employer.id, employer.logo_url, employer.label, employer.public_email] }
+    @employers = Employer.all
   end
 
   def create
-    return true if params[:survey].nil? || params[:question_groups].nil?
-
-    @survey = Survey.new(
-      label: params[:survey][:label]
-    )
-
-    @qgroups = []
-    @questions = []
-    @options = []
-
-    @survey.employer = Employer.find(params[:employer_id])
-
-    unless @survey.valid?
-      Rails.logger.error 'Survey is not valid. Error messages:'
-      @survey.errors.full_messages.each { |e| Rails.logger.error e }
-      return true
-    end
-
-    params[:question_groups].each do |qgroup_params|
-      @qgroup = QuestionGroup.new(label: qgroup_params[:label])
-
-      qgroup_params[:questions].each do |question_params|
-        @question = Question.new(
-          question_type: question_params[:question_type],
-          benchmark_val: 1,
-          benchmark_vol: 1
-        )
-        @question.question_group = @qgroup
-        question_params[:options].each do |option_params|
-          @option = Option.new(text: option_params[:label])
-          @option.has_text_field = option_params[:with_text_field] == 'on'
-          @option.question = @question
-          unless @option.valid?
-            Rails.logger.error 'Option is not valid. Error messages:'
-            @option.errors.full_messages.each { |e| Rails.logger.error e }
-            return true
-          end
-          @options << @option
-        end
-        unless @question.valid?
-          Rails.logger.error 'Question is not valid. Error messages:'
-          @question.errors.full_messages.each { |e| Rails.logger.error e }
-          return true
-        end
-        @questions << @question
-      end
-      @qgroup.survey = @survey
-
-      unless @qgroup.valid?
-        Rails.logger.error 'Question group is not valid. Error messages:'
-        @qgroup.errors.full_messages.each { |e| Rails.logger.error e }
-        return true
-      end
-      @qgroups << @qgroup
-    end
     begin
-      @survey.save!
-      @qgroups.each(&:save!)
-      @questions.each(&:save!)
-      @options.each(&:save!)
-    rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotSaved => e
+      @permitted_params = params.permit(
+        :employer_id,
+        survey: :label,
+        question_groups: [
+          :label,
+          questions: [
+            :question_type,
+            options: [
+              :label,
+              :with_text_field
+            ]
+          ]
+        ]
+      )
+    rescue ActionController::ParameterMissing => e
       log_exception(e)
-      flash.alert = 'Survey creation failed. Check logs...'
-      redirect_to admin_surveys_url
+      flash.alert 'Survey creation failed. Check logs...'
     else
-      flash.notice = 'Survey created successfully'
-      redirect_to admin_survey_url(@survey)
+      @survey = Survey.new(
+        label: @permitted_params[:survey][:label]
+      )
+      @survey.employer = Employer.find(@permitted_params[:employer_id])
+
+      @permitted_params[:question_groups].each do |qgroup_params|
+        @qgroup = QuestionGroup.new(label: qgroup_params[:label], survey: @survey)
+        qgroup_params[:questions].each do |question_params|
+          @question = Question.new(
+            question_type: question_params[:question_type],
+            benchmark_val: 1,
+            benchmark_vol: 1,
+            question_group: @qgroup
+          )
+          question_params[:options].each do |option_params|
+            option = Option.new(text: option_params[:label], question: @question)
+            option.has_text_field = option_params[:with_text_field] == 'on'
+            @question.options << option
+          end
+          @qgroup.questions << @question
+        end
+        @survey.question_groups << @qgroup
+      end
+      begin
+        @survey.save!
+      rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotSaved => e
+        log_exception(e)
+        flash.alert = 'Survey creation failed. Check logs...'
+        redirect_to(employer_surveys_url)
+      else
+        flash.notice = 'Survey created successfully'
+        redirect_to(comapny_survey_url(@survey))
+      end
     end
   end
 

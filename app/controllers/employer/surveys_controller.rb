@@ -11,10 +11,10 @@ class Employer::SurveysController < ApplicationController
   def show
     id = params.require(:id)
     @survey = Survey.includes(:employer, question_groups: [questions: :options]).find(id)
-    render('employer/static_pages/not_found_404') if @survey.employer.id != current_account.employer.id
+    redirect_to(employer_static_pages_url(page: 'not-found-404')) if @survey.employer.id != current_account.employer.id
   rescue ActiveRecord::RecordNotFound, ActionController::ParameterMissing => e
     log_exception(e)
-    render('employer/static_pages/not_found_404')
+    redirect_to(employer_static_pages_url(page: 'not-found-404'))
   else
     @employees_data = []
     @current_assigned_employees_ids = []
@@ -30,7 +30,6 @@ class Employer::SurveysController < ApplicationController
       end
     end
     @results = SurveyEmployeeRelation.where(survey_id: params[:id], is_conducted: true).includes(:employee)
-    @survey_question_groups = @survey.question_groups
   end
 
   def new
@@ -78,7 +77,6 @@ class Employer::SurveysController < ApplicationController
           end
           @qgroup.questions << @question
         end
-        logger.debug @qgroup.questions
         @survey.question_groups << @qgroup
       end
       begin

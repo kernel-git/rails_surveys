@@ -10,16 +10,21 @@ class Employee::StaticPagesController < ApplicationController
   }.freeze
 
   def show
-    if STATIC_PAGES[params[:page].to_sym].nil?
-      render "employee/static_pages/#{STATIC_PAGES['not-found-404'.to_sym]}"
+      page = params.require(:page)
+    rescue ActionController::ParameterMissing => e
+      log_exception(e)
+      render "employee/#{STATIC_PAGES['not-found-404'.to_sym]}"
     else
-      render "employee/static_pages/#{STATIC_PAGES[params[:page].to_sym]}"
-    end
+      if STATIC_PAGES[params[:page].to_sym].nil?
+        render "employee/#{STATIC_PAGES['not-found-404'.to_sym]}"
+      else
+        render "employee/#{STATIC_PAGES[params[:page].to_sym]}"
+      end
   end
 
   protected
 
   def check_account_type
-    redirect_to(not_found_404_path) unless current_account.account_type == 'employee'
+    redirect_to(static_pages_url(page: 'not-found-404')) unless current_account.account_type == 'employee'
   end
 end

@@ -10,7 +10,7 @@ class Employer::StaticPagesController < ApplicationController
   }.freeze
 
   def show
-    page = params.require(:page)
+      page = params.require(:page)
     rescue ActionController::ParameterMissing => e
       log_exception(e)
       render "employer/#{STATIC_PAGES['not-found-404'.to_sym]}"

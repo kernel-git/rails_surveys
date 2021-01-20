@@ -17,18 +17,13 @@ class Employer::ResultsController < ApplicationController
         ]
       ]
     ).find(id)
-    @answers_data = {}
+
+    @answers = {}
     @result.survey.question_groups.each do |qgroup|
       qgroup.questions.each do |question|
         question.options.each do |option|
-          option.answers.each do |answer|
-            next unless answer.employee == @result.employee
-
-            answer_array = []
-            answer_array << answer.option_id
-            answer_array << answer.additional_text if option.has_text_field
-            @answers_data[question.id.to_s.to_sym] = answer_array
-          end
+          answer = Answer.filter_by_option_id_and_employee_id(option.id, @result.employee.id)
+          @answers[question.id.to_s.to_sym] = answer unless answer.empty?
         end
       end
     end

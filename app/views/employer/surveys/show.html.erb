@@ -13,7 +13,7 @@
   <div class="object-group-wrapper">
     <div class="object-group-wrapper__label">Survey content</div>
     <div class="attempt-wrapper__content-wrapper content-wrapper">
-      <% @survey_question_groups.each_with_index do |question_group, qg_index| %>
+      <% @survey.question_groups.each_with_index do |question_group, qg_index| %>
         <div class="qgroup-wrapper" id="qgroup_<%= qg_index %>">
           <div class="qgroup-wrapper__qgroup-label-wrapper qgroup-label-wrapper">
             <div class="qgroup-label-wrapper__label font-big">
@@ -41,7 +41,7 @@
       <% end %>
       <div class="content-wrapper__content-footer content-footer">
         <div class="progress__wrapper">
-          <% @survey_question_groups.each_with_index do |question_group, qg_index| %>
+          <% @survey.question_groups.each_with_index do |question_group, qg_index| %>
             <div class="progress__element" id="qgroup-button_<%= qg_index %>">
               <%= qg_index + 1 %>
             </div>

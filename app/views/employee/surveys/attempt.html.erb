@@ -10,6 +10,39 @@
   </div>
   <div class="attempt-wrapper__content-wrapper content-wrapper">
     <!-- Question group info here -->
+    <% @survey.question_groups.each_with_index do |qgroup, qgroup_index| %>
+      <div id="qgroup_<%=qgroup_index%>" class="qgroup-wrapper">
+        <div class="qgroup-wrapper__qgroup-label-wrapper qgroup-label-wrapper">
+          <div class="qgroup-label-wrapper__label font-big">
+            <%= qgroup.label %>
+          </div>
+        </div>
+        <% qgroup.questions.each do |question| %>
+        <% @question_id += 1 %>
+          <div class="qgroup-wrapper__question-wrapper question-wrapper">
+            <div class="question-wrapper__text font-big">
+              <%= question.question_type %>
+            </div>
+            <% question.options.each do |option| %>
+              <div class="question-wrapper__answer-option-wrapper answer-option-wrapper">
+                <% if option.has_text_field %>
+                  <div class="answer-option-wrapper__label-wrapper">
+                    <input type="radio" value="<%= @option_radio_value += 1 %>" name="answers[<%=@question_id%>][option_data]" id="radio_with_field_<%=@text_field_id += 1%>" class="answer-option-wrapper__radio">
+                    <div class="answer-option-wrapper__label"><%= option.text %></div>
+                  </div>
+                  <input class="answer-option-wrapper__text-field" type="text" id="field_<%=@text_field_id%>">
+                <% else %>
+                  <div class="answer-option-wrapper__label-wrapper">
+                    <input type="radio" value="<%= @option_radio_value += 1 %>" name="answers[<%=@question_id%>][option_data]" class="answer-option-wrapper__radio">
+                    <div class="answer-option-wrapper__label"><%= option.text %></div>
+                  </div>
+                <% end %>
+              </div>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
     <div class="content-wrapper__content-footer content-footer">
       <div class="progress__wrapper">
         <!-- Progress element data here -->

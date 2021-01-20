@@ -72,7 +72,6 @@
                     <div class="answer-option-wrapper__label">
                       <%= option.text %>
                     </div>
-                    
                   </div>
                 </div>
               <% end %>
@@ -123,6 +122,16 @@
             Email
           </div>
         </div>
+        <div class="table-header-wrapper__table-header-element table-header-element">
+          <div class="table-header-element__arrows-wrapper arrows-wrapper">
+            <div id="sort-arrow_up_2_table_1"><%= inline_svg_tag('up-chevron.svg', class: "svg-sorting-arrow") %></div>
+            <div id="sort-arrow_down_2_table_1"><%= inline_svg_tag('down-chevron.svg', class: "svg-sorting-arrow") %></div>
+          </div>
+          <div class="table-header-element__label">
+            Employer
+          </div>
+        </div>
+        <div class="table-header-wrapper__table-header-element table-header-element"></div>
       </div>
       <div id="add-row_0" class="custom-table__table-row-wrapper table-row-wrapper link-div custom-table__message">
         <%= inline_svg_tag('plus-sign.svg', class: "svg-plus") %>
@@ -164,6 +173,15 @@
           Email
         </div>
       </div>
+      <div class="table-header-wrapper__table-header-element table-header-element">
+        <div class="table-header-element__arrows-wrapper arrows-wrapper">
+          <div id="sort-arrow_up_2_table_1"><%= inline_svg_tag('up-chevron.svg', class: "svg-sorting-arrow") %></div>
+          <div id="sort-arrow_down_2_table_1"><%= inline_svg_tag('down-chevron.svg', class: "svg-sorting-arrow") %></div>
+        </div>
+        <div class="table-header-element__label">
+          Employer
+        </div>
+      </div>
     </div>
     <% unless @results.empty? %>
       <% @results.each do |result| %>
@@ -176,6 +194,9 @@
           </div>
           <div class="table-row-wrapper__information">
             <%= result.employee.account.email %>
+          </div>
+          <div class="table-row-wrapper__information">
+            <%= result.employee.employer.label %>
           </div>
         <% end %>
       <% end %>
@@ -223,6 +244,15 @@
             </div>
             <div class="table-header-element__label">
               Email
+            </div>
+          </div>
+          <div class="table-header-wrapper__table-header-element table-header-element">
+            <div class="table-header-element__arrows-wrapper arrows-wrapper">
+              <div id="sort-arrow_up_2_table_1"><%= inline_svg_tag('up-chevron.svg', class: "svg-sorting-arrow") %></div>
+              <div id="sort-arrow_down_2_table_1"><%= inline_svg_tag('down-chevron.svg', class: "svg-sorting-arrow") %></div>
+            </div>
+            <div class="table-header-element__label">
+              Employer
             </div>
           </div>
         </div>

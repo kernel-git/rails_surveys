@@ -44,10 +44,6 @@ class Employer::EmployeesController < ApplicationController
       position_age: employee_params[:position_age],
       opt_out: employee_params[:opt_out]
     )
-
-    logger.debug account
-    logger.debug account.employee
-
     account.employee.employer = current_account.employer
     account.employee.segments = Segment.where(id: segments_ids)
 

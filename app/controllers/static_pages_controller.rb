@@ -17,9 +17,9 @@ class StaticPagesController < ApplicationController
       render "/#{STATIC_PAGES['not-found-404'.to_sym]}"
     else
       if STATIC_PAGES[params[:page].to_sym].nil?
-        render "/#{STATIC_PAGES['not-found-404'.to_sym]}"
+        render "#{STATIC_PAGES['not-found-404'.to_sym]}"
       else
-        render "/#{STATIC_PAGES[params[:page].to_sym]}"
+        render "#{STATIC_PAGES[params[:page].to_sym]}"
       end
   end
 end
