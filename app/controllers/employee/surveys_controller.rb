@@ -11,31 +11,6 @@ class Employee::SurveysController < ApplicationController
 
   def attempt
     # @survey = Survey.filter_avaible_by_assigned_employee_id(current_account.employee.id).find(params[:id])
-    @answer = Answer.new
-    @qgroup = QuestionGroup.new
-    @text_field_id = 0
-    @option_radio_value = 0
-    @question_id = 0
-
-    @qgroups_data = []
-    @survey.question_groups.each do |qgroup|
-      qgroup_data = []
-      qgroup_data << qgroup.label
-      questions_data = []
-      qgroup.questions.each do |question|
-        question_data = []
-        question_data << question.id
-        question_data << question.question_type
-        options_data = []
-        question.options.each do |option|
-          options_data << [option.id, option.text, option.has_text_field]
-        end
-        question_data << options_data
-        questions_data << question_data
-      end
-      qgroup_data << questions_data
-      @qgroups_data << qgroup_data
-    end
   end
 
   def conduct

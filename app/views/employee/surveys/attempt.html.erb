@@ -1,6 +1,3 @@
-<%= content_tag :div, id: "qgroups_data", data: {qgroups: @qgroups_data} do %>
-<% end %>
-
 <%= javascript_pack_tag "employee/surveys/attempt.js" %>
 
 <div class="attempt-wrapper">
@@ -10,15 +7,14 @@
   </div>
   <div class="attempt-wrapper__content-wrapper content-wrapper">
     <!-- Question group info here -->
-    <% @survey.question_groups.each_with_index do |qgroup, qgroup_index| %>
-      <div id="qgroup_<%=qgroup_index%>" class="qgroup-wrapper">
+    <% @survey.question_groups.each_with_index do |qgroup, index| %>
+      <div id="qgroup_<%= index %>" class="qgroup-wrapper">
         <div class="qgroup-wrapper__qgroup-label-wrapper qgroup-label-wrapper">
           <div class="qgroup-label-wrapper__label font-big">
             <%= qgroup.label %>
           </div>
         </div>
         <% qgroup.questions.each do |question| %>
-        <% @question_id += 1 %>
           <div class="qgroup-wrapper__question-wrapper question-wrapper">
             <div class="question-wrapper__text font-big">
               <%= question.question_type %>
@@ -45,7 +41,11 @@
     <% end %>
     <div class="content-wrapper__content-footer content-footer">
       <div class="progress__wrapper">
-        <!-- Progress element data here -->
+        <% @survey.question_groups.each_with_index do |qgroup, index| %>
+          <div class="progress__element" id="progress_<%= index %>">
+            <%= index + 1 %>
+          </div>
+        <% end %>
       </div>
       <%= image_submit_tag("next-arrow.svg", class: 'next-button svg-next-arrow') %>
     </div>

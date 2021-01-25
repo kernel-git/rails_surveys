@@ -1,17 +1,17 @@
 # frozen_string_literal: true
 
-class ChangeSurveyEmployerRelation < ActiveRecord::Migration[6.0]
+class ChangeSurveyClientRelation < ActiveRecord::Migration[6.0]
   def up
-    drop_table :employers_surveys
+    drop_table :clients_surveys
     change_table :surveys do |t|
-      t.belongs_to :employer
+      t.belongs_to :client
     end
   end
 
   def down
-    remove_column :surveys, :employer_id
-    create_table :employers_surveys do |t|
-      t.belongs_to :employer
+    remove_column :surveys, :client_id
+    create_table :clients_surveys do |t|
+      t.belongs_to :client
       t.belongs_to :survey
     end
   end

@@ -7,9 +7,9 @@ class RenameColumnsInManyToManyTables < ActiveRecord::Migration[6.0]
     rename_index :segments_users, 'segments_id', 'segment_id'
     rename_index :segments_users, 'users_id', 'user_id'
 
-    rename_column :employers_segments, :employers_id, :employer_id
-    rename_column :employers_segments, :segments_id, :segment_id
-    rename_index :segments_users, 'employers_id', 'employer_id'
+    rename_column :clients_segments, :clients_id, :client_id
+    rename_column :clients_segments, :segments_id, :segment_id
+    rename_index :segments_users, 'clients_id', 'client_id'
     rename_index :segments_users, 'segments_id', 'segment_id'
   end
 end

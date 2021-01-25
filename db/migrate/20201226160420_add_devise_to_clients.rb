@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-class AddDeviseToEmployers < ActiveRecord::Migration[6.0]
+class AddDeviseToClients < ActiveRecord::Migration[6.0]
   def self.up
-    remove_column :employers, :email
-    change_table :employers do |t|
+    remove_column :clients, :email
+    change_table :clients do |t|
       ## Database authenticatable
       t.string :email,              null: false, default: ''
       t.string :encrypted_password, null: false, default: ''
@@ -37,21 +37,21 @@ class AddDeviseToEmployers < ActiveRecord::Migration[6.0]
       # t.timestamps null: false
     end
 
-    add_index :employers, :email,                unique: true
-    add_index :employers, :reset_password_token, unique: true
-    # add_index :employers, :confirmation_token,   unique: true
-    add_index :employers, :unlock_token,         unique: true
+    add_index :clients, :email,                unique: true
+    add_index :clients, :reset_password_token, unique: true
+    # add_index :clients, :confirmation_token,   unique: true
+    add_index :clients, :unlock_token,         unique: true
   end
 
   def self.down
-    remove_column :employers, :email
-    remove_column :employers, :encrypted_password
-    remove_column :employers, :reset_password_token
-    remove_column :employers, :reset_password_sent_at
-    remove_column :employers, :remember_created_at
-    remove_column :employers, :failed_attempts
-    remove_column :employers, :unlock_token
-    remove_column :employers, :locked_at
+    remove_column :clients, :email
+    remove_column :clients, :encrypted_password
+    remove_column :clients, :reset_password_token
+    remove_column :clients, :reset_password_sent_at
+    remove_column :clients, :remember_created_at
+    remove_column :clients, :failed_attempts
+    remove_column :clients, :unlock_token
+    remove_column :clients, :locked_at
 
     change_table :users do |t|
       t.string :email
