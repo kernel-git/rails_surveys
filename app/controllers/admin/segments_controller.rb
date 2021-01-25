@@ -2,60 +2,35 @@
 
 class Admin::SegmentsController < ApplicationController
   layout 'admin'
-  before_action :check_account_type, if: :authenticate_account!
+  load_and_authorize_resource
+  skip_load_resource only: :show
 
   def index
-    @segments = Segment.all.page(params[:page])
+    @segments = @segments.page(params[:page])
   end
 
   def show
-    id = Integer(params[:id])
-    begin
-      @segment = Segment.find(id)
-    rescue ActiveRecord::RecordNotFound => e
-      log_exception(e)
-      redirect_to(not_found_404_path)
-    else
-      @segment_employers = @segment.employers
-      @segment_employees = @segment.employees
-    end
+    @segment = Segment.includes(:employees, :employers).find(params[:id])
   end
 
   def new
-    @segment = Segment.new
     @employees_data = Employee.all.collect do |employee|
-      [
-        employee.id,
-        employee.first_name,
-        employee.last_name,
-        employee.account.email,
-        employee.employer.label
-      ]
+      [employee.id, employee.first_name, employee.last_name,
+       employee.account.email, employee.employer.label]
     end
     @employers_data = Employer.all.collect do |employer|
-      [
-        employer.id,
-        employer.logo_url,
-        employer.label,
-        employer.public_email
-      ]
+      [employer.id, employer.logo_url,
+       employer.label, employer.public_email]
     end
   end
 
   def create
-    @segment = Segment.new({
-                             label: params[:segment][:label]
-                           })
-    @segment.employers = Employer.where(id: params[:employers_ids])
-    @segment.employees = Employee.where(id: params[:employees_ids])
-    @segment.save!
-  rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotSaved => e
-    log_exception(e)
-    flash.alert = ('Segment creation failed. Check logs...')
-    redirect_to(admin_segments_url)
-  else
-    flash.info('Segment created successfully')
-    redirect_to(admin_segment_url(@segment))
+    if @segment.save
+      redirect_to admin_segment_url(@segment), notice: 'Segment created successfully'
+    else
+      log_errors(@segment)
+      redirect_to new_admin_segment_url, alert: 'Segment creation failed. Check logs...'
+    end
   end
 
   def edit
@@ -72,7 +47,11 @@ class Admin::SegmentsController < ApplicationController
 
   protected
 
-  def check_account_type
-    redirect_to(not_found_404_path) unless current_account.account_type == 'administrator'
+  def segment_params
+    params.require(:segment).permit(
+      :label,
+      employee_ids: [],
+      employer_ids: []
+    )
   end
 end

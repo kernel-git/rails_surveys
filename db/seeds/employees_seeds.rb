@@ -3,6 +3,8 @@
 require 'faker'
 
 class EmployeesSeeds
+  include LoggerExtension
+
   EMPLOYERS = %w[
     BSUIR
     BSU
@@ -15,13 +17,7 @@ class EmployeesSeeds
 
   def perform
     employees = []
-    accounts = []
     100.times do |_index|
-      account = Account.new({
-                              account_type: 'employee',
-                              email: Faker::Internet.unique.email,
-                              password: '11111111'
-                            })
       employee = Employee.new({
                                 first_name: Faker::Name.first_name,
                                 last_name: Faker::Name.last_name,
@@ -31,18 +27,17 @@ class EmployeesSeeds
                                 opt_out: true,
                                 employer_id: Employer.find_by(label: EMPLOYERS.sample).id
                               })
-      accounts << account
+      employee.build_account(
+        account_user_type: 'Employee',
+        email: Faker::Internet.unique.email,
+        password: '11111111',
+        password_confirmation: '11111111'
+      )
       employees << employee
     end
 
-    begin
-      100.times do |index|
-        accounts[index].save!
-        employees[index].account = accounts[index]
-        employees[index].save!
-      end
-    rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotSaved => e
-      log_exception(e)
+    100.times do |index|
+      log_errors(employees[index]) unless employees[index].save
     end
   end
 end

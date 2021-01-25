@@ -61,18 +61,18 @@
           </div>
         </div>
       </div>
-      <%= link_to(admin_employer_url(@employee_employer), class: "custom-table__table-row-wrapper table-row-wrapper link-div") do %>
+      <%= link_to(admin_employer_url(@employee.employer), class: "custom-table__table-row-wrapper table-row-wrapper link-div") do %>
         <div class="table-row-wrapper__information w-10">
-          <%= image_tag(@employee_employer.logo_url, size: "75x75") %>
+          <%= image_tag(@employee.employer.logo_url, size: "75x75") %>
         </div>
         <div class="table-row-wrapper__information">
-          <%= @employee_employer.label %>
+          <%= @employee.employer.label %>
         </div>
         <div class="table-row-wrapper__information">
-          <%= @employee_employer.public_email %>
+          <%= @employee.employer.public_email %>
         </div>
         <div class="table-row-wrapper__information">
-          <%= @employee_employer.phone %>
+          <%= @employee.employer.phone %>
         </div>
       <% end %>
     </div>
@@ -91,8 +91,8 @@
           </div>
         </div>
       </div>
-      <% unless @employee_segments.empty? %>
-        <% @employee_segments.each do |segment| %>
+      <% unless @employee.segments.empty? %>
+        <% @employee.segments.each do |segment| %>
           <%= link_to(admin_segment_url(segment), class: "custom-table__table-row-wrapper table-row-wrapper link-div table-row_0") do %>
             <div class="table-row-wrapper__information">
               <%= segment.label %>
@@ -145,9 +145,8 @@
           </div>
         </div>
       </div>
-      <% unless @employee_answers.empty? %>
-      
-        <% @employee_answers.each do |answer| %>
+      <% unless @employee.answers.empty? %>
+        <% @employee.answers.each do |answer| %>
           <div class="custom-table__table-row-wrapper table-row-wrapper table-row_1 ">
             <div class="table-row-wrapper__information">
               <%= answer.answer_val %>

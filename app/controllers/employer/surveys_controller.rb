@@ -2,93 +2,52 @@
 
 class Employer::SurveysController < ApplicationController
   layout 'employer'
-  before_action :check_account_type, if: :authenticate_account!
+  load_and_authorize_resource
+  skip_load_resource only: :show
 
   def index
-    @surveys = Survey.filter_by_employer_id(current_account.employer.id).page(params[:page])
+    @surveys = @surveys.page(params[:page])
   end
 
   def show
-    id = params.require(:id)
-    @survey = Survey.includes(:employer, question_groups: [questions: :options]).find(id)
-    redirect_to(employer_static_pages_url(page: 'not-found-404')) if @survey.employer.id != current_account.employer.id
-  rescue ActiveRecord::RecordNotFound, ActionController::ParameterMissing => e
-    log_exception(e)
-    redirect_to(employer_static_pages_url(page: 'not-found-404'))
-  else
+    @survey = Survey.includes(:employer, question_groups: [questions: :options]).find(params[:id])
     @employees_data = []
     @current_assigned_employees_ids = []
-    Employee.filter_by_employer_id(current_account.employer.id).each do |employee|
-      unless SurveyEmployeeRelation.find_by(survey_id: id, employee_id: employee.id, is_conducted: true)
-        @employees_data << [employee.id, employee.first_name, employee.last_name, employee.account.email]
-      end
-      employee.surveys.each do |survey|
-        if survey.id == Integer(id) && !SurveyEmployeeRelation.find_by(
-          survey_id: id, employee_id: employee.id).is_conducted
-          @current_assigned_employees_ids << employee.id
-        end
-      end
+    @employees_data = Employee.filter_by_employer_id(@survey.employer.id).collect do |employee|
+      [employee.id, employee.first_name, employee.last_name,
+       employee.account.email, employee.employer.label]
+    end
+    Employee.filter_by_employer_id(@survey.employer.id).filter_avaible_by_survey_id(@survey.id).collect do |employee|
+      @current_assigned_employees_ids << employee.id
     end
     @results = SurveyEmployeeRelation.where(survey_id: params[:id], is_conducted: true).includes(:employee)
   end
 
-  def new
-    @survey = Survey.new
-    @employer = current_account.employer
-  end
+  def new; end
 
   def create
-    begin
-      @permitted_params = params.permit(
-        survey: :label,
-        question_groups: [
-          :label,
-          questions: [
-            :question_type,
-            options: [
-              :label,
-              :with_text_field
-            ]
-          ]
-        ]
-      )
-    rescue ActionController::ParameterMissing => e
-      log_exception(e)
-      flash.alert 'Survey creation failed. Check logs...'
-    else
-      @survey = Survey.new(
-        label: @permitted_params[:survey][:label]
-      )
-      @survey.employer = current_account.employer
-
-      @permitted_params[:question_groups].each do |qgroup_params|
-        @qgroup = QuestionGroup.new(label: qgroup_params[:label], survey: @survey)
-        qgroup_params[:questions].each do |question_params|
-          @question = Question.new(
-            question_type: question_params[:question_type],
-            benchmark_val: 1,
-            benchmark_vol: 1,
-            question_group: @qgroup
+    question_group_params[:question_groups].each do |qgroup_params|
+      @qgroup = @survey.question_groups.build(label: qgroup_params[:label])
+      qgroup_params[:questions].each do |question_params|
+        @question = @qgroup.questions.build(
+          question_type: question_params[:question_type],
+          benchmark_val: 1,
+          benchmark_vol: 1
+        )
+        question_params[:options].each do |option_params|
+          @question.options.build(
+            text: option_params[:label],
+            has_text_field: option_params[:with_text_field] == 'on'
           )
-          question_params[:options].each do |option_params|
-            option = Option.new(text: option_params[:label], question: @question)
-            option.has_text_field = option_params[:with_text_field] == 'on'
-            @question.options << option
-          end
-          @qgroup.questions << @question
         end
-        @survey.question_groups << @qgroup
       end
-      begin
-        @survey.save!
-      rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotSaved => e
-        log_exception(e)
-        flash.alert = ('Survey creation failed. Check logs...')
-        redirect_to(employer_surveys_url)
-      else
-        flash.notice('Survey created successfully')
-        redirect_to(comapny_survey_url(@survey))
-      end
+    end
+
+    if @survey.save
+      redirect_to employer_survey_url(@survey), notice: 'Survey created successfully'
+    else
+      log_errors(@survey)
+      redirect_to employer_surveys_url, alert: 'Survey creation failed. Check logs...'
     end
   end
 
@@ -97,37 +56,46 @@ class Employer::SurveysController < ApplicationController
   end
 
   def update
-    begin
-      @employees_ids = params.permit(:id, employees_ids: [])[:employees_ids]
-      @employees_ids ||= []
-      @id = params.require(:id)
-      logger.debug @id
-      logger.debug @employees_ids
-    rescue ActionController::ParameterMissing => e
-      log_exception(e)
-      flash.alert 'Survey update failed. Check logs...'
-    else
-      begin
-        @survey = Survey.includes(:employer, :employees, question_groups: [questions: :options]).find(Integer(params[:id]))
-        redirect_to(not_found_404_path) if @survey.employer.id != current_account.employer.id
-      rescue ActiveRecord::RecordNotFound => e
-        redirect_to(not_found_404_path)
-      else
-        Employee.filter_conducted_by_survey_id(@survey.id).each do |employee|
-          params[:employees_ids] << String(employee.id) unless params[:employees_ids].include?(String(employee.id))
-        end
-        if params[:employees_ids].nil?
-          @survey.employees.clear
-          return
-        end
-        @survey.employee_ids = params[:employees_ids]
-        params[:employees_ids].each do |employee_id|
-          relation = SurveyEmployeeRelation.where(survey_id: @survey.id, employee_id: employee_id).first
-          relation.is_conducted = false if relation.is_conducted != true
-          relation.save
-        end
-      end
+    Employee.filter_conducted_by_survey_id(@survey.id).each do |employee|
+      params[:employees_ids] << String(employee.id) unless params[:employees_ids].include?(String(employee.id))
     end
+    @survey.employee_ids = params[:employees_ids]
+    if @survey.save
+      redirect_to employer_survey_url(@survey), notice: 'Survey updated successfully'
+    else
+      log_errors(@survey)
+      redirect_to employer_survey_url(@survey), alert: 'Survey update failed. Check logs...'
+    end
+
+    #   @employees_ids = params.permit(:id, employees_ids: [])[:employees_ids]
+    #   @employees_ids ||= []
+    #   @id = params.require(:id)
+    #   logger.debug @id
+    #   logger.debug @employees_ids
+    # rescue ActionController::ParameterMissing => e
+    #   log_exception(e)
+    #   flash.alert 'Survey update failed. Check logs...'
+    # else
+    #   begin
+    #     @survey = Survey.includes(:employer, :employees, question_groups: [questions: :options]).find(Integer(params[:id]))
+    #     redirect_to(not_found_404_path) if @survey.employer.id != current_account.employer.id
+    #   rescue ActiveRecord::RecordNotFound => e
+    #     redirect_to(not_found_404_path)
+    #   else
+    #     Employee.filter_conducted_by_survey_id(@survey.id).each do |employee|
+    #       params[:employees_ids] << String(employee.id) unless params[:employees_ids].include?(String(employee.id))
+    #     end
+    #     if params[:employees_ids].nil?
+    #       @survey.employees.clear
+    #       return
+    #     end
+    #     @survey.employee_ids = params[:employees_ids]
+    #     params[:employees_ids].each do |employee_id|
+    #       relation = SurveyEmployeeRelation.where(survey_id: @survey.id, employee_id: employee_id).first
+    #       relation.is_conducted = false if relation.is_conducted != true
+    #       relation.save
+    #     end
+    #   end
   end
 
   def destroy
@@ -136,7 +104,22 @@ class Employer::SurveysController < ApplicationController
 
   protected
 
-  def check_account_type
-    redirect_to(static_pages_url(page: 'not-found-404')) unless current_account.account_type == 'employer'
+  def survey_params
+    params.require(:survey).permit(:label)
+  end
+
+  def question_group_params
+    params.permit(
+      question_groups: [
+        :label,
+        { questions: [
+          :question_type,
+          { options: %i[
+            label
+            with_text_field
+          ] }
+        ] }
+      ]
+    )
   end
 end

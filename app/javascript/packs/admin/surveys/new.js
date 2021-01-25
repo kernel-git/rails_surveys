@@ -87,11 +87,11 @@ $(document).ready(() => {
   employers_data.forEach((employer, index) => {  // filling hiddenEmployersData with html  
     const newHiddenInputSegment = $('<input></input>')
       .attr('id', `employer_${employer.id}`)
-      .attr('name', 'employer_id')
+      .attr('name', 'survey[employer_id]')
       .attr('type', 'hidden')
       .val(employer.id);
 
-    hiddenEmployersData.push($('#current_employer_id').append(newHiddenInputSegment));
+    hiddenEmployersData.push(newHiddenInputSegment);
   });
 
   updateEmployerTables();
@@ -108,13 +108,13 @@ function updateEmployerTables() {
   if (addEmployerButton == null)
     addEmployerButton = $('#add-row_0').detach();
   $('#listing-table_0 .table-row-wrapper').detach();
-  $('#current-employer-id').empty();
+  $('#current_employer_id').empty();
 
   $('#listing-table_0').append(employersData[currentEmployerIndex]);
   if (currentEmployerIndex == null)
     $('#listing-table_0').append(addEmployerButton);
 
-  $('#current-employer-id').append(hiddenEmployersData[currentEmployerIndex]);
+  $('#current_employer_id').append(hiddenEmployersData[currentEmployerIndex]);
 }
 
 function openModal(modalId) {

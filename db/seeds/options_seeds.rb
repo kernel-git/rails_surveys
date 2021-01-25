@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class OptionsSeeds
+  include LoggerExtension
+
   QUESTIONS = %w[
     science_in_university_one
     science_in_university_one
@@ -46,24 +48,51 @@ class OptionsSeeds
     social_medical_three
     social_medical_three
   ].freeze
-  OPTIONS = [].freeze
-  2.times { OPTIONS << Faker::Lorem.sentence }
-  OPTIONS << 'Other'
-  3.times { OPTIONS << Faker::Lorem.sentence }
-  OPTIONS << 'Other'
-  2.times { OPTIONS << Faker::Lorem.sentence }
-  OPTIONS << 'Other'
-  6.times { OPTIONS << Faker::Lorem.sentence }
-  OPTIONS << 'Other'
-  5.times { OPTIONS << Faker::Lorem.sentence }
-  OPTIONS << 'Other'
-  8.times { OPTIONS << Faker::Lorem.sentence }
-  OPTIONS << 'Other'
-  4.times { OPTIONS << Faker::Lorem.sentence }
-  OPTIONS << 'Other'
-  3.times { OPTIONS << Faker::Lorem.sentence }
-  OPTIONS << 'Other'
-  2.times { OPTIONS << Faker::Lorem.sentence }
+  OPTIONS = [
+    Faker::Lorem.sentence,
+    Faker::Lorem.sentence,
+    'Other',
+    Faker::Lorem.sentence,
+    Faker::Lorem.sentence,
+    Faker::Lorem.sentence,
+    'Other',
+    Faker::Lorem.sentence,
+    Faker::Lorem.sentence,
+    'Other',
+    Faker::Lorem.sentence,
+    Faker::Lorem.sentence,
+    Faker::Lorem.sentence,
+    Faker::Lorem.sentence,
+    Faker::Lorem.sentence,
+    Faker::Lorem.sentence,
+    'Other',
+    Faker::Lorem.sentence,
+    Faker::Lorem.sentence,
+    Faker::Lorem.sentence,
+    Faker::Lorem.sentence,
+    Faker::Lorem.sentence,
+    'Other',
+    Faker::Lorem.sentence,
+    Faker::Lorem.sentence,
+    Faker::Lorem.sentence,
+    Faker::Lorem.sentence,
+    Faker::Lorem.sentence,
+    Faker::Lorem.sentence,
+    Faker::Lorem.sentence,
+    Faker::Lorem.sentence,
+    'Other',
+    Faker::Lorem.sentence,
+    Faker::Lorem.sentence,
+    Faker::Lorem.sentence,
+    Faker::Lorem.sentence,
+    'Other',
+    Faker::Lorem.sentence,
+    Faker::Lorem.sentence,
+    Faker::Lorem.sentence,
+    'Other',
+    Faker::Lorem.sentence,
+    Faker::Lorem.sentence
+  ].freeze
 
   def initialize; end
 

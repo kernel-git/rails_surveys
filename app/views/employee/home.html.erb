@@ -4,29 +4,29 @@
     <div class="model-wrapper__model-info-block">
       <div class="model-wrapper__model-info-wrapper">
         <div class="model-info-wrapper__label">First name: </div>
-        <div class="model-info-wrapper__info"><%= current_account.employee.first_name %></div>
+        <div class="model-info-wrapper__info"><%= current_account.account_user.first_name %></div>
       </div>
       <div class="model-wrapper__model-info-wrapper">
         <div class="model-info-wrapper__label">Last name:</div>
-        <div class="model-info-wrapper__info"><%= current_account.employee.last_name %></div>
+        <div class="model-info-wrapper__info"><%= current_account.account_user.last_name %></div>
       </div>
       <div class="model-wrapper__model-info-wrapper">
         <div class="model-info-wrapper__label">Age:</div>
-        <div class="model-info-wrapper__info"><%= current_account.employee.age %></div>
+        <div class="model-info-wrapper__info"><%= current_account.account_user.age %></div>
       </div>
     </div>
     <div class="model-wrapper__model-info-block">
       <div class="model-wrapper__model-info-wrapper">
         <div class="model-info-wrapper__label">Email:</div>
-        <div class="model-info-wrapper__info"><%= current_account.employee.account.email %></div>
+        <div class="model-info-wrapper__info"><%= current_account.account_user.account.email %></div>
       </div>
       <div class="model-wrapper__model-info-wrapper">
         <div class="model-info-wrapper__label">Account type: </div>
-        <div class="model-info-wrapper__info"><%= current_account.employee.account_type %></div>
+        <div class="model-info-wrapper__info"><%= current_account.account_user.account_type %></div>
       </div>
       <div class="model-wrapper__model-info-wrapper">
         <div class="model-info-wrapper__label">Is unsubscribed from new surveys:</div>
-        <div class="model-info-wrapper__info"><%= current_account.employee.opt_out %></div>
+        <div class="model-info-wrapper__info"><%= current_account.account_user.opt_out %></div>
       </div>
     </div>
   </div>
@@ -57,16 +57,16 @@
       </div>
       <div class="custom-table__table-row-wrapper table-row-wrapper">
         <div class="table-row-wrapper__information w-10">
-          <%= image_tag(current_account.employee.employer.logo_url, size: "75x75") %>
+          <%= image_tag(current_account.account_user.employer.logo_url, size: "75x75") %>
         </div>
         <div class="table-row-wrapper__information">
-          <%= current_account.employee.employer.label %>
+          <%= current_account.account_user.employer.label %>
         </div>
         <div class="table-row-wrapper__information">
-          <%= current_account.employee.employer.public_email %>
+          <%= current_account.account_user.employer.public_email %>
         </div>
         <div class="table-row-wrapper__information">
-          <%= current_account.employee.employer.phone %>
+          <%= current_account.account_user.employer.phone %>
         </div>
       </div>
     </div>
@@ -85,8 +85,8 @@
           </div>
         </div>
       </div>
-      <% unless current_account.employee.segments.empty? %>
-        <% current_account.employee.segments.each do |segment| %>
+      <% unless current_account.account_user.segments.empty? %>
+        <% current_account.account_user.segments.each do |segment| %>
           <div class="custom-table__table-row-wrapper table-row-wrapper">
             <div class="table-row-wrapper__information">
               <%= segment.label %>

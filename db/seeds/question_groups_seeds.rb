@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class QuestionGroupsSeeds
+  include LoggerExtension
+
   def initialize; end
 
   def perform

@@ -70,7 +70,7 @@ $(document).ready(() => {
   segments_data.forEach((segment_data, index) => {  // filling hiddenSegmentsData with html  
     const newHiddenInputSegment = $('<input></input>')
       .attr('id', `segment_${segment_data[0]}`)
-      .attr('name', 'segments_ids[]')
+      .attr('name', 'employer[segment_ids][]')
       .attr('type', 'hidden')
       .val(segment_data[0]);
 

@@ -20,7 +20,7 @@
       <% @results.each do |result| %>
         <%= link_to(employee_result_url(result), class: "custom-table__table-row-wrapper table-row-wrapper link-div table-row_0") do %>
           <div class="table-row-wrapper__information">
-            <%= result.label %>
+            <%= result.survey.label %>
           </div>
         <% end %>
       <% end %>

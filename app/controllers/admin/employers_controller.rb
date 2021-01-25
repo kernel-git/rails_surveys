@@ -2,55 +2,30 @@
 
 class Admin::EmployersController < ApplicationController
   layout 'admin'
-  before_action :check_account_type, if: :authenticate_account!
+  load_and_authorize_resource
 
   def index
-    @employers = Employer.all.page(params[:page])
+    @employers = @employers.page(params[:page])
   end
 
-  def show
-    id = Integer(params[:id])
-    begin
-      @employer = Employer.find(id)
-    rescue ActiveRecord::RecordNotFound => e
-      log_exception(e)
-      redirect_to(not_found_404_path)
-    else
-      @employers_employees = @employer.employees
-      @employers_segments = @employer.segments
-    end
-  end
+  def show; end
 
   def new
-    @employer = Employer.new
     @segments_data = Segment.all.collect { |segment| [segment.id, segment.label] }
   end
 
   def create
-    unless params[:employer][:logo_url].start_with?('http://')
-      params[:employer][:logo_url] = "http://#{params[:employer][:logo_url]}"
-    end
-    employer = Employer.new({
-                              logo_url: params[:employer][:logo_url],
-                              label: params[:employer][:label],
-                              address: params[:employer][:address],
-                              public_email: params[:employer][:public_email],
-                              phone: params[:employer][:phone]
-                            })
-    employer.segments = Segment.where(id: params[:segments_ids])
-    employer.build_account(
-      account_type: 'employer',
-      email: params[:employer][:email],
-      password: params[:employer][:password]
+    @employer.build_account(
+      email: account_params[:email],
+      password: account_params[:password],
+      password_confirmation: account_params[:password]
     )
-    employer.save!
-  rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotSaved => e
-    log_exception(e)
-    flash.alert = ('Employer creation failed. Check logs...')
-    redirect_to(admin_employers_url)
-  else
-    flash.info('Employer created successfully')
-    redirect_to(admin_employer_url(employer))
+    if @employer.save
+      redirect_to admin_employer_url(@employer), notice: 'Employer created successfully'
+    else
+      log_errors(@employer)
+      redirect_to new_admin_employer_url, alert: 'Employer creation failed. Check logs...'
+    end
   end
 
   def edit
@@ -79,7 +54,22 @@ class Admin::EmployersController < ApplicationController
 
   protected
 
-  def check_account_type
-    redirect_to(not_found_404_path) unless current_account.account_type == 'administrator'
+  def employer_params
+    params.require(:employer).permit(
+      :logo_url,
+      :label,
+      :public_email,
+      :address,
+      :phone,
+      segment_ids: []
+    )
+  end
+
+  def account_params
+    params.require(:employer).permit(
+      :email,
+      :password,
+      :password_confirmation
+    )
   end
 end

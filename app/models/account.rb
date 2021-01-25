@@ -6,7 +6,19 @@ class Account < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
-  has_one :administrator
-  has_one :employer
-  has_one :employee
+  belongs_to :account_user, polymorphic: true, autosave: true
+
+  def admin?
+    account_user_type == 'Administrator'
+  end
+
+  def employer?
+    account_user_type == 'Employer'
+  end
+
+  def employee?
+    account_user_type == 'Employee'
+  end
+
+  validates_presence_of :account_user_type
 end

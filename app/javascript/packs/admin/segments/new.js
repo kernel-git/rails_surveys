@@ -102,7 +102,7 @@ $(document).ready(() => {
   employees_data.forEach((employee_data, index) => {  // filling hiddenEmployeesData with html  
     const newHiddenInputSegment = $('<input></input>')
       .attr('id', `employee_${employee_data[0]}`)
-      .attr('name', 'employees_ids[]')
+      .attr('name', 'segment[employee_ids][]')
       .attr('type', 'hidden')
       .val(employee_data[0]);
 
@@ -185,7 +185,7 @@ $(document).ready(() => {
   employers_data.forEach((employer_data, index) => {  // filling hiddenEmployerData with html  
     const newHiddenInputSegment = $('<input></input>')
       .attr('id', `employer_${employer_data[0]}`)
-      .attr('name', 'employers_ids[]')
+      .attr('name', 'segment[employer_ids][]')
       .attr('type', 'hidden')
       .val(employer_data[0]);
 

@@ -7,7 +7,9 @@ class Survey < ActiveRecord::Base
   belongs_to :employer
   has_many :survey_employee_relations
   has_many :employees, through: :survey_employee_relations
-  validates :label, :employer_id, presence: true
+
+  validates_presence_of :label, :employer
+  validates_associated :question_groups
 
   scope :filter_by_employer_id, ->(id) { where(employer_id: id) }
   scope :filter_avaible_by_assigned_employee_id, lambda { |assigned_employee_id|

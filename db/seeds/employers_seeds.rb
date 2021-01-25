@@ -1,18 +1,11 @@
 # frozen_string_literal: true
 
 class EmployersSeeds
+  include LoggerExtension
+
   def initialize; end
 
   def perform
-    accounts = []
-    5.times do |_index|
-      accounts << Account.new({
-                                account_type: 'employer',
-                                email: Faker::Internet.unique.email,
-                                password: '11111111'
-                              })
-    end
-    employers = []
     [{
       label: 'BSUIR',
       public_email: 'kanc@bsuir.by',
@@ -47,17 +40,15 @@ class EmployersSeeds
        phone: '88005553535',
        address: 'Statue of Liberty, Liberty Island New York, NY 10004',
        logo_url: 'https://www.graphicsprings.com/filestorage/stencils/e6935e56cde852659cd5d7aa06dc261c.svg'
-     }].each { |hash| employers << Employer.new(hash) }
-
-    begin
-      5.times do |index|
-        accounts[index].save!
-        employers[index].account = accounts[index]
-        employers[index].save!
-      end
-      employers.each(&:save!)
-    rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotSaved => e
-      log_exception(e)
+     }].each do |hash|
+      @employer = Employer.new(hash)
+      @employer.build_account(
+        account_user_type: 'Empoyer',
+        email: Faker::Internet.unique.email,
+        password: '11111111',
+        password_confirmation: '11111111'
+      )
+      log_errors(@employer) unless @employer.save
     end
   end
 end

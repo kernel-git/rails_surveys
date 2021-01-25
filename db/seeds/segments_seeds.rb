@@ -3,6 +3,8 @@
 require 'faker'
 
 class SegmentsSeeds
+  include LoggerExtension
+
   SEGMENTS = [
     'Teacher',
     'Technical',

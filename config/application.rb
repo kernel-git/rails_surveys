@@ -24,8 +24,8 @@ module RailsSurveys
     config.colorize_logging = false
 
     # Auto load modules in /lib
-    config.eager_load_paths += %W(
+    config.eager_load_paths += %W[
       #{config.root}/lib/logger_extension
-    )  
+    ]
   end
 end

@@ -27,13 +27,13 @@
               <div class="question-wrapper__answer-option-wrapper answer-option-wrapper">
                 <% if option.has_text_field %>
                   <div class="answer-option-wrapper__label-wrapper">
-                    <input type="radio" value="<%= @option_radio_value += 1 %>" name="answers[<%=@question_id%>][option_data]" id="radio_with_field_<%=@text_field_id += 1%>" class="answer-option-wrapper__radio">
+                    <input type="radio" value="<%= option.id %>" name="answers[<%= question.id %>][option_data]" id="radio_with_field_<%= option.id %>" class="answer-option-wrapper__radio">
                     <div class="answer-option-wrapper__label"><%= option.text %></div>
                   </div>
-                  <input class="answer-option-wrapper__text-field" type="text" id="field_<%=@text_field_id%>">
+                  <input class="answer-option-wrapper__text-field" type="text" id="field_<%= option.id %>">
                 <% else %>
                   <div class="answer-option-wrapper__label-wrapper">
-                    <input type="radio" value="<%= @option_radio_value += 1 %>" name="answers[<%=@question_id%>][option_data]" class="answer-option-wrapper__radio">
+                    <input type="radio" value="<%= option.id %>" name="answers[<%= question.id %>][option_data]" class="answer-option-wrapper__radio">
                     <div class="answer-option-wrapper__label"><%= option.text %></div>
                   </div>
                 <% end %>

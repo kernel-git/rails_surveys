@@ -16,15 +16,15 @@
         </div>
       </div>
     </div>
-    <% unless @avaible_surveys.empty? %>
-      <% @avaible_surveys.each do |survey| %>
+    <% unless @surveys.empty? %>
+      <% @surveys.each do |survey| %>
         <%= link_to(attempt_employee_survey_url(survey), class: "custom-table__table-row-wrapper table-row-wrapper link-div table-row_0") do %>
           <div class="table-row-wrapper__information">
             <%= survey.label %>
           </div>
         <% end %>
       <% end %>
-      <%= paginate @avaible_surveys %>
+      <%= paginate @surveys %>
     <% else %>
       <div class="custom-table__message">Empty</div>
     <% end %>

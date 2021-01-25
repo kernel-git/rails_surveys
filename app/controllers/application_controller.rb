@@ -3,6 +3,22 @@
 class ApplicationController < ActionController::Base
   include LoggerExtension
 
+  rescue_from CanCan::AccessDenied do |exception|
+    log_exception(exception)
+    if current_account.present?
+      case current_account.account_user_type
+      when 'Administrator'
+        redirect_to(admin_static_pages_url(page: 'access-denied'))
+      when 'Employer'
+        redirect_to(employer_static_pages_url(page: 'access-denied'))
+      when 'Employee'
+        redirect_to(employee_static_pages_url(page: 'access-denied'))
+      end
+    else
+      redirect_to(static_pages_url(page: 'access-denied'))
+    end
+  end
+
   # before_action :configure_permitted_parameters, if: :devise_controller?, only:
 
   # def configure_permitted_parameters
@@ -28,4 +44,8 @@ class ApplicationController < ActionController::Base
   #     employer_root_url
   #   end
   # end
+
+  def current_ability
+    @current_ability ||= Ability.new(current_account)
+  end
 end

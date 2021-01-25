@@ -7,19 +7,15 @@ class StaticPagesController < ApplicationController
     'privacy-policy': 'privacy_policy',
     'contact-employer': 'contact_employer',
     'contact-support': 'contact_support',
-    'not-found-404': 'not_found_404'
+    'not-found-404': 'not_found_404',
+    'access-denied': 'access_denied'
   }.freeze
 
   def show
-    page = params.require(:page)
-    rescue ActionController::ParameterMissing => e
-      log_exception(e)
-      render "/#{STATIC_PAGES['not-found-404'.to_sym]}"
+    if STATIC_PAGES[params[:page].to_sym].nil?
+      render (STATIC_PAGES['not-found-404'.to_sym]).to_s
     else
-      if STATIC_PAGES[params[:page].to_sym].nil?
-        render "#{STATIC_PAGES['not-found-404'.to_sym]}"
-      else
-        render "#{STATIC_PAGES[params[:page].to_sym]}"
-      end
+      render (STATIC_PAGES[params[:page].to_sym]).to_s
+    end
   end
 end

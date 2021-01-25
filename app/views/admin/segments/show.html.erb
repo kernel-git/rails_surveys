@@ -40,8 +40,8 @@
           </div>
         </div>
       </div>
-      <% unless @segment_employers.empty? %>
-        <% @segment_employers.each do |employer| %>
+      <% unless @segment.employers.empty? %>
+        <% @segment.employers.each do |employer| %>
           <%= link_to(admin_employer_url(employer), class: "custom-table__table-row-wrapper table-row-wrapper link-div table-row_0") do %>
             <div class="table-row-wrapper__information w-10">
               <%= image_tag(employer.logo_url, size: "75x75") %>
@@ -103,8 +103,8 @@
           </div>
         </div>
       </div>
-      <% unless @segment_employees.empty? %>
-        <% @segment_employees.each do |employee| %>
+      <% unless @segment.employees.empty? %>
+        <% @segment.employees.each do |employee| %>
           <%= link_to(admin_employee_url(employee), class: "custom-table__table-row-wrapper table-row-wrapper link-div table-row_1") do %>
             <div class="table-row-wrapper__information">
               <%= employee.first_name %>

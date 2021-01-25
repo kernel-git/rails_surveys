@@ -15,35 +15,31 @@ Rails.application.routes.draw do
   end
 
   namespace :admin do
-    constraints(id: /[0-9]+/) do # старый стиль
-      resources :admins
-      resources :employees
-      resources :segments
-      resources :surveys
-      resources :results
-      resources :employers
-    end
+    resources :administrators
+    resources :employees
+    resources :segments
+    resources :surveys
+    resources :results
+    resources :employers
     root 'static_pages#show', page: 'home'
     get '/:page', to: 'static_pages#show', as: 'static_pages'
   end
   namespace :employee do
-    resources :surveys, only: [:index], constraints: { id: /[0-9]+/ } do # старый стиль
+    resources :surveys, only: [:index] do
       member do
         get :attempt
         post :conduct
       end
     end
-    resources :results, only: %i[index show], constraints: { id: /[0-9]+/ } # старый стиль
+    resources :results, only: %i[index show]
     root 'static_pages#show', page: 'home'
     get '/:page', to: 'static_pages#show', as: 'static_pages'
   end
   namespace :employer do
-    constraints(id: /[0-9]+/) do # старый стиль
-      resources :surveys
-      resources :employees
-      resources :segments
-      resources :results
-    end
+    resources :surveys
+    resources :employees
+    resources :segments
+    resources :results
     root 'static_pages#show', page: 'home'
     get '/:page', to: 'static_pages#show', as: 'static_pages'
   end

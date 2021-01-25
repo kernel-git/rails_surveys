@@ -53,8 +53,8 @@
           </div>
         </div>
       </div>
-      <% unless @employers_employees.empty? %>
-        <% @employers_employees.each do |employee| %>
+      <% unless @employer.employees.empty? %>
+        <% @employer.employees.each do |employee| %>
           <%= link_to(admin_employee_url(employee), class: "custom-table__table-row-wrapper table-row-wrapper link-div table-row_0") do %>
             <div class="table-row-wrapper__information">
               <%= employee.first_name %>
@@ -86,8 +86,8 @@
           </div>
         </div>
       </div>
-      <% unless @employers_segments.empty? %>
-        <% @employers_segments.each do |segment| %>
+      <% unless @employer.segments.empty? %>
+        <% @employer.segments.each do |segment| %>
           <%= link_to(admin_segment_url(segment), class: "custom-table__table-row-wrapper table-row-wrapper link-div table-row_1") do %>
             <div class="table-row-wrapper__information">
               <%= segment.label %>

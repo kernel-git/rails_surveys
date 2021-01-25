@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class QuestionsSeeds
+  include LoggerExtension
+
   QUESTIONS = %w[
     science_in_university_one
     science_in_university_two

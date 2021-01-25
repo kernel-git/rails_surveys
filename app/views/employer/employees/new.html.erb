@@ -70,13 +70,13 @@
       </div>
       <div class="custom-table__table-row-wrapper table-row-wrapper table-row_0">
         <div class="table-row-wrapper__information w-10">
-          <%= image_tag(current_account.employer.logo_url, size: "75x75", alt: "Image load failed") %>
+          <%= image_tag(current_account.account_user.logo_url, size: "75x75", alt: "Image load failed") %>
         </div>  
         <div class="table-row-wrapper__information">
-          <%= current_account.employer.label %>
+          <%= current_account.account_user.label %>
         </div> 
         <div class="table-row-wrapper__information">
-          <%= current_account.employer.public_email %>
+          <%= current_account.account_user.public_email %>
         </div>   
       </div>
     </div>
