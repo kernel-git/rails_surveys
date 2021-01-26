@@ -44,11 +44,26 @@ class Admin::EmployeesController < ApplicationController
   end
 
   def edit
-    Rails.logger.debug "Ping from admin/employees#edit with params: #{params}"
+    @segments_data = Segment.all.collect do |segment|
+      [segment.id,
+       segment.label]
+    end
+    @employers_data = Employer.all.collect do |employer|
+      [employer.id,
+       employer.logo_url,
+       employer.label,
+       employer.public_email]
+    end
+    @init_employer_id = @employee.employer.id
+    @init_segments_ids = @employee.segment_ids
   end
 
   def update
-    Rails.logger.debug "Ping from admin/employees#update with params: #{params}"
+    if @employee.update(employee_params)
+      redirect_to admin_employee_url(@emloyee), notice: 'Employee updated successfully'
+    else
+      redirect_to edit_admin_employee_url(@employee), alert: 'Employee update failed. Check logs...'
+    end
   end
 
   def destroy

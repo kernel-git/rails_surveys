@@ -26,11 +26,33 @@
   .save-button {
     width: 100%;
   }
+  .add-button {
+    padding: 20px 15px;
+    margin: 20px;
+    display: flex;
+    justify-content: center;
+
+    border-radius: 10px;
+    text-decoration: none;
+
+    background-color: $white-color;
+    color: $dark-gray-color;
+
+    &:hover {
+      background-color: $overcast-color;
+      color: $black-color;
+    }
+
+    &__centered-label {
+      padding: 20px 0;
+      font-size: 32px;
+    }
+  }
 }
 
 @mixin highlighting {
   .colored-group {
-    padding: 15px 10px;
+    padding: 15px 30px;
     margin: 5px 0;
     background-color: $light-light-gray-color;
     border-radius: 20px;
@@ -41,6 +63,16 @@
     }
     &__label {
       padding: 20px 0 10px;
+      font-size: 32px;
+    }
+    &__label-text-field {
+      width: 50%;
+      margin: 10px 0 0;
+      padding: 10px 5px;
+      font-size: 25px;
+    }
+    &__centered-text {
+      justify-self: center;
       font-size: 32px;
     }
   }
@@ -74,10 +106,13 @@
       font-size: 0px;
     }
     &__label {
-      font-weight: bold;
+      padding: 5px 0;
+      font-size: 25px;
     }
   }
   .table-row-wrapper {
+    padding: 5px 0;
+
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -95,6 +130,13 @@
       width: 25%;
       padding: 5px 10px;
       margin: 5px 5px;
+    }
+    &__checkbox-wrapper {
+      display: flex;
+    }
+    &__checkbox-label {
+      color: $dark-gray-color;
+      padding-right: 10px;
     }
     
     &:last-of-type {

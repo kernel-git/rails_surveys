@@ -3,19 +3,21 @@
 class SurveysSeeds
   include LoggerExtension
 
-  SURVEYS = %w[
-    University
-    Social
+  SURVEYS = [
+    'University',
+    'Social',
+    'Fast food'
   ].freeze
   EMPLOYERS = %w[
     BSUIR
     BSTU
+    BSUIR
   ].freeze
 
   def initialize; end
 
   def perform
-    2.times do |index|
+    SURVEYS.length.times do |index|
       survey = Survey.new({
                             label: SURVEYS[index],
                             employer_id: Employer.find_by(label: EMPLOYERS[index]).id

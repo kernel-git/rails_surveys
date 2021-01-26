@@ -28,11 +28,14 @@ class Admin::AdministratorsController < ApplicationController
   end
 
   def edit
-    Rails.logger.debug "Ping from admin/admins#edit with params: #{params}"
   end
 
   def update
-    Rails.logger.debug "Ping from admin/admins#update with params: #{params}"
+    if @administrator.update(administrator_params)
+      redirect_to admin_administrator_url(@administrator), notice: 'Administrator updated successfully'
+    else
+      redirect_to edit_admin_administrator_url(@administrator), alert: 'Administrator update failed. Check logs...'
+    end
   end
 
   def destroy

@@ -15,14 +15,24 @@
   width: 90%;
 
   &__label-wrapper {
+    padding: 20px 10px 15px;
+    font-size: 25px;
+
     display: flex;
     justify-content: space-between;
-    font-weight: bold;
-    padding-bottom: 15px;
+    align-items: center;
   }
   &__model-wrapper {
     display: flex;
     flex-direction: column;
+  }
+}
+
+.label-wrapper {
+
+  &__label {
+    padding: 20px 0 10px;
+    font-size: 32px;
   }
 }
 .model-wrapper {

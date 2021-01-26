@@ -11,10 +11,10 @@ class Employer::StaticPagesController < ApplicationController
   }.freeze
 
   def show
-    if STATIC_PAGES[page.to_sym].nil?
+    if STATIC_PAGES[params[:page].to_sym].nil?
       render "employer/#{STATIC_PAGES['not-found-404'.to_sym]}"
     else
-      render "employer/#{STATIC_PAGES[page.to_sym]}"
+      render "employer/#{STATIC_PAGES[params[:page].to_sym]}"
     end
   end
 

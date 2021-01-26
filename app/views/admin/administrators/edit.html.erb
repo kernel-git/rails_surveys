@@ -1,0 +1,12 @@
+<%= form_with scope: :administrator, url: admin_administrator_url(@administrator), method: :patch, class: "model-wrapper" do |admin_form| %>
+  <div class="model-wrapper__label">Edit administrator</div>
+  <div class="model-wrapper__model-group">
+    <div class="model-wrapper__model-info-block">
+      <div class="model-wrapper__model-info-wrapper input-wrapper">
+        <div class="model-info-wrapper__label">Nickname:</div>
+        <div class="model-info-wrapper__info"><%= admin_form.text_field :nickname %></div>
+      </div>
+    </div>
+  </div>
+  <%= admin_form.submit "Update administrator" %>
+<% end %>

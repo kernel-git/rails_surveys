@@ -4,18 +4,18 @@
     <title>Surveys Project: Employer</title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-    <%= stylesheet_link_tag "employer" %>
+    <%= stylesheet_link_tag "page_global" %>
   </head>
 
   <body>
-    <div class="employer-wrapper">
-      <div class="employer-header">
-        <%= link_to "Employer", employer_root_url, class: "employer-header__label font-large" %>
-        <div class="employer-header__sections employer-header-sections">
-          <%= link_to "Surveys", employer_surveys_url, class: "employer-header-sections__section font-big" %>
-          <%= link_to "Results", employer_results_url, class: "employer-header-sections__section font-big" %>
-          <%= link_to "Employees", employer_employees_url, class: "employer-header-sections__section font-big" %>
-          <%= link_to "Segments", employer_segments_url, class: "employer-header-sections__section font-big" %>
+    <div class="wrapper">
+      <div class="header">
+        <%= link_to "Employer", employer_root_url, class: "header__label font-large" %>
+        <div class="header__sections header-sections">
+          <%= link_to "Surveys", employer_surveys_url, class: "header-sections__section font-big" %>
+          <%= link_to "Results", employer_results_url, class: "header-sections__section font-big" %>
+          <%= link_to "Employees", employer_employees_url, class: "header-sections__section font-big" %>
+          <%= link_to "Segments", employer_segments_url, class: "header-sections__section font-big" %>
         </div>
         <div class="header__buttons header-buttons">
           <%= button_to "Logout", destroy_account_session_url, method: :delete, class: "header-buttons__button font-medium" %>
@@ -26,8 +26,8 @@
       <div class="content">
         <%= yield %>
       </div>
-      <div class="employer-footer">
-        <div class="employer-footer__text font-small">
+      <div class="footer">
+        <div class="footer__text font-small">
           site design / logo © 2020 boss078, Inc.
         </div>
       </div>

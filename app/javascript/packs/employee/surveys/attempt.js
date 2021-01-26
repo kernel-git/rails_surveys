@@ -4,8 +4,8 @@ let nextButton = null;
 
 $(document).ready(() => {
   current_qgroup_index = 0;
-  nextButton = $('.next-button').detach();
-  nextButton.attr('name', 'commit');
+  // nextButton = $('.next-button').detach();
+  // nextButton.attr('name', 'commit');
 
   $('.qgroup-wrapper').hide();
   $(`#qgroup_0`).show();
@@ -38,7 +38,7 @@ $(document).ready(() => {
 });
 
 function updateQgroupTab() {
-  if (nextButton == null)
-    nextButton = $('.next-button').detach();
+  // if (nextButton == null)
+  //   nextButton = $('.next-button').detach();
   $('.content-wrapper').prepend(qgroups[current_qgroup_index]);
 }

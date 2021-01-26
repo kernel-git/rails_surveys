@@ -4,7 +4,7 @@ let free_option_ids = [0]
 let add_button
 
 $(document).ready(() => {
-  add_button = $('#add_button').detach()
+  add_button = $('#add_button').detach();
   $('#add_qgroup').on('click', () => {
     addNewQuestionGroup(free_qgroup_ids[0]);
     if (free_qgroup_ids.length == 1)
@@ -20,9 +20,11 @@ function addNewQuestionGroup(qgroup_id) {
     .addClass('colored-group');
   const qgroupLabelWrapper = $('<div></div>')
     .addClass('colored-group__label-wrapper');
-  const qgroupLabel = $('<div></div>')
-    .addClass('colored-group__label')
-    .text('Question Group');
+  const qgroupLabelInput = $('<input/>')
+    .addClass('colored-group__label-text-field')
+    .attr('type', 'text')
+    .attr('name', 'question_groups[][label]')
+    .attr('placeholder', 'New question group');
   const newDeleteButton = $('<div></div>')
     .addClass('table-row-wrapper__information link-button')
     .text('Delete')
@@ -33,35 +35,18 @@ function addNewQuestionGroup(qgroup_id) {
       });
       $(`#qgroup_${qgroup_id}`).remove();
     });
-  qgroupLabelWrapper.append(qgroupLabel, newDeleteButton);
-  const modelGroup = $('<div></div>')
-    .addClass('model-wrapper__model-group');
-  const modelInfoBlock = $('<div></div>')
-    .addClass('model-wrapper__model-info-block');
-  const modelInfoWrapper = $('<div></div>')
-    .addClass('model-wrapper__model-info-wrapper');
-  const infoLabel = $('<div></div>')
-    .addClass('model-info-wrapper__label')
-    .text('Label:');
-  const infoInput = $('<input/>')
-    .addClass('model-info-wrapper__info')
-    .attr('type', 'text')
-    .attr('name', 'question_groups[][label]');
-  modelInfoWrapper.append(infoLabel, infoInput);
-  modelInfoBlock.append(modelInfoWrapper);
-  modelGroup.append(modelInfoBlock);
+  qgroupLabelWrapper.append(qgroupLabelInput, newDeleteButton);
 
   const questionsLabel = $('<div></div>')
     .addClass('model-info-wrapper__label')
     .text('Questions');
   
   const questionsWrapper = $('<div></div>')
-    .addClass('model-wrapper__model-table-wrapper model-table-wrapper')
     .attr('id', `qgroup_${qgroup_id}_questions_wrapper`);
 
   const questionAddButton = $('<div><div/>')
     .text('Add new question')
-    .addClass('link-button')
+    .addClass('add-button')
     .attr('id', `add_question_to_qgroup_${qgroup_id}`)
     .on('click', () => {
       addNewQuestion(free_question_ids[0], qgroup_id);
@@ -104,27 +89,24 @@ function addNewQuestionGroup(qgroup_id) {
   //   });
 
   questionsWrapper.append(questionAddButton);
-  qgroupWrapper.append(qgroupLabelWrapper, modelGroup, questionsLabel, questionsWrapper);
+  qgroupWrapper.append(qgroupLabelWrapper, questionsLabel, questionsWrapper);
 
   $('#current-qgroups-wrapper').append(qgroupWrapper);
 }
 
 function addNewQuestion(question_id, qgroup_id) {
+  const addQuestionButton = $(`#add_question_to_qgroup_${qgroup_id}`).detach();
+
   const questionWrapper = $('<div></div>')
     .addClass('qgroup-wrapper__question-wrapper question-wrapper')
     .attr('id', `question_${question_id}`);
   const questionHeader = $('<div></div')
     .addClass('question-wrapper__header');
-  const questionLabelWrapper = $('<div></div')
-  .addClass('question-wrapper__header-label-wrapper');
-  const questionLabelText = $('<div></div')
-    .addClass('question-wrapper__header-label-text')
-    .text('Label:');
   const questionLabelInput = $('<input/>')
-    .addClass('question-wrapper__header-label-input')
+    .addClass('colored-group__label-text-field')
     .attr('type', 'text')
-    .attr('name', 'question_groups[][questions[][question_type]]');
-  questionLabelWrapper.append(questionLabelText, questionLabelInput);
+    .attr('name', 'question_groups[][questions[][question_type]]')
+    .attr('placeholder', 'New question');
   const newDeleteButton = $('<div></div>')
     .addClass('question-wrapper__header-delete-button link-button')
     .text('Delete')
@@ -132,7 +114,7 @@ function addNewQuestion(question_id, qgroup_id) {
       free_question_ids.unshift(question_id);
       $(`#question_${question_id}`).remove();
     });
-  questionHeader.append(questionLabelWrapper, newDeleteButton);
+  questionHeader.append(questionLabelInput, newDeleteButton);
     
   const optionsWrapper = $('<div></div>')
     .addClass('model-wrapper__model-table-wrapper model-table-wrapper');
@@ -145,24 +127,25 @@ function addNewQuestion(question_id, qgroup_id) {
     .addClass('model-table-wrapper__table custom-table');
   const headerWrapper = $('<div></div>')
     .addClass('custom-table__table-header-wrapper table-header-wrapper');
-  const headerElem1 = $('<div></div>')
+  // const headerElem1 = $('<div></div>')
+  //   .addClass('table-header-wrapper__table-header-element table-header-element');
+  // const headerLabel1 = $('<div></div>')
+  //   .addClass('table-header-element__label')
+  //   .text('Option text');
+  // headerElem1.append(headerLabel1);
+  // const headerElem2 = $('<div></div>')
+  //   .addClass('table-header-wrapper__table-header-element table-header-element');
+  // const headerLabel2 = $('<div></div>')
+  //   .addClass('table-header-element__label')
+  //   .text('With text field');
+  // headerElem2.append(headerLabel2);
+  const headerElem = $('<div></div>')
     .addClass('table-header-wrapper__table-header-element table-header-element');
-  const headerLabel1 = $('<div></div>')
+  const headerLabel = $('<div></div>')
     .addClass('table-header-element__label')
-    .text('Option text');
-  headerElem1.append(headerLabel1);
-  const headerElem2 = $('<div></div>')
-    .addClass('table-header-wrapper__table-header-element table-header-element');
-  const headerLabel2 = $('<div></div>')
-    .addClass('table-header-element__label')
-    .text('With text field');
-  headerElem2.append(headerLabel2);
-  const headerElem3 = $('<div></div>')
-    .addClass('w-10 table-header-wrapper__table-header-element table-header-element');
-  const headerLabel3 = $('<div></div>')
-    .addClass('table-header-element__label');
-  headerElem3.append(headerLabel3);
-  headerWrapper.append(headerElem1, headerElem2, headerElem3);
+    .text('Options');
+  headerElem.append(headerLabel);
+  headerWrapper.append(headerElem);
 
   const optionAddButton = add_button.clone();
   optionAddButton
@@ -179,8 +162,7 @@ function addNewQuestion(question_id, qgroup_id) {
 
   questionWrapper.append(questionHeader, optionsWrapper);
 
-  $(`#qgroup_${qgroup_id}_questions_wrapper`).append(questionWrapper);
-  
+  $(`#qgroup_${qgroup_id}_questions_wrapper`).append(questionWrapper, addQuestionButton);
 
 
   // const rowWrapper = $('<div></div>')
@@ -211,12 +193,19 @@ function addNewOption(option_id, question_id) {
     .addClass('custom-table__table-row-wrapper table-row-wrapper');
   const optionLabel = $('<input/>')
     .attr('type', 'text')
+    .attr('placeholder', 'New option')
     .attr('name', 'question_groups[][questions[][options[][label]]')
     .addClass('table-row-wrapper__text-input');
+  const optionCheckboxWrapper = $('<div></div>')
+    .addClass('table-row-wrapper__checkbox-wrapper');
+  const checkboxText = $('<div></div>')
+    .addClass('table-row-wrapper__checkbox-label')
+    .text('Should be with text field?');
   const optionCheckbox = $('<input/>')
     .attr('type', 'checkbox')
     .attr('name', 'question_groups[][questions[][options[][with_text_field]]')
     .addClass('table-row-wrapper__checkbox');
+  optionCheckboxWrapper.append(checkboxText, optionCheckbox);
   const newDeleteButton = $('<div></div>')
     .addClass('table-row-wrapper__information link-button')
     .text('Delete')
@@ -224,7 +213,7 @@ function addNewOption(option_id, question_id) {
       free_option_ids.unshift(option_id);
       $(`#option_${option_id}`).remove();
     });
-    optionWrapper.append(optionLabel, optionCheckbox, newDeleteButton);
+    optionWrapper.append(optionLabel, optionCheckboxWrapper, newDeleteButton);
   const addButton = $(`#add-row_${question_id + 1}`).detach();
 
   $(`#listing-table_${question_id + 1}`).append(optionWrapper);
