@@ -27,7 +27,7 @@
         <div class="model-info-wrapper__info"><%= @employee.account_type %></div>
       </div>
       <div class="model-wrapper__model-info-wrapper">
-        <div class="model-info-wrapper__label">Position age:</div>
+        <div class="model-info-wrapper__label">Years of service:</div>
         <div class="model-info-wrapper__info"><%= @employee.position_age %></div>
       </div>
       <div class="model-wrapper__model-info-wrapper">
@@ -37,7 +37,7 @@
     </div>
   </div>
   <div class="model-wrapper__model-table-wrapper model-table-wrapper">
-    <div class="model-table-wrapper__label">Employee's groups</div>
+    <div class="model-table-wrapper__label">This employee groups</div>
     <div id="listing-table_0" class="model-table-wrapper__table custom-table">
       <div class="custom-table__table-header-wrapper table-header-wrapper">
         <div class="table-header-wrapper__table-header-element table-header-element">
@@ -46,7 +46,7 @@
             <div id="sort-arrow_down_0_table_0"><%= inline_svg_tag('down-chevron.svg', class: "svg-sorting-arrow") %></div>
           </div>
           <div class="table-header-element__label">
-            Label
+            Name
           </div>
         </div>
       </div>
@@ -64,26 +64,38 @@
     </div>
   </div>
   <div class="model-wrapper__model-table-wrapper model-table-wrapper">
-    <div class="model-table-wrapper__label">Assigned for this employee surveys</div>
+    <div class="model-table-wrapper__label">Assigned surveys for this employee</div>
     <div id="listing-table_1" class="model-table-wrapper__table custom-table">
       <div class="custom-table__table-header-wrapper table-header-wrapper">
         <div class="table-header-wrapper__table-header-element table-header-element">
           <div class="table-header-element__arrows-wrapper arrows-wrapper">
-            <div id="sort-arrow_up_3_table_1"><%= inline_svg_tag('up-chevron.svg', class: "svg-sorting-arrow") %></div>
-            <div id="sort-arrow_down_3_table_1"><%= inline_svg_tag('down-chevron.svg', class: "svg-sorting-arrow") %></div>
+            <div id="sort-arrow_up_0_table_1"><%= inline_svg_tag('up-chevron.svg', class: "svg-sorting-arrow") %></div>
+            <div id="sort-arrow_down_0_table_1"><%= inline_svg_tag('down-chevron.svg', class: "svg-sorting-arrow") %></div>
           </div>
           <div class="table-header-element__label">
             Survey
           </div>
         </div>
+        <div class="table-header-wrapper__table-header-element table-header-element">
+          <div class="table-header-element__arrows-wrapper arrows-wrapper">
+            <div id="sort-arrow_up_1_table_1"><%= inline_svg_tag('up-chevron.svg', class: "svg-sorting-arrow") %></div>
+            <div id="sort-arrow_down_1_table_1"><%= inline_svg_tag('down-chevron.svg', class: "svg-sorting-arrow") %></div>
+          </div>
+          <div class="table-header-element__label">
+            Date of assigment
+          </div>
+        </div>
       </div>
       <% unless @available_surveys.empty? %>
         <% @available_surveys.each do |connection| %>
-          <div class="custom-table__table-row-wrapper table-row-wrapper table-row_1 ">
+          <%= link_to(employer_survey_url(connection.survey), class: "custom-table__table-row-wrapper table-row-wrapper link-div table-row_1") do %>
             <div class="table-row-wrapper__information">
               <%= connection.survey.label %>
             </div>
-          </div>
+            <div class="table-row-wrapper__information">
+              <%= connection.created_at.to_formatted_s(:db) %>
+            </div>
+          <% end %>
         <% end %>
       <% else %>
         <div class="custom-table__message">Empty</div>
@@ -92,23 +104,35 @@
   </div>
   <div class="model-wrapper__model-table-wrapper model-table-wrapper">
     <div class="model-table-wrapper__label">Completed surveys by this employee</div>
-    <div id="listing-table_1" class="model-table-wrapper__table custom-table">
+    <div id="listing-table_2" class="model-table-wrapper__table custom-table">
       <div class="custom-table__table-header-wrapper table-header-wrapper">
         <div class="table-header-wrapper__table-header-element table-header-element">
           <div class="table-header-element__arrows-wrapper arrows-wrapper">
-            <div id="sort-arrow_up_3_table_1"><%= inline_svg_tag('up-chevron.svg', class: "svg-sorting-arrow") %></div>
-            <div id="sort-arrow_down_3_table_1"><%= inline_svg_tag('down-chevron.svg', class: "svg-sorting-arrow") %></div>
+            <div id="sort-arrow_up_0_table_2"><%= inline_svg_tag('up-chevron.svg', class: "svg-sorting-arrow") %></div>
+            <div id="sort-arrow_down_0_table_2"><%= inline_svg_tag('down-chevron.svg', class: "svg-sorting-arrow") %></div>
           </div>
           <div class="table-header-element__label">
             Survey
           </div>
         </div>
+        <div class="table-header-wrapper__table-header-element table-header-element">
+          <div class="table-header-element__arrows-wrapper arrows-wrapper">
+            <div id="sort-arrow_up_1_table_2"><%= inline_svg_tag('up-chevron.svg', class: "svg-sorting-arrow") %></div>
+            <div id="sort-arrow_down_1_table_2"><%= inline_svg_tag('down-chevron.svg', class: "svg-sorting-arrow") %></div>
+          </div>
+          <div class="table-header-element__label">
+            Date of completion
+          </div>
+        </div>
       </div>
       <% unless @conducted_surveys.empty? %>
         <% @conducted_surveys.each do |connection| %>
-          <%= link_to(employer_result_url(connection), class: "custom-table__table-row-wrapper table-row-wrapper link-div table-row_1") do %>
+          <%= link_to(employer_result_url(connection), class: "custom-table__table-row-wrapper table-row-wrapper link-div table-row_2") do %>
             <div class="table-row-wrapper__information">
               <%= connection.survey.label %>
+            </div>
+            <div class="table-row-wrapper__information">
+              <%= connection.updated_at.to_formatted_s(:db) %>
             </div>
           <% end %>
         <% end %>

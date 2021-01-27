@@ -45,7 +45,7 @@
       <div class="content-wrapper__content-footer content-footer">
         <div class="progress__wrapper">
           <% @survey.question_groups.each_with_index do |question_group, qg_index| %>
-            <div class="progress__element" id="qgroup-button_<%= qg_index %>">
+            <div class="progress__element link-div" id="qgroup-button_<%= qg_index %>">
               <%= qg_index + 1 %>
             </div>
           <% end %>
@@ -83,6 +83,10 @@
           </div>
           <div class="table-header-element__label">
             Email
+          </div>
+        </div>
+        <div class="table-header-wrapper__table-header-element table-header-element">
+          <div class="table-header-element__label">
           </div>
         </div>
       </div>

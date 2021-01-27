@@ -35,7 +35,7 @@
         <div class="model-info-wrapper__info"><%= employee_form.password_field :password %></div>
       </div>
       <div class="model-wrapper__model-info-wrapper input-wrapper">
-        <div class="model-info-wrapper__label">Position age:</div>
+        <div class="model-info-wrapper__label">Years of service:</div>
         <div class="model-info-wrapper__info"><%= employee_form.text_field :position_age %></div>
       </div>
         <div class="model-wrapper__model-info-wrapper input-wrapper">
@@ -45,49 +45,21 @@
     </div>
   </div>
   <div class="model-wrapper__model-table-wrapper model-table-wrapper">
-    <div class="model-table-wrapper__label">Employee's employer</div>
-    <div id="listing-table_0" class="model-table-wrapper__table custom-table">
-      <div class="custom-table__table-header-wrapper table-header-wrapper">
-        <div class="w-10 table-header-wrapper__table-header-element table-header-element">
-          <div class="table-header-element__label">
-            Logo
-          </div>
-        </div>
-        <div class="table-header-wrapper__table-header-element table-header-element">
-          <div class="table-header-element__label">
-            Label
-          </div>
-        </div>
-        <div class="table-header-wrapper__table-header-element table-header-element">
-          <div class="table-header-element__label">
-            Email
-          </div>
-        </div>
-        <div class="w-10 table-header-wrapper__table-header-element table-header-element">
-          <div class="table-header-element__label">
-          </div>
-        </div>
-      </div>
-      <div class="custom-table__table-row-wrapper table-row-wrapper table-row_0">
-        <div class="table-row-wrapper__information w-10">
-          <%= image_tag(current_account.account_user.logo_url, size: "75x75", alt: "Image load failed") %>
-        </div>  
-        <div class="table-row-wrapper__information">
-          <%= current_account.account_user.label %>
-        </div> 
-        <div class="table-row-wrapper__information">
-          <%= current_account.account_user.public_email %>
-        </div>   
-      </div>
-    </div>
-  </div>
-  <div class="model-wrapper__model-table-wrapper model-table-wrapper">
-    <div class="model-table-wrapper__label">Employee's groups</div>
+    <div class="model-table-wrapper__label">This employee groups</div>
     <div id="listing-table_1" class="model-table-wrapper__table custom-table">
       <div class="custom-table__table-header-wrapper table-header-wrapper">
         <div class="table-header-wrapper__table-header-element table-header-element">
           <div class="table-header-element__label">
-            Label
+            Name
+          </div>
+        </div>
+        <div class="table-header-wrapper__table-header-element table-header-element">
+          <div class="table-header-element__label">
+            Date of creation
+          </div>
+        </div>
+        <div class="table-header-wrapper__table-header-element table-header-element">
+          <div class="table-header-element__label">
           </div>
         </div>
       </div>
@@ -116,6 +88,11 @@
           <div class="table-header-wrapper__table-header-element table-header-element">
             <div class="table-header-element__label">
               Label
+            </div>
+          </div>
+          <div class="table-header-wrapper__table-header-element table-header-element">
+            <div class="table-header-element__label">
+              Date of creation
             </div>
           </div>
         </div>

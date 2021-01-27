@@ -2,7 +2,7 @@
 
 <div class="listing-wrapper">
   <div class="listing-wrapper__label-wrapper">
-    <div class="label-wrapper__label">Employee's listing</div>
+    <div class="label-wrapper__label">Your employees</div>
     <%= link_to "Add new employee", new_employer_employee_url, class: "link-button label-wrapper__button" %>
   </div>
   <div id="listing-table_0" class="listing-wrapper__custom-table custom-table">
@@ -34,6 +34,15 @@
           Email
         </div>
       </div>
+      <div class="table-header-wrapper__table-header-element table-header-element">
+        <div class="table-header-element__arrows-wrapper arrows-wrapper">
+          <div id="sort-arrow_up_3_table_0"><%= inline_svg_tag('up-chevron.svg', class: "svg-sorting-arrow") %></div>
+          <div id="sort-arrow_down_3_table_0"><%= inline_svg_tag('down-chevron.svg', class: "svg-sorting-arrow") %></div>
+        </div>
+        <div class="table-header-element__label">
+          Type
+        </div>
+      </div>
     </div>
   <% unless @employees.empty? %>
   <% @employees.each do |employee| %>
@@ -46,6 +55,9 @@
       </div>
       <div class="table-row-wrapper__information">
         <%= employee.account.email %>
+      </div>
+      <div class="table-row-wrapper__information">
+        <%= employee.account_type %>
       </div>
     <% end %>
   <% end %>

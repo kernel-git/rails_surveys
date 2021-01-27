@@ -52,10 +52,7 @@ $(document).ready(() => {
     const newEmail = $('<div></div>')
       .addClass("table-row-wrapper__information")
       .text(employee_data[3]);
-    const newEmployerLabel = $('<div></div>')
-      .addClass("table-row-wrapper__information")
-      .text(employee_data[4]);
-    newRow.append(newFirstName, newLastName, newEmail, newEmployerLabel);
+    newRow.append(newFirstName, newLastName, newEmail);
 
     modalEmployeesData.push(newRow);
     if(!init_employees_ids.includes(employee_data[0]))
@@ -76,9 +73,6 @@ $(document).ready(() => {
     const newEmail = $('<div></div>')
       .addClass("table-row-wrapper__information")
       .text(employee_data[3]);
-    const newEmployerLabel = $('<div></div>')
-      .addClass("table-row-wrapper__information")
-      .text(employee_data[4]);
     const newDeleteButton = $('<div></div>')
       .addClass('table-row-wrapper__information link-button')
       .text('Delete')
@@ -90,7 +84,7 @@ $(document).ready(() => {
         currentModalEmployeesIndexes.push(index);
         updateEmployeeTables();
     });
-    newRow.append(newFirstName, newLastName, newEmail, newEmployerLabel, newDeleteButton);
+    newRow.append(newFirstName, newLastName, newEmail, newDeleteButton);
 
     employeesData.push(newRow);
     if(init_employees_ids.includes(employee_data[0]))

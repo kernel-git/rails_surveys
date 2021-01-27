@@ -14,7 +14,7 @@ class Employer::EmployeesController < ApplicationController
   end
 
   def new
-    @groups_data = Group.all.collect { |group| [group.id, group.label] }
+    @groups_data = Group.all.collect { |group| [group.id, group.label, group.created_at.to_formatted_s(:db)] }
   end
 
   def create
@@ -32,7 +32,7 @@ class Employer::EmployeesController < ApplicationController
   end
 
   def edit
-    @groups_data = Group.all.collect { |group| [group.id, group.label] }
+    @groups_data = Group.all.collect { |group| [group.id, group.label, group.created_at.to_formatted_s(:db)] }
     @init_groups_ids = @employee.group_ids
   end
 

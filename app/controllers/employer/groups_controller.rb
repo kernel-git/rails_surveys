@@ -16,8 +16,8 @@ class Employer::GroupsController < ApplicationController
 
   def new
     @employees_data = Employee.filter_by_employer_id(current_account.account_user.id).collect do |employee|
-      [employee.id, employee.first_name,
-       employee.last_name, employee.account.email]
+      [employee.id, employee.first_name, employee.last_name, 
+        employee.account.email, employee.account_type]
     end
   end
 

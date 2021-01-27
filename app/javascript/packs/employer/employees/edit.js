@@ -27,6 +27,10 @@ $(document).ready(() => {
     const newLabel = $('<div></div>')
       .addClass("table-row-wrapper__information")
       .text(group_data[1]);
+    
+    const newDate = $('<div></div>')
+      .addClass("table-row-wrapper__information")
+      .text(group_data[2]);
 
     const newDeleteButton = $('<div></div>')
       .addClass('table-row-wrapper__information link-button')
@@ -41,7 +45,7 @@ $(document).ready(() => {
         updateGroupTables();
     });
     
-    newRow.append(newLabel, newDeleteButton);
+    newRow.append(newLabel, newDate, newDeleteButton);
     groupsData.push(newRow);
   });
 
@@ -73,7 +77,10 @@ $(document).ready(() => {
     const newLabel = $('<div></div>')
       .addClass("table-row-wrapper__information")
       .text(group_data[1]);
-    newRow.append(newLabel);
+    const newDate = $('<div></div>')
+      .addClass("table-row-wrapper__information")
+      .text(group_data[2]);
+    newRow.append(newLabel, newDate);
 
     modalGroupsData.push(newRow);
     currentModalGroupsIndexes.push(index);

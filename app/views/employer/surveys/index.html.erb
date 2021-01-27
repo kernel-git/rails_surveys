@@ -37,9 +37,10 @@
           </div>
         <% end %>
       <% end %>
-      <%= paginate @surveys %>
-    <% else %>
-      <div class="custom-table__message">Empty</div>
-    <% end %>
+    </div>
+  <%= paginate @surveys %>
+  <% else %>
+    <div class="custom-table__message">Empty</div>
   </div>
+  <% end %>
 </div>
