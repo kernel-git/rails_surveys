@@ -37,7 +37,7 @@
     </div>
   </div>
   <div class="model-wrapper__model-table-wrapper model-table-wrapper">
-    <div class="model-table-wrapper__label">Employee's segments</div>
+    <div class="model-table-wrapper__label">Employee's groups</div>
     <div id="listing-table_0" class="model-table-wrapper__table custom-table">
       <div class="custom-table__table-header-wrapper table-header-wrapper">
         <div class="table-header-wrapper__table-header-element table-header-element">
@@ -50,11 +50,11 @@
           </div>
         </div>
       </div>
-      <% unless @employee.segments.empty? %>
-        <% @employee.segments.each do |segment| %>
-          <%= link_to(admin_segment_url(segment), class: "custom-table__table-row-wrapper table-row-wrapper link-div table-row_0") do %>
+      <% unless @employee.groups.empty? %>
+        <% @employee.groups.each do |group| %>
+          <%= link_to(employer_group_url(group), class: "custom-table__table-row-wrapper table-row-wrapper link-div table-row_0") do %>
             <div class="table-row-wrapper__information">
-              <%= segment.label %>
+              <%= group.label %>
             </div>
           <% end %>
         <% end %>
@@ -77,11 +77,11 @@
           </div>
         </div>
       </div>
-      <% unless SurveyEmployeeRelation.filter_avaible_by_employee_id(@employee.id).empty? %>
-        <% SurveyEmployeeRelation.filter_avaible_by_employee_id(@employee.id).each do |relation| %>
+      <% unless SurveyEmployeeConnection.filter_avaible_by_employee_id(@employee.id).empty? %>
+        <% SurveyEmployeeConnection.filter_avaible_by_employee_id(@employee.id).each do |connection| %>
           <div class="custom-table__table-row-wrapper table-row-wrapper table-row_1 ">
             <div class="table-row-wrapper__information">
-              <%= relation.survey.label %>
+              <%= connection.survey.label %>
             </div>
           </div>
         <% end %>
@@ -104,11 +104,11 @@
           </div>
         </div>
       </div>
-      <% unless SurveyEmployeeRelation.filter_conducted_by_employee_id(@employee.id).empty? %>
-        <% SurveyEmployeeRelation.filter_conducted_by_employee_id(@employee.id).each do |relation| %>
-          <%= link_to(employer_result_url(relation), class: "custom-table__table-row-wrapper table-row-wrapper link-div table-row_1") do %>
+      <% unless SurveyEmployeeConnection.filter_conducted_by_employee_id(@employee.id).empty? %>
+        <% SurveyEmployeeConnection.filter_conducted_by_employee_id(@employee.id).each do |connection| %>
+          <%= link_to(employer_result_url(connection), class: "custom-table__table-row-wrapper table-row-wrapper link-div table-row_1") do %>
             <div class="table-row-wrapper__information">
-              <%= relation.survey.label %>
+              <%= connection.survey.label %>
             </div>
           <% end %>
         <% end %>

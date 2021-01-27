@@ -11,7 +11,7 @@ class Employer::EmployeesController < ApplicationController
   def show; end
 
   def new
-    @segments_data = Segment.all.collect { |segment| [segment.id, segment.label] }
+    @groups_data = Group.all.collect { |group| [group.id, group.label] }
   end
 
   def create
@@ -29,8 +29,8 @@ class Employer::EmployeesController < ApplicationController
   end
 
   def edit
-    @segments_data = Segment.all.collect { |segment| [segment.id, segment.label] }
-    @init_segments_ids = @employee.segment_ids
+    @groups_data = Group.all.collect { |group| [group.id, group.label] }
+    @init_groups_ids = @employee.group_ids
   end
 
   def update
@@ -55,7 +55,7 @@ class Employer::EmployeesController < ApplicationController
       :age,
       :position_age,
       :opt_out,
-      segment_ids: []
+      group_ids: []
     )
   end
 

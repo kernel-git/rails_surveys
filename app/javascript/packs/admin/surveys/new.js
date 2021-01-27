@@ -85,13 +85,13 @@ $(document).ready(() => {
   });
 
   employers_data.forEach((employer, index) => {  // filling hiddenEmployersData with html  
-    const newHiddenInputSegment = $('<input></input>')
+    const newHiddenInputGroup = $('<input></input>')
       .attr('id', `employer_${employer.id}`)
       .attr('name', 'survey[employer_id]')
       .attr('type', 'hidden')
       .val(employer.id);
 
-    hiddenEmployersData.push(newHiddenInputSegment);
+    hiddenEmployersData.push(newHiddenInputGroup);
   });
 
   updateEmployerTables();

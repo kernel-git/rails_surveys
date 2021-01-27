@@ -33,7 +33,7 @@ describe Employer, 'association' do
   it { is_expected.to belong_to(:account) }
   it { is_expected.to have_many(:employees) }
   it { is_expected.to have_many(:surveys) }
-  it { is_expected.to have_and_belong_to_many(:segments) }
+  it { is_expected.to have_and_belong_to_many(:groups) }
 end
 
 describe Employer, 'column_specification' do

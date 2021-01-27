@@ -10,7 +10,7 @@ class Admin::EmployeesController < ApplicationController
   end
 
   def show
-    @employee = Employee.includes(:segments, :employer, answers: [
+    @employee = Employee.includes(:groups, :employer, answers: [
                                     question: [
                                       question_group: [:survey]
                                     ]
@@ -18,9 +18,9 @@ class Admin::EmployeesController < ApplicationController
   end
 
   def new
-    @segments_data = Segment.all.collect do |segment|
-      [segment.id,
-       segment.label]
+    @groups_data = Group.all.collect do |group|
+      [group.id,
+      group.label]
     end
     @employers_data = Employer.all.collect do |employer|
       [employer.id,
@@ -44,9 +44,9 @@ class Admin::EmployeesController < ApplicationController
   end
 
   def edit
-    @segments_data = Segment.all.collect do |segment|
-      [segment.id,
-       segment.label]
+    @groups_data = Group.all.collect do |group|
+      [group.id,
+      group.label]
     end
     @employers_data = Employer.all.collect do |employer|
       [employer.id,
@@ -55,12 +55,12 @@ class Admin::EmployeesController < ApplicationController
        employer.public_email]
     end
     @init_employer_id = @employee.employer.id
-    @init_segments_ids = @employee.segment_ids
+    @init_groups_ids = @employee.group_ids
   end
 
   def update
     if @employee.update(employee_params)
-      redirect_to admin_employee_url(@emloyee), notice: 'Employee updated successfully'
+      redirect_to admin_employee_url(@employee), notice: 'Employee updated successfully'
     else
       redirect_to edit_admin_employee_url(@employee), alert: 'Employee update failed. Check logs...'
     end
@@ -81,7 +81,7 @@ class Admin::EmployeesController < ApplicationController
       :position_age,
       :opt_out,
       :employer_id,
-      segment_ids: []
+      group_ids: []
     )
   end
 

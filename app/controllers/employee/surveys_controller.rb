@@ -31,7 +31,7 @@ class Employee::SurveysController < ApplicationController
       log_exception(e)
       redirect_to attempt_employee_survey_url(params[:id]), alert: 'Attempt save failed. Check logs...'
     else
-      result = SurveyEmployeeRelation.find_by(
+      result = SurveyEmployeeConnection.find_by(
         survey_id: params[:id],
         employee_id: current_account.account_user_id
       )
@@ -69,9 +69,9 @@ class Employee::SurveysController < ApplicationController
     #     answers << new_answer
     #   end
     #   answers.each(&:save!)
-    #   relation = SurveyEmployeeRelation.where(survey_id: params[:id], employee_id: current_employee.id).first
-    #   relation.is_conducted = true
-    #   relation.save
+    #   connection = SurveyEmployeeConnection.where(survey_id: params[:id], employee_id: current_employee.id).first
+    #   connection.is_conducted = true
+    #   connection.save
     # rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotSaved, ActionController::ParameterMissing => e
     #   log_exception(e)
     #   flash.alert = 'Attempt save failed. Check logs...'

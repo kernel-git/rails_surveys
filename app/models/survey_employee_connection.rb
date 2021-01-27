@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class SurveyEmployeeRelation < ActiveRecord::Base
+class SurveyEmployeeConnection < ActiveRecord::Base
   belongs_to :survey
   belongs_to :employee
 

@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Route to segments as admin' do
+RSpec.describe 'Route to groups as admin' do
   it 'routes /admin/employees to admin/employees#index' do
     expect(get: '/admin/employees').to route_to(
       controller: 'admin/employees',

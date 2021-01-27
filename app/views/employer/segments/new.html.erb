@@ -3,22 +3,22 @@
 <%= content_tag :div, id: "employers_data", data: {employers: @employers_data} do %>
 <% end %>
 
-<%= javascript_pack_tag "employer/segments/new.js" %>
+<%= javascript_pack_tag "employer/groups/new.js" %>
 <%= javascript_pack_tag "extra/table-behavior.js" %>
 
-<%= form_with scope: :segment, url: employer_segments_url(@segment), method: :post, class: "model-wrapper" do |segment_form| %>
-  <div class="model-wrapper__label">New segment</div>
+<%= form_with scope: :group, url: employer_groups_url(@group), method: :post, class: "model-wrapper" do |group_form| %>
+  <div class="model-wrapper__label">New group</div>
   <div class="model-wrapper__model-group">
     <div class="model-wrapper__model-info-block">
       <div class="model-wrapper__model-info-wrapper input-wrapper">
         <div class="model-info-wrapper__label">Label: </div>
-        <div class="model-info-wrapper__info"><%= segment_form.text_field :label %></div>
+        <div class="model-info-wrapper__info"><%= group_form.text_field :label %></div>
       </div>
     </div>
   </div>
   
   <div class="model-wrapper__model-table-wrapper model-table-wrapper">
-    <div class="model-table-wrapper__label">Segment's employees</div>
+    <div class="model-table-wrapper__label">Group's employees</div>
     <div id="listing-table_0" class="model-table-wrapper__table custom-table">
       <div class="custom-table__table-header-wrapper table-header-wrapper">
         <div class="table-header-wrapper__table-header-element table-header-element">
@@ -47,7 +47,7 @@
   </div>
 
   <div class="model-wrapper__model-table-wrapper model-table-wrapper">
-    <div class="model-table-wrapper__label">Segment's company</div>
+    <div class="model-table-wrapper__label">Group's company</div>
     <div id="listing-table_1" class="model-table-wrapper__table custom-table">
       <div class="custom-table__table-header-wrapper table-header-wrapper">
         <div class="table-header-wrapper__table-header-element table-header-element">
@@ -85,7 +85,7 @@
 
   <div id="current-employee-ids" style="display: none;"></div>
 
-  <%= segment_form.submit "Create segment" %>
+  <%= group_form.submit "Create group" %>
   
 <% end %>
 

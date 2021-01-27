@@ -15,6 +15,6 @@ SurveysSeeds.new.perform
 QuestionGroupsSeeds.new.perform
 QuestionsSeeds.new.perform
 EmployeesSeeds.new.perform
-SegmentsSeeds.new.perform
+GroupsSeeds.new.perform
 OptionsSeeds.new.perform
 AnswersSeeds.new.perform

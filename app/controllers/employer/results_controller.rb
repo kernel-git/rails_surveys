@@ -2,7 +2,7 @@
 
 class Employer::ResultsController < ApplicationController
   layout 'employer'
-  load_and_authorize_resource class: 'SurveyEmployeeRelation'
+  load_and_authorize_resource class: 'SurveyEmployeeConnection'
   skip_load_resource only: :show
 
   def index
@@ -10,7 +10,7 @@ class Employer::ResultsController < ApplicationController
   end
 
   def show
-    @result = SurveyEmployeeRelation.includes(:employee, survey:
+    @result = SurveyEmployeeConnection.includes(:employee, survey:
       [question_groups:
         [questions:
           [options: :answers]]]).find(params[:id])

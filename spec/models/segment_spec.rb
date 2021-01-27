@@ -2,9 +2,9 @@
 
 require 'rails_helper'
 
-describe Segment, 'validation' do
+describe Group, 'validation' do
   subject do
-    FactoryBot.create(:segment)
+    FactoryBot.create(:group)
   end
 
   context 'with valid attributes' do
@@ -16,12 +16,12 @@ describe Segment, 'validation' do
   end
 end
 
-describe Segment, 'association' do
+describe Group, 'association' do
   it { is_expected.to have_and_belong_to_many(:employees) }
   it { is_expected.to have_and_belong_to_many(:employers) }
 end
 
-describe Segment, 'column_specification' do
+describe Group, 'column_specification' do
   it { is_expected.to have_db_column(:label).of_type(:string) }
 
   it { is_expected.to have_db_column(:created_at).of_type(:datetime) }

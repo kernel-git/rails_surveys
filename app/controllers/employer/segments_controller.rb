@@ -1,16 +1,17 @@
 # frozen_string_literal: true
 
-class Employer::SegmentsController < ApplicationController
+class Employer::GroupsController < ApplicationController
   layout 'employer'
   load_and_authorize_resource
   skip_load_resource only: :show
 
   def index
-    @segments = @segments.page(params[:page])
+    @groups = @groups.page(params[:page])
   end
 
   def show
-    @segment = Segment.includes(:employees).find(params[:id])
+    @group = Group.includes(:employees).find(params[:id])
+    @group_employees = Employee.filter_by_employer_id(current_account.account_user_id).filter_by_group_id(@group.id)
   end
 
   def new
@@ -21,31 +22,31 @@ class Employer::SegmentsController < ApplicationController
   end
 
   def create
-    @segment.employers << current_account.account_user
-    if @segment.save
-      redirect_to employer_segment_url(@segment), notice: 'Segment created successfully'
+    @group.employers << current_account.account_user
+    if @group.save
+      redirect_to employer_group_url(@group), notice: 'Group created successfully'
     else
-      log_errors(@segment)
-      redirect_to new_employer_segment_url, alert: 'Segment creation failed. Check logs...'
+      log_errors(@group)
+      redirect_to new_employer_group_url, alert: 'Group creation failed. Check logs...'
     end
   end
 
   def edit
-    Rails.logger.debug "Ping from admin/segments#edit with params: #{params}"
+    Rails.logger.debug "Ping from admin/groups#edit with params: #{params}"
   end
 
   def update
-    Rails.logger.debug "Ping from admin/segments#update with params: #{params}"
+    Rails.logger.debug "Ping from admin/groups#update with params: #{params}"
   end
 
   def destroy
-    Rails.logger.debug "Ping from admin/segments#destroy with params: #{params}"
+    Rails.logger.debug "Ping from admin/groups#destroy with params: #{params}"
   end
 
   protected
 
-  def segment_params
-    params.require(:segment).permit(
+  def group_params
+    params.require(:group).permit(
       :label,
       employee_ids: []
     )

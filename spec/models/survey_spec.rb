@@ -25,8 +25,8 @@ end
 describe Survey, 'association' do
   it { is_expected.to belong_to(:employer) }
   it { is_expected.to have_many(:question_groups) }
-  it { is_expected.to have_many(:survey_employee_relations) }
-  it { is_expected.to have_many(:employees).through(:survey_employee_relations) }
+  it { is_expected.to have_many(:survey_employee_connections) }
+  it { is_expected.to have_many(:employees).through(:survey_employee_connections) }
 end
 
 describe Survey, 'column_specification' do
@@ -93,7 +93,7 @@ describe Survey, '.filter_avaible_by_assigned_employee_id' do
     employee2_id = employee2.id
 
     3.times do
-      FactoryBot.create(:survey_employee_relation,
+      FactoryBot.create(:survey_employee_connection,
         survey_id: FactoryBot.create(:survey,
           employer_id: FactoryBot.create(:employer,
             account_id: FactoryBot.create(:account, account_type: 'employer').id
@@ -104,7 +104,7 @@ describe Survey, '.filter_avaible_by_assigned_employee_id' do
       )
     end
     4.times do
-      FactoryBot.create(:survey_employee_relation,
+      FactoryBot.create(:survey_employee_connection,
         survey_id: FactoryBot.create(:survey,
           employer_id: FactoryBot.create(:employer,
             account_id: FactoryBot.create(:account, account_type: 'employer').id
@@ -149,7 +149,7 @@ describe Survey, '.filter_conducted_by_assigned_employee_id' do
     ).id
 
     4.times do
-      FactoryBot.create(:survey_employee_relation,
+      FactoryBot.create(:survey_employee_connection,
         survey_id: FactoryBot.create(:survey,
           employer_id: FactoryBot.create(:employer,
             account_id: FactoryBot.create(:account, account_type: 'employer').id
@@ -160,7 +160,7 @@ describe Survey, '.filter_conducted_by_assigned_employee_id' do
       )
     end
     2.times do
-      FactoryBot.create(:survey_employee_relation,
+      FactoryBot.create(:survey_employee_connection,
         survey_id: FactoryBot.create(:survey,
           employer_id: FactoryBot.create(:employer,
             account_id: FactoryBot.create(:account, account_type: 'employer').id

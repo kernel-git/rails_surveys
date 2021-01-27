@@ -5,19 +5,19 @@ class Survey < ActiveRecord::Base
 
   has_many :question_groups
   belongs_to :employer
-  has_many :survey_employee_relations
-  has_many :employees, through: :survey_employee_relations
+  has_many :survey_employee_connections
+  has_many :employees, through: :survey_employee_connections
 
   validates_presence_of :label, :employer
   validates_associated :question_groups
 
   scope :filter_by_employer_id, ->(id) { where(employer_id: id) }
   scope :filter_avaible_by_assigned_employee_id, lambda { |assigned_employee_id|
-    joins(:survey_employee_relations)
-      .where(survey_employee_relations: { employee_id: assigned_employee_id, is_conducted: false })
+    joins(:survey_employee_connections)
+      .where(survey_employee_connections: { employee_id: assigned_employee_id, is_conducted: false })
   }
   scope :filter_conducted_by_assigned_employee_id, lambda { |assigned_employee_id|
-    joins(:survey_employee_relations)
-      .where(survey_employee_relations: { employee_id: assigned_employee_id, is_conducted: true })
+    joins(:survey_employee_connections)
+      .where(survey_employee_connections: { employee_id: assigned_employee_id, is_conducted: true })
   }
 end

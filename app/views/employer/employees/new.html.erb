@@ -1,4 +1,4 @@
-<%= content_tag :div, id: "segments_data", data: {segments: @segments_data} do %>
+<%= content_tag :div, id: "groups_data", data: {groups: @groups_data} do %>
 <% end %>
 
 <%= javascript_pack_tag "employer/employees/new.js" %>
@@ -82,7 +82,7 @@
     </div>
   </div>
   <div class="model-wrapper__model-table-wrapper model-table-wrapper">
-    <div class="model-table-wrapper__label">Employee's segments</div>
+    <div class="model-table-wrapper__label">Employee's groups</div>
     <div id="listing-table_1" class="model-table-wrapper__table custom-table">
       <div class="custom-table__table-header-wrapper table-header-wrapper">
         <div class="table-header-wrapper__table-header-element table-header-element">
@@ -95,7 +95,7 @@
         <%= inline_svg_tag('plus-sign.svg', class: "svg-plus") %>
       </div>
     </div>
-    <div id="current-segments-ids" style="display: none;"></div>
+    <div id="current-groups-ids" style="display: none;"></div>
   </div>
 
   <%= employee_form.submit "Create employee" %>
@@ -105,7 +105,7 @@
 <div id="modal_1" class="modal-background modal-background--hidden">
   <div class="modal-content">
     <div class="modal-content__header-wrapper">
-      <div class="modal-content__header-label">Select segments</div>
+      <div class="modal-content__header-label">Select groups</div>
       <div id="modal-close_1" class="modal-content__header-button">
         <%= inline_svg_tag('cross-sign.svg', class: "svg-cross") %>
       </div>
@@ -119,7 +119,7 @@
             </div>
           </div>
         </div>
-        <!-- Segments data goes here -->
+        <!-- Groups data goes here -->
       </div>
     </div>
   </div>

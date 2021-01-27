@@ -11,7 +11,7 @@ class Admin::EmployersController < ApplicationController
   def show; end
 
   def new
-    @segments_data = Segment.all.collect { |segment| [segment.id, segment.label] }
+    @groups_data = Group.all.collect { |group| [group.id, group.label] }
   end
 
   def create
@@ -61,7 +61,7 @@ class Admin::EmployersController < ApplicationController
       :public_email,
       :address,
       :phone,
-      segment_ids: []
+      group_ids: []
     )
   end
 

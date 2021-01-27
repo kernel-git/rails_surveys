@@ -2,10 +2,10 @@
 
 require 'faker'
 
-class SegmentsSeeds
+class GroupsSeeds
   include LoggerExtension
 
-  SEGMENTS = [
+  GROUPS = [
     'Teacher',
     'Technical',
     'Management',
@@ -17,19 +17,19 @@ class SegmentsSeeds
   def initialize; end
 
   def perform
-    segments = []
+    groups = []
 
     6.times do |index|
-      segment = Segment.new({ label: SEGMENTS[index] })
+      group = Group.new({ label: GROUPS[index] })
       Faker::Number.unique.clear
-      %w[BSUIR BSU BSTU BSAI BSMU].sample(rand(1..4)).each { |e| segment.employers << Employer.find_by(label: e) }
-      rand(1..3).times { segment.employees << Employee.find(Faker::Number.unique.within(range: 1..8)) }
+      %w[BSUIR BSU BSTU BSAI BSMU].sample(rand(1..4)).each { |e| group.employers << Employer.find_by(label: e) }
+      rand(1..3).times { group.employees << Employee.find(Faker::Number.unique.within(range: 1..8)) }
 
-      segments << segment
+      groups << group
     end
 
     begin
-      segments.each(&:save!)
+      groups.each(&:save!)
     rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotSaved => e
       log_exception(e)
     end

@@ -2,9 +2,9 @@
 
 require 'rails_helper'
 
-describe SurveyEmployeeRelation, 'validation' do
+describe SurveyEmployeeConnection, 'validation' do
   subject do
-    FactoryBot.create(:survey_employee_relation,
+    FactoryBot.create(:survey_employee_connection,
       survey_id: FactoryBot.create(:survey,
         employer_id: FactoryBot.create(:employer,
           account_id: FactoryBot.create(:account, account_type: 'employer').id
@@ -29,12 +29,12 @@ describe SurveyEmployeeRelation, 'validation' do
   end
 end
 
-describe SurveyEmployeeRelation, 'association' do
+describe SurveyEmployeeConnection, 'association' do
   it { is_expected.to belong_to(:survey) }
   it { is_expected.to belong_to(:employee) }
 end
 
-describe SurveyEmployeeRelation, 'column_specification' do
+describe SurveyEmployeeConnection, 'column_specification' do
   it { is_expected.to have_db_column(:is_conducted).of_type(:boolean) }
 
   it { is_expected.to have_db_column(:created_at).of_type(:datetime) }
@@ -46,10 +46,10 @@ describe SurveyEmployeeRelation, 'column_specification' do
   it { is_expected.to have_db_index(:survey_id) }
 end
 
-describe SurveyEmployeeRelation, '.filter_conducted and .filter_avaible' do
+describe SurveyEmployeeConnection, '.filter_conducted and .filter_avaible' do
   before(:each) do
     3.times do
-      FactoryBot.create(:survey_employee_relation,
+      FactoryBot.create(:survey_employee_connection,
         survey_id: FactoryBot.create(:survey,
           employer_id: FactoryBot.create(:employer,
             account_id: FactoryBot.create(:account, account_type: 'employer').id
@@ -65,7 +65,7 @@ describe SurveyEmployeeRelation, '.filter_conducted and .filter_avaible' do
       )
     end
     5.times do
-      FactoryBot.create(:survey_employee_relation,
+      FactoryBot.create(:survey_employee_connection,
         survey_id: FactoryBot.create(:survey,
           employer_id: FactoryBot.create(:employer,
             account_id: FactoryBot.create(:account, account_type: 'employer').id
@@ -82,16 +82,16 @@ describe SurveyEmployeeRelation, '.filter_conducted and .filter_avaible' do
     end
   end
 
-  it 'returns conducted survey employee relations' do
-    expect(SurveyEmployeeRelation.filter_conducted.count).to eq 3
+  it 'returns conducted survey employee connections' do
+    expect(SurveyEmployeeConnection.filter_conducted.count).to eq 3
   end
 
-  it 'returns not conducted survey employee relations' do
-    expect(SurveyEmployeeRelation.filter_avaible.count).to eq 5
+  it 'returns not conducted survey employee connections' do
+    expect(SurveyEmployeeConnection.filter_avaible.count).to eq 5
   end
 end
 
-describe SurveyEmployeeRelation, '.filter_by_survey_id' do
+describe SurveyEmployeeConnection, '.filter_by_survey_id' do
   survey1_id = 0
   survey2_id = 0
   before(:each) do
@@ -106,7 +106,7 @@ describe SurveyEmployeeRelation, '.filter_by_survey_id' do
       ).id
     ).id
     4.times do
-      FactoryBot.create(:survey_employee_relation,
+      FactoryBot.create(:survey_employee_connection,
         survey_id: survey1_id,
         employee_id: FactoryBot.create(:employee,
           employer_id: FactoryBot.create(:employer,
@@ -118,7 +118,7 @@ describe SurveyEmployeeRelation, '.filter_by_survey_id' do
       )
     end
     3.times do
-      FactoryBot.create(:survey_employee_relation,
+      FactoryBot.create(:survey_employee_connection,
         survey_id: survey2_id,
         employee_id: FactoryBot.create(:employee,
           employer_id: FactoryBot.create(:employer,
@@ -131,21 +131,21 @@ describe SurveyEmployeeRelation, '.filter_by_survey_id' do
     end
   end
 
-  it 'returns survey employee relations for survey with survey_id' do
-    expect(SurveyEmployeeRelation.filter_by_survey_id(survey1_id).count).to eq 4
-    expect(SurveyEmployeeRelation.filter_by_survey_id(survey2_id).count).to eq 3
+  it 'returns survey employee connections for survey with survey_id' do
+    expect(SurveyEmployeeConnection.filter_by_survey_id(survey1_id).count).to eq 4
+    expect(SurveyEmployeeConnection.filter_by_survey_id(survey2_id).count).to eq 3
   end
 
   it 'returns empty when survey_id is blank' do
-    expect(SurveyEmployeeRelation.filter_by_survey_id(nil).count).to eq 0
+    expect(SurveyEmployeeConnection.filter_by_survey_id(nil).count).to eq 0
   end
 
   it 'returns empty when survey with survey_id is not found' do
-    expect(SurveyEmployeeRelation.filter_by_survey_id(-1).count).to eq 0
+    expect(SurveyEmployeeConnection.filter_by_survey_id(-1).count).to eq 0
   end
 end
 
-describe SurveyEmployeeRelation, '.filter_by_employee_id' do
+describe SurveyEmployeeConnection, '.filter_by_employee_id' do
   employee1_id = 0
   employee2_id = 0
   before(:each) do
@@ -162,7 +162,7 @@ describe SurveyEmployeeRelation, '.filter_by_employee_id' do
       account_id: FactoryBot.create(:account, account_type: 'employee').id
     ).id
     2.times do
-      FactoryBot.create(:survey_employee_relation,
+      FactoryBot.create(:survey_employee_connection,
         survey_id: FactoryBot.create(:survey,
           employer_id: FactoryBot.create(:employer,
             account_id: FactoryBot.create(:account, account_type: 'employer').id
@@ -173,7 +173,7 @@ describe SurveyEmployeeRelation, '.filter_by_employee_id' do
       )
     end
     5.times do
-      FactoryBot.create(:survey_employee_relation,
+      FactoryBot.create(:survey_employee_connection,
         survey_id: FactoryBot.create(:survey,
           employer_id: FactoryBot.create(:employer,
             account_id: FactoryBot.create(:account, account_type: 'employer').id
@@ -185,21 +185,21 @@ describe SurveyEmployeeRelation, '.filter_by_employee_id' do
     end
   end
 
-  it 'returns survey employee relations for employee with employee_id' do
-    expect(SurveyEmployeeRelation.filter_by_employee_id(employee1_id).count).to eq 2
-    expect(SurveyEmployeeRelation.filter_by_employee_id(employee2_id).count).to eq 5
+  it 'returns survey employee connections for employee with employee_id' do
+    expect(SurveyEmployeeConnection.filter_by_employee_id(employee1_id).count).to eq 2
+    expect(SurveyEmployeeConnection.filter_by_employee_id(employee2_id).count).to eq 5
   end
 
   it 'returns empty when employee_id is blank' do
-    expect(SurveyEmployeeRelation.filter_by_employee_id(nil).count).to eq 0
+    expect(SurveyEmployeeConnection.filter_by_employee_id(nil).count).to eq 0
   end
 
   it 'returns empty when survey with employee_id is not found' do
-    expect(SurveyEmployeeRelation.filter_by_employee_id(-1).count).to eq 0
+    expect(SurveyEmployeeConnection.filter_by_employee_id(-1).count).to eq 0
   end
 end
 
-describe SurveyEmployeeRelation, '.filter_by(_conducted)_employer_id' do
+describe SurveyEmployeeConnection, '.filter_by(_conducted)_employer_id' do
   employer1_id = 0
   employer2_id = 0
   before(:each) do
@@ -208,7 +208,7 @@ describe SurveyEmployeeRelation, '.filter_by(_conducted)_employer_id' do
     employer2_id = FactoryBot.create(:employer,
                                      account_id: FactoryBot.create(:account, account_type: 'employer').id).id
     2.times do
-      FactoryBot.create(:survey_employee_relation,
+      FactoryBot.create(:survey_employee_connection,
         survey_id: FactoryBot.create(:survey,
           employer_id: FactoryBot.create(:employer,
             account_id: FactoryBot.create(:account, account_type: 'employer').id
@@ -222,7 +222,7 @@ describe SurveyEmployeeRelation, '.filter_by(_conducted)_employer_id' do
       )
     end
     5.times do
-      FactoryBot.create(:survey_employee_relation,
+      FactoryBot.create(:survey_employee_connection,
         survey_id: FactoryBot.create(:survey,
           employer_id: FactoryBot.create(:employer,
             account_id: FactoryBot.create(:account, account_type: 'employer').id
@@ -237,20 +237,20 @@ describe SurveyEmployeeRelation, '.filter_by(_conducted)_employer_id' do
     end
   end
 
-  it 'returns (conducted)survey employee relations for employee\' employer with employer_id' do
-    expect(SurveyEmployeeRelation.filter_by_employer_id(employer1_id).count).to eq 2
-    expect(SurveyEmployeeRelation.filter_by_employer_id(employer2_id).count).to eq 5
-    expect(SurveyEmployeeRelation.filter_conducted_by_employer_id(employer1_id).count).to eq 2
-    expect(SurveyEmployeeRelation.filter_conducted_by_employer_id(employer2_id).count).to eq 0
+  it 'returns (conducted)survey employee connections for employee\' employer with employer_id' do
+    expect(SurveyEmployeeConnection.filter_by_employer_id(employer1_id).count).to eq 2
+    expect(SurveyEmployeeConnection.filter_by_employer_id(employer2_id).count).to eq 5
+    expect(SurveyEmployeeConnection.filter_conducted_by_employer_id(employer1_id).count).to eq 2
+    expect(SurveyEmployeeConnection.filter_conducted_by_employer_id(employer2_id).count).to eq 0
   end
 
   it 'returns empty when employer_id is blank' do
-    expect(SurveyEmployeeRelation.filter_by_employer_id(nil).count).to eq 0
-    expect(SurveyEmployeeRelation.filter_conducted_by_employer_id(nil).count).to eq 0
+    expect(SurveyEmployeeConnection.filter_by_employer_id(nil).count).to eq 0
+    expect(SurveyEmployeeConnection.filter_conducted_by_employer_id(nil).count).to eq 0
   end
 
   it 'returns empty when employee with employer with employer_id is not found' do
-    expect(SurveyEmployeeRelation.filter_by_employer_id(-1).count).to eq 0
-    expect(SurveyEmployeeRelation.filter_conducted_by_employer_id(-1).count).to eq 0
+    expect(SurveyEmployeeConnection.filter_by_employer_id(-1).count).to eq 0
+    expect(SurveyEmployeeConnection.filter_conducted_by_employer_id(-1).count).to eq 0
   end
 end

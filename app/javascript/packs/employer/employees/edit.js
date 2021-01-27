@@ -1,12 +1,12 @@
 //const { $ } = require('@rails/ujs');
 
-let modalSegmentsData = [];
-let currentModalSegmentsIndexes = [];
-let segmentsData = [];
-let hiddenSegmentsData = [];
-let currentSegmentsIndexes = [];
-let addSegmentButton = null;
-let initSegmentsIds = [];
+let modalGroupsData = [];
+let currentModalGroupsIndexes = [];
+let groupsData = [];
+let hiddenGroupsData = [];
+let currentGroupsIndexes = [];
+let addGroupButton = null;
+let initGroupsIds = [];
 
 $(document).ready(() => {
   $('#add-row_1').on('click', () => {
@@ -16,96 +16,96 @@ $(document).ready(() => {
     closeModal(1);
   });
 
-  let segments_data = $('#segments_data').data('segments');
-  initSegmentsIds = $('#init_segments_ids').data('ids');
+  let groups_data = $('#groups_data').data('groups');
+  initGroupsIds = $('#init_groups_ids').data('ids');
 
-  segments_data.forEach((segment_data, index) => {  // filling segmentsData with html  
+  groups_data.forEach((group_data, index) => {  // filling groupsData with html  
     const newRow = $('<div></div>')
       .addClass(`custom-table__table-row-wrapper table-row-wrapper`)
       .attr('id', `row_${index}_table_1`);
 
     const newLabel = $('<div></div>')
       .addClass("table-row-wrapper__information")
-      .text(segment_data[1]);
+      .text(group_data[1]);
 
     const newDeleteButton = $('<div></div>')
       .addClass('table-row-wrapper__information link-button')
       .text('Delete')
       .on('click', () => {
-        console.log('Segment delete clicked!');
-        let foundIndex = currentSegmentsIndexes.findIndex((elem) => {
+        console.log('Group delete clicked!');
+        let foundIndex = currentGroupsIndexes.findIndex((elem) => {
           return elem == index;
         });
-        currentSegmentsIndexes.splice(foundIndex, 1);
-        currentModalSegmentsIndexes.push(index);
-        updateSegmentTables();
+        currentGroupsIndexes.splice(foundIndex, 1);
+        currentModalGroupsIndexes.push(index);
+        updateGroupTables();
     });
     
     newRow.append(newLabel, newDeleteButton);
-    segmentsData.push(newRow);
+    groupsData.push(newRow);
   });
 
-  segments_data.forEach((segment_data, index) => {  // filling hiddenSegmentsData with html  
-    const newHiddenInputSegment = $('<input></input>')
-      .attr('id', `segment_${segment_data[0]}`)
-      .attr('name', 'employee[segment_ids][]')
+  groups_data.forEach((group_data, index) => {  // filling hiddenGroupsData with html  
+    const newHiddenInputGroup = $('<input></input>')
+      .attr('id', `group_${group_data[0]}`)
+      .attr('name', 'employee[group_ids][]')
       .attr('type', 'hidden')
-      .val(segment_data[0]);
+      .val(group_data[0]);
 
-    hiddenSegmentsData.push(newHiddenInputSegment);
+    hiddenGroupsData.push(newHiddenInputGroup);
   });
 
-  segments_data.forEach((segment_data, index) => {  // filling modalSegmentsData with html
+  groups_data.forEach((group_data, index) => {  // filling modalGroupsData with html
     const newRow = $('<div></div>')
       .addClass('custom-table__table-row-wrapper table-row-wrapper link-div')
       .attr('id', `row_${index}_table_3`)
       .on('click', () => {
-        console.log(`Modal segment clicked with index: ${index}`);
-        currentSegmentsIndexes.push(index);
-        let foundIndex = currentModalSegmentsIndexes.findIndex((elem) => {
+        console.log(`Modal group clicked with index: ${index}`);
+        currentGroupsIndexes.push(index);
+        let foundIndex = currentModalGroupsIndexes.findIndex((elem) => {
           return elem == index;
         });
-        currentModalSegmentsIndexes.splice(foundIndex, 1);
-        updateSegmentTables();
+        currentModalGroupsIndexes.splice(foundIndex, 1);
+        updateGroupTables();
         closeModal(1);
       });
   
     const newLabel = $('<div></div>')
       .addClass("table-row-wrapper__information")
-      .text(segment_data[1]);
+      .text(group_data[1]);
     newRow.append(newLabel);
 
-    modalSegmentsData.push(newRow);
-    currentModalSegmentsIndexes.push(index);
-    if (initSegmentsIds.includes(segment_data[0])) {
-      currentSegmentsIndexes.push(index);
-      let foundIndex = currentModalSegmentsIndexes.findIndex((elem) => {
+    modalGroupsData.push(newRow);
+    currentModalGroupsIndexes.push(index);
+    if (initGroupsIds.includes(group_data[0])) {
+      currentGroupsIndexes.push(index);
+      let foundIndex = currentModalGroupsIndexes.findIndex((elem) => {
         return elem == index;
       });
-      currentModalSegmentsIndexes.splice(foundIndex, 1);
-      updateSegmentTables();
+      currentModalGroupsIndexes.splice(foundIndex, 1);
+      updateGroupTables();
     }
   });
 
-  updateSegmentTables();
+  updateGroupTables();
 });
 
-function updateSegmentTables() {
-  if (addSegmentButton == null)
-    addSegmentButton = $('#add-row_1').detach();
+function updateGroupTables() {
+  if (addGroupButton == null)
+    addGroupButton = $('#add-row_1').detach();
   $('#listing-table_1 .table-row-wrapper').detach();
   $('#listing-table_3 .table-row-wrapper').detach();
-  $('#current_segments_ids').empty();
+  $('#current_groups_ids').empty();
 
-  currentSegmentsIndexes.forEach((index) => {
-    $('#listing-table_1').append(segmentsData[index]);
-    $('#current_segments_ids').append(hiddenSegmentsData[index]);
+  currentGroupsIndexes.forEach((index) => {
+    $('#listing-table_1').append(groupsData[index]);
+    $('#current_groups_ids').append(hiddenGroupsData[index]);
   });
-  if(currentSegmentsIndexes.length < segmentsData.length)
-    $('#listing-table_1').append(addSegmentButton);
+  if(currentGroupsIndexes.length < groupsData.length)
+    $('#listing-table_1').append(addGroupButton);
   
-  currentModalSegmentsIndexes.forEach((index) => {
-    $('#listing-table_3').append(modalSegmentsData[index]);
+  currentModalGroupsIndexes.forEach((index) => {
+    $('#listing-table_3').append(modalGroupsData[index]);
   });
 }
 

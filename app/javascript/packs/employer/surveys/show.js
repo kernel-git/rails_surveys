@@ -98,13 +98,13 @@ $(document).ready(() => {
   });
 
   employees_data.forEach((employee_data, index) => {  // filling hiddenEmployeesData with html  
-    const newHiddenInputSegment = $('<input></input>')
+    const newHiddenInputGroup = $('<input></input>')
       .attr('id', `employee_${employee_data[0]}`)
       .attr('name', 'employees_ids[]')
       .attr('type', 'hidden')
       .val(employee_data[0]);
 
-    hiddenEmployeesData.push(newHiddenInputSegment);
+    hiddenEmployeesData.push(newHiddenInputGroup);
   });
 
   

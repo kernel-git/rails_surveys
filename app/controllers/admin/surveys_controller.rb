@@ -20,7 +20,7 @@ class Admin::SurveysController < ApplicationController
     Employee.filter_by_employer_id(@survey.employer.id).filter_avaible_by_survey_id(@survey.id).collect do |employee|
       @current_assigned_employees_ids << employee.id
     end
-    @results = SurveyEmployeeRelation.where(survey_id: params[:id], is_conducted: true).includes(:employee)
+    @results = SurveyEmployeeConnection.where(survey_id: params[:id], is_conducted: true).includes(:employee)
   end
 
   def new

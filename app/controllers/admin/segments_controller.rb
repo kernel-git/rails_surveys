@@ -1,16 +1,16 @@
 # frozen_string_literal: true
 
-class Admin::SegmentsController < ApplicationController
+class Admin::GroupsController < ApplicationController
   layout 'admin'
   load_and_authorize_resource
   skip_load_resource only: :show
 
   def index
-    @segments = @segments.page(params[:page])
+    @groups = @groups.page(params[:page])
   end
 
   def show
-    @segment = Segment.includes(:employees, :employers).find(params[:id])
+    @group = Group.includes(:employees, :employers).find(params[:id])
   end
 
   def new
@@ -25,30 +25,30 @@ class Admin::SegmentsController < ApplicationController
   end
 
   def create
-    if @segment.save
-      redirect_to admin_segment_url(@segment), notice: 'Segment created successfully'
+    if @group.save
+      redirect_to admin_group_url(@group), notice: 'Group created successfully'
     else
-      log_errors(@segment)
-      redirect_to new_admin_segment_url, alert: 'Segment creation failed. Check logs...'
+      log_errors(@group)
+      redirect_to new_admin_group_url, alert: 'Group creation failed. Check logs...'
     end
   end
 
   def edit
-    Rails.logger.debug "Ping from admin/segments#edit with params: #{params}"
+    Rails.logger.debug "Ping from admin/groups#edit with params: #{params}"
   end
 
   def update
-    Rails.logger.debug "Ping from admin/segments#update with params: #{params}"
+    Rails.logger.debug "Ping from admin/groups#update with params: #{params}"
   end
 
   def destroy
-    Rails.logger.debug "Ping from admin/segments#destroy with params: #{params}"
+    Rails.logger.debug "Ping from admin/groups#destroy with params: #{params}"
   end
 
   protected
 
-  def segment_params
-    params.require(:segment).permit(
+  def group_params
+    params.require(:group).permit(
       :label,
       employee_ids: [],
       employer_ids: []

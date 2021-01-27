@@ -9,6 +9,6 @@ class Employer < ActiveRecord::Base
 
   has_many :employees
   has_many :surveys
-  has_and_belongs_to_many :segments
+  has_and_belongs_to_many :groups
   has_one :account, as: :account_user
 end

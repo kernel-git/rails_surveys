@@ -22,7 +22,7 @@
               </div>
               <% question.options.each do |option| %>
                 <div class="question-wrapper__answer-option-wrapper answer-option-wrapper">
-                  <% if !@answers[question.id.to_s.to_sym].empty? && option.id == @answers[question.id.to_s.to_sym][0].option.id %>
+                  <% if !@answers[question.id.to_s.to_sym].blank? && option.id == @answers[question.id.to_s.to_sym][0].option.id %>
                     <div class="answer-option-wrapper__label-wrapper">
                       <div class="answer-option-wrapper__label answer-option-wrapper__label--chosen">
                         <%= option.text %>

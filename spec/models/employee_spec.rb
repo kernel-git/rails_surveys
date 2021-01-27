@@ -35,10 +35,10 @@ end
 describe Employee, 'association' do
   it { is_expected.to belong_to(:employer) }
   it { is_expected.to belong_to(:account) }
-  it { is_expected.to have_many(:survey_employee_relations) }
-  it { is_expected.to have_many(:surveys).through(:survey_employee_relations) }
+  it { is_expected.to have_many(:survey_employee_connections) }
+  it { is_expected.to have_many(:surveys).through(:survey_employee_connections) }
   it { is_expected.to have_many(:answers) }
-  it { is_expected.to have_and_belong_to_many(:segments) }
+  it { is_expected.to have_and_belong_to_many(:groups) }
 end
 
 describe Employee, 'column_specification' do
@@ -111,7 +111,7 @@ describe Employee, '.filter_avaible_by_survey_id' do
     ).id
 
     2.times do
-      FactoryBot.create(:survey_employee_relation,
+      FactoryBot.create(:survey_employee_connection,
         survey_id: survey1_id,
         employee_id: FactoryBot.create(:employee,
           employer_id: FactoryBot.create(:employer,
@@ -123,7 +123,7 @@ describe Employee, '.filter_avaible_by_survey_id' do
       )
     end
     5.times do
-      FactoryBot.create(:survey_employee_relation,
+      FactoryBot.create(:survey_employee_connection,
         survey_id: survey2_id,
         employee_id: FactoryBot.create(:employee,
           employer_id: FactoryBot.create(:employer,
@@ -169,7 +169,7 @@ describe Employee, '.filter_conducted_by_survey_id' do
     )
 
     6.times do
-      FactoryBot.create(:survey_employee_relation,
+      FactoryBot.create(:survey_employee_connection,
         survey_id: survey1.id,
         employee_id: FactoryBot.create(:employee,
           employer_id: FactoryBot.create(:employer,
@@ -181,7 +181,7 @@ describe Employee, '.filter_conducted_by_survey_id' do
       )
     end
     3.times do
-      FactoryBot.create(:survey_employee_relation,
+      FactoryBot.create(:survey_employee_connection,
         survey_id: survey2.id,
         employee_id: FactoryBot.create(:employee,
           employer_id: FactoryBot.create(:employer,

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 FactoryBot.define do
-  factory :segment do
+  factory :group do
     label { Faker::Lorem.word }
   end
 end
