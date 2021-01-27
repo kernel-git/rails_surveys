@@ -8,8 +8,7 @@ class Survey < ActiveRecord::Base
   has_many :survey_employee_connections
   has_many :employees, through: :survey_employee_connections
 
-  validates_presence_of :label, :employer
-  validates_associated :question_groups
+  accepts_nested_attributes_for :question_groups
 
   scope :filter_by_employer_id, ->(id) { where(employer_id: id) }
   scope :filter_avaible_by_assigned_employee_id, lambda { |assigned_employee_id|
@@ -20,4 +19,8 @@ class Survey < ActiveRecord::Base
     joins(:survey_employee_connections)
       .where(survey_employee_connections: { employee_id: assigned_employee_id, is_conducted: true })
   }
+
+  validates_presence_of :label, :employer
+  validates_associated :question_groups
+  validates :question_groups, length: { minimum: 1 }
 end

@@ -77,8 +77,8 @@
           </div>
         </div>
       </div>
-      <% unless SurveyEmployeeConnection.filter_avaible_by_employee_id(@employee.id).empty? %>
-        <% SurveyEmployeeConnection.filter_avaible_by_employee_id(@employee.id).each do |connection| %>
+      <% unless @available_surveys.empty? %>
+        <% @available_surveys.each do |connection| %>
           <div class="custom-table__table-row-wrapper table-row-wrapper table-row_1 ">
             <div class="table-row-wrapper__information">
               <%= connection.survey.label %>
@@ -104,8 +104,8 @@
           </div>
         </div>
       </div>
-      <% unless SurveyEmployeeConnection.filter_conducted_by_employee_id(@employee.id).empty? %>
-        <% SurveyEmployeeConnection.filter_conducted_by_employee_id(@employee.id).each do |connection| %>
+      <% unless @conducted_surveys.empty? %>
+        <% @conducted_surveys.each do |connection| %>
           <%= link_to(employer_result_url(connection), class: "custom-table__table-row-wrapper table-row-wrapper link-div table-row_1") do %>
             <div class="table-row-wrapper__information">
               <%= connection.survey.label %>

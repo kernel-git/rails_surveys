@@ -3,6 +3,10 @@
 class QuestionGroup < ActiveRecord::Base
   has_many :questions
   belongs_to :survey
+
+  accepts_nested_attributes_for :questions
+
   validates_presence_of :label, :survey
   validates_associated :questions
+  validates :questions, length: { minimum: 1 }
 end

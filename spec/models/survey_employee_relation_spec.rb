@@ -240,17 +240,17 @@ describe SurveyEmployeeConnection, '.filter_by(_conducted)_employer_id' do
   it 'returns (conducted)survey employee connections for employee\' employer with employer_id' do
     expect(SurveyEmployeeConnection.filter_by_employer_id(employer1_id).count).to eq 2
     expect(SurveyEmployeeConnection.filter_by_employer_id(employer2_id).count).to eq 5
-    expect(SurveyEmployeeConnection.filter_conducted_by_employer_id(employer1_id).count).to eq 2
-    expect(SurveyEmployeeConnection.filter_conducted_by_employer_id(employer2_id).count).to eq 0
+    expect(SurveyEmployeeConnection.filter_by_employer_id(employer1_id).filter_conducted.count).to eq 2
+    expect(SurveyEmployeeConnection.filter_by_employer_id(employer2_id).filter_conducted.count).to eq 0
   end
 
   it 'returns empty when employer_id is blank' do
     expect(SurveyEmployeeConnection.filter_by_employer_id(nil).count).to eq 0
-    expect(SurveyEmployeeConnection.filter_conducted_by_employer_id(nil).count).to eq 0
+    expect(SurveyEmployeeConnection.filter_by_employer_id(nil).filter_conducted.count).to eq 0
   end
 
   it 'returns empty when employee with employer with employer_id is not found' do
     expect(SurveyEmployeeConnection.filter_by_employer_id(-1).count).to eq 0
-    expect(SurveyEmployeeConnection.filter_conducted_by_employer_id(-1).count).to eq 0
+    expect(SurveyEmployeeConnection.filter_by_employer_id(-1).filter_conducted.count).to eq 0
   end
 end

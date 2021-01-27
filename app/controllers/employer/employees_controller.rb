@@ -8,7 +8,10 @@ class Employer::EmployeesController < ApplicationController
     @employees = @employees.page(params[:page])
   end
 
-  def show; end
+  def show
+    @available_surveys = SurveyEmployeeConnection.filter_by_employee_id(@employee.id).filter_avaible
+    @conducted_surveys = SurveyEmployeeConnection.filter_by_employee_id(@employee.id).filter_conducted
+  end
 
   def new
     @groups_data = Group.all.collect { |group| [group.id, group.label] }

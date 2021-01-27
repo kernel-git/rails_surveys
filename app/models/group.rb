@@ -5,5 +5,7 @@ class Group < ActiveRecord::Base
 
   has_and_belongs_to_many :employees
   has_and_belongs_to_many :employers
-  validates :label, presence: true
+
+  validates_presence_of :label
+  validates :employers, length: { minimum: 1 }
 end

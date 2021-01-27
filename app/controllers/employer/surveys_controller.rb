@@ -26,23 +26,6 @@ class Employer::SurveysController < ApplicationController
   def new; end
 
   def create
-    question_group_params[:question_groups].each do |qgroup_params|
-      @qgroup = @survey.question_groups.build(label: qgroup_params[:label])
-      qgroup_params[:questions].each do |question_params|
-        @question = @qgroup.questions.build(
-          question_type: question_params[:question_type],
-          benchmark_val: 1,
-          benchmark_vol: 1
-        )
-        question_params[:options].each do |option_params|
-          @question.options.build(
-            text: option_params[:label],
-            has_text_field: option_params[:with_text_field] == 'on'
-          )
-        end
-      end
-    end
-
     if @survey.save
       redirect_to employer_survey_url(@survey), notice: 'Survey created successfully'
     else
@@ -105,7 +88,23 @@ class Employer::SurveysController < ApplicationController
   protected
 
   def survey_params
-    params.require(:survey).permit(:label)
+    params[:survey][:employer_id] = current_account.account_user_id
+    params.require(:survey).permit(
+      :label,
+      :employer_id,
+      question_groups_attributes: [
+        :label,
+        questions_attributes: [
+          :question_type,
+          :benchmark_val,
+          :benchmark_vol,
+          options_attributes: [
+            :text,
+            :has_text_field
+          ]
+        ] 
+      ]
+    )
   end
 
   def question_group_params

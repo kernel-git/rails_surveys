@@ -30,6 +30,9 @@
                   <div class="answer-option-wrapper__label-wrapper">
                     <div class="answer-option-wrapper__label">
                       <%= option.text %>
+                        <% if option.has_text_field %>
+                          (has additional text field)
+                        <% end %>
                     </div>
                     
                   </div>

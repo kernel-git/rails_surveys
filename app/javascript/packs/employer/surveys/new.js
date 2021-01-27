@@ -23,7 +23,7 @@ function addNewQuestionGroup(qgroup_id) {
   const qgroupLabelInput = $('<input/>')
     .addClass('colored-group__label-text-field')
     .attr('type', 'text')
-    .attr('name', 'question_groups[][label]')
+    .attr('name', 'survey[question_groups_attributes[][label]]')
     .attr('placeholder', 'New question group');
   const newDeleteButton = $('<div></div>')
     .addClass('table-row-wrapper__information link-button')
@@ -105,8 +105,16 @@ function addNewQuestion(question_id, qgroup_id) {
   const questionLabelInput = $('<input/>')
     .addClass('colored-group__label-text-field')
     .attr('type', 'text')
-    .attr('name', 'question_groups[][questions[][question_type]]')
+    .attr('name', 'survey[question_groups_attributes[][questions_attributes[][question_type]]]')
     .attr('placeholder', 'New question');
+  const questionBenchmarkVal = $('<input/>')
+    .attr('type', 'hidden')
+    .attr('name', 'survey[question_groups_attributes[][questions_attributes[][benchmark_val]]]')
+    .attr('value', '1');
+  const questionBenchmarkVol = $('<input/>')
+    .attr('type', 'hidden')
+    .attr('name', 'survey[question_groups_attributes[][questions_attributes[][benchmark_vol]]]')
+    .attr('value', '1');
   const newDeleteButton = $('<div></div>')
     .addClass('question-wrapper__header-delete-button link-button')
     .text('Delete')
@@ -114,7 +122,7 @@ function addNewQuestion(question_id, qgroup_id) {
       free_question_ids.unshift(question_id);
       $(`#question_${question_id}`).remove();
     });
-  questionHeader.append(questionLabelInput, newDeleteButton);
+  questionHeader.append(questionLabelInput, questionBenchmarkVal, questionBenchmarkVol, newDeleteButton);
     
   const optionsWrapper = $('<div></div>')
     .addClass('model-wrapper__model-table-wrapper model-table-wrapper');
@@ -170,7 +178,7 @@ function addNewQuestion(question_id, qgroup_id) {
   //   .addClass('custom-table__table-row-wrapper table-row-wrapper');
   // const questionLabel = $('<input/>')
   //   .attr('type', 'text')
-  //   .attr('name', 'question_groups[][question_group[questions[][question[question_type]]]]')
+  //   .attr('name', 'survey[question_groups_attributes[][questions_attributes[][question_type]]]')
   //   .addClass('table-row-wrapper__text-input');
   // const newDeleteButton = $('<div></div>')
   //   .addClass('table-row-wrapper__information link-button')
@@ -194,7 +202,7 @@ function addNewOption(option_id, question_id) {
   const optionLabel = $('<input/>')
     .attr('type', 'text')
     .attr('placeholder', 'New option')
-    .attr('name', 'question_groups[][questions[][options[][label]]')
+    .attr('name', 'survey[question_groups_attributes[][questions_attributes[][options_attributes[][text]]]]')
     .addClass('table-row-wrapper__text-input');
   const optionCheckboxWrapper = $('<div></div>')
     .addClass('table-row-wrapper__checkbox-wrapper');
@@ -203,7 +211,8 @@ function addNewOption(option_id, question_id) {
     .text('Should be with text field?');
   const optionCheckbox = $('<input/>')
     .attr('type', 'checkbox')
-    .attr('name', 'question_groups[][questions[][options[][with_text_field]]')
+    .attr('name', 'survey[question_groups_attributes[][questions_attributes[][options_attributes[][has_text_field]]]]')
+    .attr('value', 'true')
     .addClass('table-row-wrapper__checkbox');
   optionCheckboxWrapper.append(checkboxText, optionCheckbox);
   const newDeleteButton = $('<div></div>')

@@ -35,24 +35,24 @@
         </div>
       </div>
     </div>
-    <% unless @employees.empty? %>
-      <% @employees.each do |employee| %>
-        <%= link_to(employer_employee_url(employee), class: "custom-table__table-row-wrapper table-row-wrapper link-div table-row_0") do %>
-          <div class="table-row-wrapper__information">
-            <%= employee.first_name %>
-          </div>
-          <div class="table-row-wrapper__information">
-            <%= employee.last_name %>
-          </div>
-          <div class="table-row-wrapper__information">
-            <%= employee.account.email %>
-          </div>
-        <% end %>
-      <% end %>
-      <%= paginate @employees %>
-    <% else %>
-      <div class="custom-table__message">Empty</div>
+  <% unless @employees.empty? %>
+  <% @employees.each do |employee| %>
+    <%= link_to(employer_employee_url(employee), class: "custom-table__table-row-wrapper table-row-wrapper link-div table-row_0") do %>
+      <div class="table-row-wrapper__information">
+        <%= employee.first_name %>
+      </div>
+      <div class="table-row-wrapper__information">
+        <%= employee.last_name %>
+      </div>
+      <div class="table-row-wrapper__information">
+        <%= employee.account.email %>
+      </div>
     <% end %>
+  <% end %>
   </div>
+  <%= paginate @employees %>
+  <% else %>
+    <div class="custom-table__message">Empty</div>
+  </div>
+  <% end %>
 </div>
-

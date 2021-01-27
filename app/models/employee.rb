@@ -3,10 +3,6 @@
 class Employee < ActiveRecord::Base
   paginates_per 20
 
-  validates_presence_of :first_name, :last_name, :account_type, :age, :position_age, :employer_id, :account
-  validates :age, numericality: { only_integer: true, greater_than: 0 }
-  validates_associated :account
-
   belongs_to :employer
   has_and_belongs_to_many :groups
   has_many :survey_employee_connections
@@ -27,4 +23,8 @@ class Employee < ActiveRecord::Base
     joins(:employees_groups)
       .where(employees_groups: { employee_id: ids, group_id: group_id })
   }
+
+  validates_presence_of :first_name, :last_name, :account_type, :age, :position_age, :employer_id, :account
+  validates :age, numericality: { only_integer: true, greater_than: 0 }
+  validates_associated :account
 end
