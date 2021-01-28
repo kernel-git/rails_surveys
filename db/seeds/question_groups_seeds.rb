@@ -53,7 +53,7 @@ class QuestionGroupsSeeds
     question_groups[8].survey = Survey.find(3)
     question_groups[9].survey = Survey.find(3)
     begin
-      question_groups.each(&:save!)
+      question_groups.each { |qgroup| qgroup.save!(validate: false) }
     rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotSaved => e
       log_exception(e)
     end

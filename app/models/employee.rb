@@ -4,11 +4,13 @@ class Employee < ActiveRecord::Base
   paginates_per 20
 
   belongs_to :employer
-  has_and_belongs_to_many :groups
+  has_and_belongs_to_many :groups, -> { distinct }
   has_many :survey_employee_connections
   has_many :surveys, through: :survey_employee_connections
   has_many :answers
   has_one :account, as: :account_user
+
+  accepts_nested_attributes_for :account
 
   scope :filter_by_employer_id, ->(id) { where(employer_id: id) }
   scope :filter_avaible_by_survey_id, lambda { |survey_id|

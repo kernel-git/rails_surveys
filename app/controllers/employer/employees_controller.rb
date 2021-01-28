@@ -11,6 +11,7 @@ class Employer::EmployeesController < ApplicationController
   def show
     @available_surveys = SurveyEmployeeConnection.filter_by_employee_id(@employee.id).filter_avaible
     @conducted_surveys = SurveyEmployeeConnection.filter_by_employee_id(@employee.id).filter_conducted
+    logger.debug @employee.groups
   end
 
   def new
@@ -18,11 +19,13 @@ class Employer::EmployeesController < ApplicationController
   end
 
   def create
-    @employee.build_account(
-      email: account_params[:email],
-      password: account_params[:password],
-      password_confirmation: account_params[:password]
-    )
+    # @employee.build_account(
+    #   email: account_params[:email],
+    #   password: account_params[:password],
+    #   password_confirmation: account_params[:password]
+    # )
+    # logger.debug employee_params
+    # logger.debug @employee.groups
     if @employee.save
       redirect_to employer_employee_url(@employee), notice: 'Employee created successfully'
     else
@@ -58,15 +61,11 @@ class Employer::EmployeesController < ApplicationController
       :age,
       :position_age,
       :opt_out,
-      group_ids: []
-    )
-  end
-
-  def account_params
-    params.require(:employee).permit(
-      :email,
-      :password,
-      :password_confirmation
+      group_ids: [],
+      account_attributes: [
+        :email,
+        :password
+      ]
     )
   end
 end

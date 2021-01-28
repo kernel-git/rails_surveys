@@ -12,21 +12,34 @@
           <div id="sort-arrow_down_0_table_0"><%= inline_svg_tag('down-chevron.svg', class: "svg-sorting-arrow") %></div>
         </div>
         <div class="table-header-element__label">
-          Label
+          Name
+        </div>
+      </div>
+      <div class="table-header-wrapper__table-header-element table-header-element">
+        <div class="table-header-element__arrows-wrapper arrows-wrapper">
+          <div id="sort-arrow_up_1_table_0"><%= inline_svg_tag('up-chevron.svg', class: "svg-sorting-arrow") %></div>
+          <div id="sort-arrow_down_1_table_0"><%= inline_svg_tag('down-chevron.svg', class: "svg-sorting-arrow") %></div>
+        </div>
+        <div class="table-header-element__label">
+          Date of assigment
         </div>
       </div>
     </div>
-    <% unless @surveys.empty? %>
-      <% @surveys.each do |survey| %>
-        <%= link_to(attempt_employee_survey_url(survey), class: "custom-table__table-row-wrapper table-row-wrapper link-div table-row_0") do %>
+    <% unless @connections.empty? %>
+      <% @connections.each do |connection| %>
+        <%= link_to(attempt_employee_survey_url(connection.survey), class: "custom-table__table-row-wrapper table-row-wrapper link-div table-row_0") do %>
           <div class="table-row-wrapper__information">
-            <%= survey.label %>
+            <%= connection.survey.label %>
+          </div>
+          <div class="table-row-wrapper__information">
+            <%= connection.created_at.to_formatted_s(:db) %>
           </div>
         <% end %>
       <% end %>
-      <%= paginate @surveys %>
+      <%= paginate @connections %>
+      </div>
     <% else %>
-      <div class="custom-table__message">Empty</div>
-    <% end %>
+    <div class="custom-table__message">Empty</div>
   </div>
+  <% end %>
 </div>

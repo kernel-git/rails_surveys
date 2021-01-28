@@ -14,15 +14,19 @@
         <div class="model-info-wrapper__label">Age:</div>
         <div class="model-info-wrapper__info"><%= current_account.account_user.age %></div>
       </div>
+      <div class="model-wrapper__model-info-wrapper">
+        <div class="model-info-wrapper__label">Email:</div>
+        <div class="model-info-wrapper__info"><%= current_account.email %></div>
+      </div>
     </div>
     <div class="model-wrapper__model-info-block">
       <div class="model-wrapper__model-info-wrapper">
-        <div class="model-info-wrapper__label">Email:</div>
-        <div class="model-info-wrapper__info"><%= current_account.account_user.account.email %></div>
-      </div>
-      <div class="model-wrapper__model-info-wrapper">
         <div class="model-info-wrapper__label">Account type: </div>
         <div class="model-info-wrapper__info"><%= current_account.account_user.account_type %></div>
+      </div>
+      <div class="model-wrapper__model-info-wrapper">
+        <div class="model-info-wrapper__label">Years of service:</div>
+        <div class="model-info-wrapper__info"><%= current_account.account_user.position_age %></div>
       </div>
       <div class="model-wrapper__model-info-wrapper">
         <div class="model-info-wrapper__label">Is unsubscribed from new surveys:</div>
@@ -76,10 +80,6 @@
     <div id="listing-table_0" class="model-table-wrapper__table custom-table">
       <div class="custom-table__table-header-wrapper table-header-wrapper">
         <div class="table-header-wrapper__table-header-element table-header-element">
-          <div class="table-header-element__arrows-wrapper arrows-wrapper">
-            <div id="sort-arrow_up_0_table_0"><%= inline_svg_tag('up-chevron.svg', class: "svg-sorting-arrow") %></div>
-            <div id="sort-arrow_down_0_table_0"><%= inline_svg_tag('down-chevron.svg', class: "svg-sorting-arrow") %></div>
-          </div>
           <div class="table-header-element__label">
             Label
           </div>

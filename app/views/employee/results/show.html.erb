@@ -49,7 +49,7 @@
       <div class="content-wrapper__content-footer content-footer">
         <div class="progress__wrapper">
           <% @result.survey.question_groups.each_with_index do |question_group, qg_index| %>
-            <div class="progress__element" id="qgroup-button_<%= qg_index %>">
+            <div class="progress__element link-div" id="qgroup-button_<%= qg_index %>">
               <%= qg_index + 1 %>
             </div>
           <% end %>

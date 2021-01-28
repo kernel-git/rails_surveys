@@ -76,7 +76,7 @@ class QuestionsSeeds
     end
 
     begin
-      questions.each(&:save!)
+      questions.each { |question| question.save!(validate: false) }
     rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotSaved => e
       log_exception(e)
     end

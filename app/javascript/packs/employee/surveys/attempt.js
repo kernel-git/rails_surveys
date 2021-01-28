@@ -25,7 +25,8 @@ $(document).ready(() => {
 
   $('[id^="radio_with_field_"]').on('click', (self) => {
       let id = self.currentTarget.id.split("_")[3];
-      let question_id = $(`#radio_with_field_${id}`).attr('name')[8];
+      let question_id = $(`#radio_with_field_${id}`).attr('name').split(/[\[\]]/)[1];
+      console.log(`question_id: ${question_id}`);
       $(`#field_${id}`).attr('name', `answers[${question_id}][additional_text]`);
       $(`#field_${id}`).addClass('answer-option-wrapper__text-field--active');
   });

@@ -18,25 +18,24 @@ class Account::RegistrationsController < Devise::RegistrationsController
     employee = Employee.new({
                               first_name: params[:employee][:first_name],
                               last_name: params[:employee][:last_name],
-                              account_type: 'employee',
+                              account_type: params[:employee][:account_type],
                               age: params[:employee][:age],
-                              position_age: 1,
-                              opt_out: params[:employee][:opt_out]
+                              position_age: params[:employee][:position_age],
+                              opt_out: false
                             })
     employee.build_account(
-      account_type: 'employee',
+      account_user_type: 'Employee',
       email: params[:account][:email],
       password: params[:account][:password]
     )
     employee.employer = Employer.find(params[:employee][:employer_id])
     employee.save!
-    super
   rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotSaved, ActiveRecord::RecordNotFound => e
     log_exception(e)
-    flash.alert = 'Employee creation failed. Check logs...'
-    redirect_to(account_root)
+    redirect_to root_url, alert: 'Employee creation failed. Check logs...'
   else
-    flash.notice = 'Employee created successfully'
+    flash[:notice] = 'Employee created successfully'
+    super
   end
 
   # GET /resource/edit
@@ -63,7 +62,7 @@ class Account::RegistrationsController < Devise::RegistrationsController
   #   super
   # end
 
-  # protected
+  protected
 
   # If you have extra params to permit, append them to the sanitizer.
   def configure_sign_up_params
@@ -73,7 +72,10 @@ class Account::RegistrationsController < Devise::RegistrationsController
     when 'employer'
       devise_parameter_sanitizer.permit(:sign_up, keys: [:nickname])
     when 'employee'
-      devise_parameter_sanitizer.permit(:sign_up, keys: %i[first_name last_name age position_age employer_id])
+      devise_parameter_sanitizer.permit(:sign_up, keys: 
+        [:first_name, :last_name, :age,
+          :position_age, :account_type, :employer_id]
+      )
     end
   end
 
@@ -83,9 +85,9 @@ class Account::RegistrationsController < Devise::RegistrationsController
   # end
 
   # The path used after sign up.
-  # def after_sign_up_path_for(resource)
-  #   super(resource)
-  # end
+  def after_sign_up_path_for(resource)
+    '/employee/home'
+  end
 
   # The path used after sign up for inactive accounts.
   # def after_inactive_sign_up_path_for(resource)
