@@ -3,18 +3,12 @@
 class Admin::EmployeesController < ApplicationController
   layout 'admin'
   load_and_authorize_resource
-  skip_load_resource only: :show
 
   def index
     @employees = @employees.page(params[:page])
   end
 
   def show
-    @employee = Employee.includes(:groups, :employer, answers: [
-                                    question: [
-                                      question_group: [:survey]
-                                    ]
-                                  ]).find(params[:id])
   end
 
   def new
@@ -31,10 +25,6 @@ class Admin::EmployeesController < ApplicationController
   end
 
   def create
-    @employee.build_account(
-      email: account_params[:email],
-      password: account_params[:password]
-    )
     if @employee.save
       redirect_to admin_employee_url(@employee), notice: 'Employee created successfully'
     else
@@ -62,6 +52,7 @@ class Admin::EmployeesController < ApplicationController
     if @employee.update(employee_params)
       redirect_to admin_employee_url(@employee), notice: 'Employee updated successfully'
     else
+      log_errors(@employee)
       redirect_to edit_admin_employee_url(@employee), alert: 'Employee update failed. Check logs...'
     end
   end
@@ -81,15 +72,11 @@ class Admin::EmployeesController < ApplicationController
       :position_age,
       :opt_out,
       :employer_id,
-      group_ids: []
-    )
-  end
-
-  def account_params
-    params.require(:employee).permit(
-      :email,
-      :password,
-      :password_confirmation
+      group_ids: [],
+      account_attributes: [
+        :email,
+        :password
+      ]
     )
   end
 end

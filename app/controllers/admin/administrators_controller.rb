@@ -13,12 +13,6 @@ class Admin::AdministratorsController < ApplicationController
   def new; end
 
   def create
-    @administrator.build_account(
-      account_user_type: 'Administrator',
-      email: account_params[:email],
-      password: account_params[:password],
-      password_confirmation: account_params[:password_confirmation]
-    )
     if @administrator.save
       redirect_to admin_administrator_url(@administrator), notice: 'Administrator created successfully'
     else
@@ -34,6 +28,7 @@ class Admin::AdministratorsController < ApplicationController
     if @administrator.update(administrator_params)
       redirect_to admin_administrator_url(@administrator), notice: 'Administrator updated successfully'
     else
+      log_errors(@administrator)
       redirect_to edit_admin_administrator_url(@administrator), alert: 'Administrator update failed. Check logs...'
     end
   end
@@ -46,15 +41,12 @@ class Admin::AdministratorsController < ApplicationController
 
   def administrator_params
     params.require(:administrator).permit(
-      :nickname
-    )
-  end
-
-  def account_params
-    params.require(:administrator).permit(
-      :email,
-      :password,
-      :password_confirmation
+      :nickname,
+      account_attributes: [
+        :email,
+        :password,
+        :password_confirmation
+      ]
     )
   end
 end

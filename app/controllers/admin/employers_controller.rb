@@ -15,11 +15,6 @@ class Admin::EmployersController < ApplicationController
   end
 
   def create
-    @employer.build_account(
-      email: account_params[:email],
-      password: account_params[:password],
-      password_confirmation: account_params[:password]
-    )
     if @employer.save
       redirect_to admin_employer_url(@employer), notice: 'Employer created successfully'
     else
@@ -61,7 +56,12 @@ class Admin::EmployersController < ApplicationController
       :public_email,
       :address,
       :phone,
-      group_ids: []
+      group_ids: [],
+      account_attributes: [
+        :email,
+        :password,
+        :password_confirmation
+      ]
     )
   end
 

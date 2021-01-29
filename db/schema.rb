@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_28_081951) do
+ActiveRecord::Schema.define(version: 2021_01_29_082058) do
 
   create_table "accounts", force: :cascade do |t|
     t.string "email", default: "", null: false
@@ -75,13 +75,6 @@ ActiveRecord::Schema.define(version: 2021_01_28_081951) do
     t.string "public_email"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-  end
-
-  create_table "employers_groups", id: false, force: :cascade do |t|
-    t.integer "employer_id"
-    t.integer "group_id"
-    t.index ["employer_id"], name: "index_employers_groups_on_employer_id"
-    t.index ["group_id"], name: "index_employers_groups_on_group_id"
   end
 
   create_table "groups", force: :cascade do |t|

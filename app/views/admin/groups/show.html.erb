@@ -4,66 +4,7 @@
   <div class="model-wrapper__label"><%= @group.label %></div>
   
   <div class="model-wrapper__model-table-wrapper model-table-wrapper">
-    <div class="model-table-wrapper__label">Group's companies</div>
-    <div id="listing-table_0" class="model-table-wrapper__table custom-table">
-      <div class="custom-table__table-header-wrapper table-header-wrapper">
-        <div class="table-header-wrapper__table-header-element table-header-element w-10">
-          <div class="table-header-element__label">
-            Logo
-          </div>
-        </div>
-        <div class="table-header-wrapper__table-header-element table-header-element">
-          <div class="table-header-element__arrows-wrapper arrows-wrapper">
-            <div id="sort-arrow_up_0_table_0"><%= inline_svg_tag('up-chevron.svg', class: "svg-sorting-arrow") %></div>
-            <div id="sort-arrow_down_0_table_0"><%= inline_svg_tag('down-chevron.svg', class: "svg-sorting-arrow") %></div>
-          </div>
-          <div class="table-header-element__label">
-            Label
-          </div>
-        </div>
-        <div class="table-header-wrapper__table-header-element table-header-element">
-          <div class="table-header-element__arrows-wrapper arrows-wrapper">
-            <div id="sort-arrow_up_1_table_0"><%= inline_svg_tag('up-chevron.svg', class: "svg-sorting-arrow") %></div>
-            <div id="sort-arrow_down_1_table_0"><%= inline_svg_tag('down-chevron.svg', class: "svg-sorting-arrow") %></div>
-          </div>
-          <div class="table-header-element__label">
-            Email
-          </div>
-        </div>
-        <div class="table-header-wrapper__table-header-element table-header-element">
-          <div class="table-header-element__arrows-wrapper arrows-wrapper">
-            <div id="sort-arrow_up_2_table_0"><%= inline_svg_tag('up-chevron.svg', class: "svg-sorting-arrow") %></div>
-            <div id="sort-arrow_down_2_table_0"><%= inline_svg_tag('down-chevron.svg', class: "svg-sorting-arrow") %></div>
-          </div>
-          <div class="table-header-element__label">
-            Phone
-          </div>
-        </div>
-      </div>
-      <% unless @group.employers.empty? %>
-        <% @group.employers.each do |employer| %>
-          <%= link_to(admin_employer_url(employer), class: "custom-table__table-row-wrapper table-row-wrapper link-div table-row_0") do %>
-            <div class="table-row-wrapper__information w-10">
-              <%= image_tag(employer.logo_url, size: "75x75") %>
-            </div>
-            <div class="table-row-wrapper__information">
-              <%= employer.label %>
-            </div>
-            <div class="table-row-wrapper__information">
-              <%= employer.public_email %>
-            </div>
-            <div class="table-row-wrapper__information">
-              <%= employer.phone %>
-            </div>
-          <% end %>
-        <% end %>
-      <% else %>
-        <div class="custom-table__message">Empty</div>
-      <% end %>
-    </div>
-  </div>
-  <div class="model-wrapper__model-table-wrapper model-table-wrapper">
-    <div class="model-table-wrapper__label">Group's employees</div>
+    <div class="model-table-wrapper__label">Employees associated with this group</div>
     <div id="listing-table_1" class="model-table-wrapper__table custom-table">
       <div class="custom-table__table-header-wrapper table-header-wrapper">
         <div class="table-header-wrapper__table-header-element table-header-element">

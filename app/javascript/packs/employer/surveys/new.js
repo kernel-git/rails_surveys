@@ -55,38 +55,6 @@ function addNewQuestionGroup(qgroup_id) {
       else
         free_question_ids.splice(0, 1);
     });
-  
-  
-  // const questionsLabel = $('<div></div>')
-  //   .addClass('model-table-wrapper__label')
-  //   .text('Questions');
-  // const tableWrapper = $('<div></div>')
-  //   .attr('id', `listing-table_${qgroup_id + 1}`)
-  //   .addClass('model-table-wrapper__table custom-table');
-  // const headerWrapper = $('<div></div>')
-  //   .addClass('custom-table__table-header-wrapper table-header-wrapper');
-  // const headerElem1 = $('<div></div>')
-  //   .addClass('table-header-wrapper__table-header-element table-header-element');
-  // const headerLabel1 = $('<div></div>')
-  //   .addClass('table-header-element__label')
-  //   .text('Quesetion type');
-  // headerElem1.append(headerLabel1);
-  // const headerElem2 = $('<div></div>')
-  //   .addClass('w-10 table-header-wrapper__table-header-element table-header-element');
-  // const headerLabel2 = $('<div></div>')
-  //   .addClass('table-header-element__label');
-  // headerElem2.append(headerLabel2);
-  // headerWrapper.append(headerElem1, headerElem2);
-
-  // add_button
-  //   .attr('id', `add-row_${qgroup_id + 1}`)
-  //   .on('click', () => {
-  //     addNewQuestion(free_question_ids[0], qgroup_id);
-  //     if (free_question_ids.length == 1)
-  //       free_question_ids[0] += 1;
-  //     else
-  //       free_question_ids.splice(0, 1);
-  //   });
 
   questionsWrapper.append(questionAddButton);
   qgroupWrapper.append(qgroupLabelWrapper, questionsLabel, questionsWrapper);
@@ -135,18 +103,6 @@ function addNewQuestion(question_id, qgroup_id) {
     .addClass('model-table-wrapper__table custom-table');
   const headerWrapper = $('<div></div>')
     .addClass('custom-table__table-header-wrapper table-header-wrapper');
-  // const headerElem1 = $('<div></div>')
-  //   .addClass('table-header-wrapper__table-header-element table-header-element');
-  // const headerLabel1 = $('<div></div>')
-  //   .addClass('table-header-element__label')
-  //   .text('Option text');
-  // headerElem1.append(headerLabel1);
-  // const headerElem2 = $('<div></div>')
-  //   .addClass('table-header-wrapper__table-header-element table-header-element');
-  // const headerLabel2 = $('<div></div>')
-  //   .addClass('table-header-element__label')
-  //   .text('With text field');
-  // headerElem2.append(headerLabel2);
   const headerElem = $('<div></div>')
     .addClass('table-header-wrapper__table-header-element table-header-element');
   const headerLabel = $('<div></div>')
@@ -171,27 +127,6 @@ function addNewQuestion(question_id, qgroup_id) {
   questionWrapper.append(questionHeader, optionsWrapper);
 
   $(`#qgroup_${qgroup_id}_questions_wrapper`).append(questionWrapper, addQuestionButton);
-
-
-  // const rowWrapper = $('<div></div>')
-  //   .attr('id', `question_${question_id}`)
-  //   .addClass('custom-table__table-row-wrapper table-row-wrapper');
-  // const questionLabel = $('<input/>')
-  //   .attr('type', 'text')
-  //   .attr('name', 'survey[question_groups_attributes[][questions_attributes[][question_type]]]')
-  //   .addClass('table-row-wrapper__text-input');
-  // const newDeleteButton = $('<div></div>')
-  //   .addClass('table-row-wrapper__information link-button')
-  //   .text('Delete')
-  //   .on('click', () => {
-  //     free_question_ids.unshift(question_id);
-  //     $(`#question_${question_id}`).remove();
-  //   });
-  // rowWrapper.append(questionLabel, newDeleteButton);
-  // const addButton = $(`#add-row_${qgroup_id + 1}`).detach();
-
-  // $(`#listing-table_${qgroup_id + 1}`).append(rowWrapper);
-  // $(`#listing-table_${qgroup_id + 1}`).append(addButton);
 }
 
 function addNewOption(option_id, question_id) {

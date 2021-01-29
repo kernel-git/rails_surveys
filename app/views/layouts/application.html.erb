@@ -11,9 +11,7 @@
   <body>
     <div class="wrapper">
       <div class="header">
-        <div class="header__label font-large">
-          Home
-        </div>
+        <%= link_to "Home", root_url, class: "header__label font-large" %>
         <div class="header__sections header-sections">
           <%= link_to "Sign up", new_account_registration_url, class: "header-sections__section font-big" %>
           <%= link_to "Log in", new_account_session_url, class: "header-sections__section font-big" %>

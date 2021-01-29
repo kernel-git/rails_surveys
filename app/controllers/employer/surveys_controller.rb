@@ -3,14 +3,12 @@
 class Employer::SurveysController < ApplicationController
   layout 'employer'
   load_and_authorize_resource
-  skip_load_resource only: :show
 
   def index
     @surveys = @surveys.page(params[:page])
   end
 
   def show
-    @survey = Survey.includes(:employer, question_groups: [questions: :options]).find(params[:id])
     @employees_data = []
     @current_assigned_employees_ids = []
     @employees_data = Employee.filter_by_employer_id(@survey.employer.id).collect do |employee|
@@ -103,21 +101,6 @@ class Employer::SurveysController < ApplicationController
             :has_text_field
           ]
         ] 
-      ]
-    )
-  end
-
-  def question_group_params
-    params.permit(
-      question_groups: [
-        :label,
-        { questions: [
-          :question_type,
-          { options: %i[
-            label
-            with_text_field
-          ] }
-        ] }
       ]
     )
   end

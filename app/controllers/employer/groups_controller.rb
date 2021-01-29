@@ -3,15 +3,13 @@
 class Employer::GroupsController < ApplicationController
   layout 'employer'
   load_and_authorize_resource
-  skip_load_resource only: :show
 
   def index
     @groups = @groups.page(params[:page])
   end
 
   def show
-    @group = Group.includes(:employees).find(params[:id])
-    @group_employees = Employee.filter_by_employer_id(current_account.account_user_id).filter_by_group_id(@group.id)
+    @group_employees = @group.employees.filter_by_employer_id(current_account.account_user_id)
   end
 
   def new
@@ -22,7 +20,6 @@ class Employer::GroupsController < ApplicationController
   end
 
   def create
-    @group.employers << current_account.account_user
     if @group.save
       redirect_to employer_group_url(@group), notice: 'Group created successfully'
     else

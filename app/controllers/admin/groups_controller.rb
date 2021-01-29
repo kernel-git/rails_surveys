@@ -3,24 +3,18 @@
 class Admin::GroupsController < ApplicationController
   layout 'admin'
   load_and_authorize_resource
-  skip_load_resource only: :show
 
   def index
     @groups = @groups.page(params[:page])
   end
 
   def show
-    @group = Group.includes(:employees, :employers).find(params[:id])
   end
 
   def new
     @employees_data = Employee.all.collect do |employee|
       [employee.id, employee.first_name, employee.last_name,
        employee.account.email, employee.employer.label]
-    end
-    @employers_data = Employer.all.collect do |employer|
-      [employer.id, employer.logo_url,
-       employer.label, employer.public_email]
     end
   end
 
@@ -51,7 +45,6 @@ class Admin::GroupsController < ApplicationController
     params.require(:group).permit(
       :label,
       employee_ids: [],
-      employer_ids: []
     )
   end
 end

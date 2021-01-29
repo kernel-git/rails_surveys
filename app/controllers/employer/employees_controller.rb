@@ -11,7 +11,6 @@ class Employer::EmployeesController < ApplicationController
   def show
     @available_surveys = SurveyEmployeeConnection.filter_by_employee_id(@employee.id).filter_avaible
     @conducted_surveys = SurveyEmployeeConnection.filter_by_employee_id(@employee.id).filter_conducted
-    logger.debug @employee.groups
   end
 
   def new
@@ -19,13 +18,6 @@ class Employer::EmployeesController < ApplicationController
   end
 
   def create
-    # @employee.build_account(
-    #   email: account_params[:email],
-    #   password: account_params[:password],
-    #   password_confirmation: account_params[:password]
-    # )
-    # logger.debug employee_params
-    # logger.debug @employee.groups
     if @employee.save
       redirect_to employer_employee_url(@employee), notice: 'Employee created successfully'
     else
@@ -43,6 +35,7 @@ class Employer::EmployeesController < ApplicationController
     if @employee.update(employee_params)
       redirect_to employer_employee_url(@employee), notice: 'Employee updated successfully'
     else
+      log_errors(@employee)
       redirect_to edit_employer_employee_url(@employee), alert: 'Employee update failed. Check logs...'
     end
   end

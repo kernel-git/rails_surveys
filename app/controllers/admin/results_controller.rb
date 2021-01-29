@@ -3,18 +3,12 @@
 class Admin::ResultsController < ApplicationController
   layout 'admin'
   load_and_authorize_resource class: 'SurveyEmployeeConnection'
-  skip_load_resource only: :show
 
   def index
     @results = @results.page(params[:page])
   end
 
   def show
-    @result = SurveyEmployeeConnection.includes(:employee, survey:
-      [question_groups:
-        [questions:
-          [options: :answers]]]).find(params[:id])
-
     @answers = {}
     @result.survey.question_groups.each do |qgroup|
       qgroup.questions.each do |question|
