@@ -2,6 +2,7 @@ class RemoveManyToManyConnectionBetweenEmployersAndGroups < ActiveRecord::Migrat
   def self.up
     drop_table :employers_groups
   end
+
   def self.down
     create_table :employers_groups, id: false do |t|
       t.belongs_to :employers

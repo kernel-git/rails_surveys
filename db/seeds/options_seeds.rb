@@ -194,7 +194,7 @@ class OptionsSeeds
 
   def perform
     options = []
-    (OPTIONS.length).times do |index|
+    OPTIONS.length.times do |index|
       option = Option.new({
                             question_id: Question.find_by(question_type: QUESTIONS[index]).id,
                             text: OPTIONS[index]

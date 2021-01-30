@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Admin::AdministratorsController < ApplicationController
-  layout 'admin'
+  # layout 'admin'
   load_and_authorize_resource
 
   def index
@@ -21,8 +21,7 @@ class Admin::AdministratorsController < ApplicationController
     end
   end
 
-  def edit
-  end
+  def edit; end
 
   def update
     if @administrator.update(administrator_params)
@@ -42,10 +41,10 @@ class Admin::AdministratorsController < ApplicationController
   def administrator_params
     params.require(:administrator).permit(
       :nickname,
-      account_attributes: [
-        :email,
-        :password,
-        :password_confirmation
+      account_attributes: %i[
+        email
+        password
+        password_confirmation
       ]
     )
   end

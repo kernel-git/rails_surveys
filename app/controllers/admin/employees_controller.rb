@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Admin::EmployeesController < ApplicationController
-  layout 'admin'
+  # layout 'admin'
   load_and_authorize_resource
 
   def index
@@ -9,12 +9,13 @@ class Admin::EmployeesController < ApplicationController
   end
 
   def show
+    @results = SurveyEmployeeConnection.filter_by_employee_id(@employee.id).filter_conducted
   end
 
   def new
     @groups_data = Group.all.collect do |group|
       [group.id,
-      group.label]
+       group.label]
     end
     @employers_data = Employer.all.collect do |employer|
       [employer.id,
@@ -36,7 +37,7 @@ class Admin::EmployeesController < ApplicationController
   def edit
     @groups_data = Group.all.collect do |group|
       [group.id,
-      group.label]
+       group.label]
     end
     @employers_data = Employer.all.collect do |employer|
       [employer.id,
@@ -73,9 +74,9 @@ class Admin::EmployeesController < ApplicationController
       :opt_out,
       :employer_id,
       group_ids: [],
-      account_attributes: [
-        :email,
-        :password
+      account_attributes: %i[
+        email
+        password
       ]
     )
   end

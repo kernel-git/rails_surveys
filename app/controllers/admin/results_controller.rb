@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Admin::ResultsController < ApplicationController
-  layout 'admin'
+  # layout 'admin'
   load_and_authorize_resource class: 'SurveyEmployeeConnection'
 
   def index

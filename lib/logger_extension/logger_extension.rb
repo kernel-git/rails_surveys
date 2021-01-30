@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module LoggerExtension
   def log_exception(exception)
     message = "Exception catched!\n"
@@ -10,10 +12,10 @@ module LoggerExtension
   end
 
   def log_errors(object)
-    unless object.errors.empty?
-      message = "Found errors during #{object.class.name} object manipulation\n"
-      object.errors.full_messages.each { |m| message += "#{m}\n" }
-      Rails.logger.error message
-    end
+    return if object.errors.empty?
+
+    message = "Found errors during #{object.class.name} object manipulation\n"
+    object.errors.full_messages.each { |m| message += "#{m}\n" }
+    Rails.logger.error message
   end
 end

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Employer::EmployeesController < ApplicationController
-  layout 'employer'
+  # layout 'employer'
   load_and_authorize_resource
 
   def index
@@ -55,9 +55,9 @@ class Employer::EmployeesController < ApplicationController
       :position_age,
       :opt_out,
       group_ids: [],
-      account_attributes: [
-        :email,
-        :password
+      account_attributes: %i[
+        email
+        password
       ]
     )
   end

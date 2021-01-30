@@ -3,21 +3,10 @@
 class ApplicationController < ActionController::Base
   include LoggerExtension
 
-  rescue_from CanCan::AccessDenied do |exception|
-    log_exception(exception)
-    if current_account.present?
-      case current_account.account_user_type
-      when 'Administrator'
-        redirect_to(admin_static_pages_url(page: 'access-denied'))
-      when 'Employer'
-        redirect_to(employer_static_pages_url(page: 'access-denied'))
-      when 'Employee'
-        redirect_to(employee_static_pages_url(page: 'access-denied'))
-      end
-    else
-      redirect_to(static_pages_url(page: 'access-denied'))
-    end
-  end
+  rescue_from CanCan::AccessDenied, with: :access_denied
+  rescue_from ActiveRecord::RecordNotFound, with: :not_found
+  rescue_from ActionController::RoutingError, with: :not_found
+  rescue_from AbstractController::ActionNotFound, with: :not_found
 
   # before_action :configure_permitted_parameters, if: :devise_controller?, only:
 
@@ -47,5 +36,15 @@ class ApplicationController < ActionController::Base
 
   def current_ability
     @current_ability ||= Ability.new(current_account)
+  end
+
+  private
+
+  def access_denied
+    redirect_to(static_pages_url(page: 'access-denied'))
+  end
+
+  def not_found
+    redirect_to(static_pages_url(page: 'not-found-404'))
   end
 end

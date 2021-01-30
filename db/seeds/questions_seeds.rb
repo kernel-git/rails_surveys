@@ -66,7 +66,7 @@ class QuestionsSeeds
 
   def perform
     questions = []
-    (QUESTIONS.length).times do |index|
+    QUESTIONS.length.times do |index|
       questions << Question.new({
                                   question_type: QUESTIONS[index],
                                   benchmark_val: 1,

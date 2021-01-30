@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Employer::SurveysController < ApplicationController
-  layout 'employer'
+  # layout 'employer'
   load_and_authorize_resource
 
   def index
@@ -92,15 +92,15 @@ class Employer::SurveysController < ApplicationController
       :employer_id,
       question_groups_attributes: [
         :label,
-        questions_attributes: [
+        { questions_attributes: [
           :question_type,
           :benchmark_val,
           :benchmark_vol,
-          options_attributes: [
-            :text,
-            :has_text_field
-          ]
-        ] 
+          { options_attributes: %i[
+            text
+            has_text_field
+          ] }
+        ] }
       ]
     )
   end

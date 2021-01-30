@@ -34,8 +34,7 @@ class Account::RegistrationsController < Devise::RegistrationsController
     log_exception(e)
     redirect_to root_url, alert: 'Employee creation failed. Check logs...'
   else
-    flash[:notice] = 'Employee created successfully'
-    super
+    redirect_to employee_root_url, alert: 'Employee created successfully'
   end
 
   # GET /resource/edit
@@ -72,10 +71,9 @@ class Account::RegistrationsController < Devise::RegistrationsController
     when 'employer'
       devise_parameter_sanitizer.permit(:sign_up, keys: [:nickname])
     when 'employee'
-      devise_parameter_sanitizer.permit(:sign_up, keys: 
-        [:first_name, :last_name, :age,
-          :position_age, :account_type, :employer_id]
-      )
+      devise_parameter_sanitizer.permit(:sign_up, keys:
+        %i[first_name last_name age
+           position_age account_type employer_id])
     end
   end
 
@@ -85,7 +83,7 @@ class Account::RegistrationsController < Devise::RegistrationsController
   # end
 
   # The path used after sign up.
-  def after_sign_up_path_for(resource)
+  def after_sign_up_path_for(_resource)
     '/employee/home'
   end
 

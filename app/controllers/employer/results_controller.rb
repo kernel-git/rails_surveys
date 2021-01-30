@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Employer::ResultsController < ApplicationController
-  layout 'employer'
+  # layout 'employer'
   load_and_authorize_resource class: 'SurveyEmployeeConnection'
   skip_load_resource only: :show
 

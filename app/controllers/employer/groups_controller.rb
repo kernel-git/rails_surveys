@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Employer::GroupsController < ApplicationController
-  layout 'employer'
+  # layout 'employer'
   load_and_authorize_resource
 
   def index
@@ -14,8 +14,8 @@ class Employer::GroupsController < ApplicationController
 
   def new
     @employees_data = Employee.filter_by_employer_id(current_account.account_user.id).collect do |employee|
-      [employee.id, employee.first_name, employee.last_name, 
-        employee.account.email, employee.account_type]
+      [employee.id, employee.first_name, employee.last_name,
+       employee.account.email, employee.account_type]
     end
   end
 

@@ -7,7 +7,7 @@ class Option < ApplicationRecord
   after_initialize :init
 
   def init
-    self.has_text_field = false if self.has_text_field.nil?
+    self.has_text_field = false if has_text_field.nil?
   end
 
   validates_presence_of :text, :question

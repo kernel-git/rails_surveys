@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Admin::EmployersController < ApplicationController
-  layout 'admin'
+  # layout 'admin'
   load_and_authorize_resource
 
   def index
@@ -57,10 +57,10 @@ class Admin::EmployersController < ApplicationController
       :address,
       :phone,
       group_ids: [],
-      account_attributes: [
-        :email,
-        :password,
-        :password_confirmation
+      account_attributes: %i[
+        email
+        password
+        password_confirmation
       ]
     )
   end

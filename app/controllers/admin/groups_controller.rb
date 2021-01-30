@@ -1,15 +1,14 @@
 # frozen_string_literal: true
 
 class Admin::GroupsController < ApplicationController
-  layout 'admin'
+  # layout 'admin'
   load_and_authorize_resource
 
   def index
     @groups = @groups.page(params[:page])
   end
 
-  def show
-  end
+  def show; end
 
   def new
     @employees_data = Employee.all.collect do |employee|
@@ -44,7 +43,7 @@ class Admin::GroupsController < ApplicationController
   def group_params
     params.require(:group).permit(
       :label,
-      employee_ids: [],
+      employee_ids: []
     )
   end
 end
