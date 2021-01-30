@@ -16,6 +16,7 @@ Rails.application.routes.draw do
 
   namespace :admin do
     resources :administrators
+    resources :moderators
     resources :employees
     resources :groups
     resources :surveys
@@ -35,7 +36,8 @@ Rails.application.routes.draw do
     root 'static_pages#show', page: 'home'
     get '/:page', to: 'static_pages#show', as: 'static_pages'
   end
-  namespace :employer do
+  namespace :moderator do
+    resources :moderators
     resources :surveys
     resources :employees
     resources :groups

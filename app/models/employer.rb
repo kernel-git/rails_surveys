@@ -5,11 +5,9 @@ class Employer < ActiveRecord::Base
 
   has_many :employees
   has_many :surveys
-  has_one :account, as: :account_user
+  has_many :moderators
 
-  accepts_nested_attributes_for :account
-
-  validates_presence_of :label, :public_email, :phone, :address, :logo_url, :account
+  validates_presence_of :label, :public_email, :phone, :address, :logo_url
   validates :public_email, format: { with: /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i, message: 'is not an email' }
-  validates_associated :account
+  validates :moderators, length: { minimum: 1 }
 end

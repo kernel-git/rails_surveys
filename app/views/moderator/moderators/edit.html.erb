@@ -1,0 +1,12 @@
+<%= form_with scope: :moderator, url: moderator_moderator_url(@moderator), method: :patch, class: "model-wrapper" do |form| %>
+  <div class="model-wrapper__label">Edit moderator</div>
+  <div class="model-wrapper__model-group">
+    <div class="model-wrapper__model-info-block">
+      <div class="model-wrapper__model-info-wrapper input-wrapper">
+        <div class="model-info-wrapper__label">Nickname:</div>
+        <div class="model-info-wrapper__info"><%= form.text_field :nickname %></div>
+      </div>
+    </div>
+  </div>
+  <%= form.submit "Update moderator" %>
+<% end %>

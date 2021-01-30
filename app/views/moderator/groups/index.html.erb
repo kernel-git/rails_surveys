@@ -2,8 +2,8 @@
 
 <div class="listing-wrapper">
   <div class="listing-wrapper__label-wrapper">
-    <div class="label-wrapper__label">All administrators</div>
-    <%= link_to "Add new admin", new_admin_administrator_url, class: "link-button label-wrapper__button" %>
+    <div class="label-wrapper__label">All groups</div>
+    <%= link_to "Add new group", new_moderator_group_url, class: "link-button label-wrapper__button" %>
   </div>
   <div id="listing-table_0" class="listing-wrapper__custom-table custom-table">
     <div class="custom-table__table-header-wrapper table-header-wrapper">
@@ -13,7 +13,7 @@
           <div id="sort-arrow_down_0_table_0"><%= inline_svg_tag('down-chevron.svg', class: "svg-sorting-arrow") %></div>
         </div>
         <div class="table-header-element__label">
-          Nickname
+          Name
         </div>
       </div>
       <div class="table-header-wrapper__table-header-element table-header-element">
@@ -22,25 +22,25 @@
           <div id="sort-arrow_down_1_table_0"><%= inline_svg_tag('down-chevron.svg', class: "svg-sorting-arrow") %></div>
         </div>
         <div class="table-header-element__label">
-          Email
+          Date of creation
         </div>
       </div>
     </div>
-    <% unless @administrators.empty? %>
-      <% @administrators.each do |admin| %>
-        <%= link_to(admin_administrator_url(admin), class: "custom-table__table-row-wrapper table-row-wrapper link-div table-row_0") do %>
+    <% unless @groups.empty? %>
+      <% @groups.each do |group| %>
+        <%= link_to(moderator_group_url(group), class: "custom-table__table-row-wrapper table-row-wrapper link-div table-row_0") do %>
           <div class="table-row-wrapper__information">
-            <%= admin.nickname %>
+            <%= group.label %>
           </div>
           <div class="table-row-wrapper__information">
-            <%= admin.account.email %>
+            <%= group.created_at.to_formatted_s(:db) %>
           </div>
         <% end %>
       <% end %>
+    </div>
+  <%= paginate @groups %>
+  <% else %>
+    <div class="custom-table__message">Empty</div>
   </div>
-      <%= paginate @administrators %>
-    <% else %>
-      <div class="custom-table__message">Empty</div>
-  </div>
-    <% end %>
+  <% end %>
 </div>

@@ -12,8 +12,8 @@ class Account < ApplicationRecord
     account_user_type == 'Administrator'
   end
 
-  def employer?
-    account_user_type == 'Employer'
+  def moderator?
+    account_user_type == 'Moderator'
   end
 
   def employee?

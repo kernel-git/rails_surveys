@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class Employee::SurveysController < ApplicationController
-  # layout 'employee'
   load_resource only: :attempt
   authorize_resource
 

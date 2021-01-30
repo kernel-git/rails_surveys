@@ -33,15 +33,16 @@ class Ability
 
     if account.present?
       if account.admin?
-        can :manage, [Administrator, Employee, Employer, Group, Survey]
+        can :manage, [Administrator, Employee, Employer, Group, Survey, Moderator]
         can %i[index show], SurveyEmployeeConnection, is_conducted: true
-      elsif account.employer?
-        can :manage, Employee, employer_id: account.account_user.id
+      elsif account.moderator?
+        can :manage, Moderator, employer_id: account.account_user.employer.id
+        can :manage, Employee, employer_id: account.account_user.employer.id
         can %i[index show], SurveyEmployeeConnection,
             is_conducted: true,
-            employee: { employer: { id: account.account_user.id } }
+            employee: { employer: { id: account.account_user.employer.id } }
         can :manage, Group
-        can :manage, Survey, employer_id: account.account_user.id
+        can :manage, Survey, employer_id: account.account_user.employer.id
         cannot :manage, Employer
       elsif account.employee?
         can %i[index show], SurveyEmployeeConnection,

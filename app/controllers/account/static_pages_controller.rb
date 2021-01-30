@@ -2,13 +2,12 @@
 
 class Account::StaticPagesController < ApplicationController
   STATIC_PAGES = {
-    'home': 'home',
-    'not-found-404': 'not_found_404'
+    'home': 'home'
   }.freeze
 
   def show
     if STATIC_PAGES[params[:page].to_sym].nil?
-      render "account/static_pages/#{STATIC_PAGES['not-found-404'.to_sym]}"
+      redirect_to static_pages_url(page: 'not-found-404')
     else
       render "account/static_pages/#{STATIC_PAGES[params[:page].to_sym]}"
     end

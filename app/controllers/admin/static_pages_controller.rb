@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class Admin::StaticPagesController < ApplicationController
-  # layout 'admin'
   before_action :check_account_type, if: :authenticate_account!
 
   STATIC_PAGES = {

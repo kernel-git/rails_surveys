@@ -42,12 +42,19 @@ class EmployersSeeds
        logo_url: 'https://www.graphicsprings.com/filestorage/stencils/e6935e56cde852659cd5d7aa06dc261c.svg'
      }].each do |hash|
       @employer = Employer.new(hash)
-      @employer.build_account(
-        account_user_type: 'Empoyer',
-        email: Faker::Internet.unique.email,
-        password: '11111111',
-        password_confirmation: '11111111'
-      )
+      2.times do
+        moderator = Moderator.new(
+          nickname: Faker::Lorem.word,
+        )
+        moderator.build_account(
+          account_user_type: 'Moderator',
+          email: Faker::Internet.unique.email,
+          password: '11111111',
+          password_confirmation: '11111111'
+        )
+        @employer.moderators << moderator
+        log_errors(moderator) unless moderator.save
+      end
       log_errors(@employer) unless @employer.save
     end
   end

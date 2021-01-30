@@ -1,0 +1,60 @@
+<%= javascript_pack_tag "extra/table-behavior.js" %>
+<%= javascript_pack_tag "moderator/results/show.js" %>
+
+<div class="model-wrapper">
+  <div class="model-wrapper__label"><%= @result.survey.label %></div>
+
+  <div class="object-group-wrapper">
+    <div class="object-group-wrapper__label">Survey content</div>
+
+    <div class="attempt-wrapper__content-wrapper content-wrapper">
+      <% @result.survey.question_groups.each_with_index do |question_group, qg_index| %>
+        <div class="qgroup-wrapper" id="qgroup_<%= qg_index %>">
+          <div class="qgroup-wrapper__qgroup-label-wrapper qgroup-label-wrapper">
+            <div class="qgroup-label-wrapper__label font-big">
+              <%= question_group.label %>
+            </div>
+          </div>
+          <% question_group.questions.each do |question| %>
+            <div class="qgroup-wrapper__question-wrapper question-wrapper">
+              <div class="question-wrapper__text font-big">
+                <%= question.question_type %>
+              </div>
+              <% question.options.each do |option| %>
+                <div class="question-wrapper__answer-option-wrapper answer-option-wrapper">
+                  <% if !@answers[question.id.to_s.to_sym].blank? && option.id == @answers[question.id.to_s.to_sym][0].option.id %>
+                    <div class="answer-option-wrapper__label-wrapper">
+                      <div class="answer-option-wrapper__label answer-option-wrapper__label--chosen">
+                        <%= option.text %>
+                      </div>
+                    </div>
+                    <% if option.has_text_field %>
+                      <div class="answer-option-wrapper__text-field answer-option-wrapper__text-field--active">
+                        <%= @answers[question.id.to_s.to_sym][0].additional_text %>
+                      </div>
+                    <% end %>
+                  <% else %>
+                    <div class="answer-option-wrapper__label-wrapper">
+                      <div class="answer-option-wrapper__label">
+                        <%= option.text %>
+                      </div>
+                    </div>
+                  <% end %>
+                </div>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+      <div class="content-wrapper__content-footer content-footer">
+        <div class="progress__wrapper">
+          <% @result.survey.question_groups.each_with_index do |question_group, qg_index| %>
+            <div class="progress__element link-div" id="qgroup-button_<%= qg_index %>">
+              <%= qg_index + 1 %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

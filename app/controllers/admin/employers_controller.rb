@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class Admin::EmployersController < ApplicationController
-  # layout 'admin'
   load_and_authorize_resource
 
   def index

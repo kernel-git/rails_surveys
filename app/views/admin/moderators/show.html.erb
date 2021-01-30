@@ -1,0 +1,61 @@
+<%= javascript_pack_tag "extra/table-behavior.js" %>
+
+<div class="model-wrapper">
+  <div class="model-wrapper__label">Moderator info</div>
+  <div class="model-wrapper__model-group">
+    <div class="model-wrapper__model-info-block">
+      <div class="model-wrapper__model-info-wrapper">
+        <div class="model-info-wrapper__label">Nickname: </div>
+        <div class="model-info-wrapper__info"><%= @moderator.nickname %></div>
+      </div>
+      <div class="model-wrapper__model-info-wrapper">
+        <div class="model-info-wrapper__label">Email:</div>
+        <div class="model-info-wrapper__info"><%= @moderator.account.email %></div>
+      </div>
+    </div>
+  </div>
+  <div class="model-wrapper__model-table-wrapper model-table-wrapper">
+    <div class="model-table-wrapper__label">Moderator's employer</div>
+    <div class="model-table-wrapper__table custom-table">
+      <div class="custom-table__table-header-wrapper table-header-wrapper">
+        <div class="table-header-wrapper__table-header-element table-header-element w-10">
+          <div class="table-header-element__label">
+            Logo
+          </div>
+        </div>
+        <div class="table-header-wrapper__table-header-element table-header-element">
+          <div class="table-header-element__label">
+            Name
+          </div>
+        </div>
+        <div class="table-header-wrapper__table-header-element table-header-element">
+          <div class="table-header-element__label">
+            Email
+          </div>
+        </div>
+        <div class="table-header-wrapper__table-header-element table-header-element">
+          <div class="table-header-element__label">
+            Phone
+          </div>
+        </div>
+      </div>
+      <%= link_to(admin_employer_url(@moderator.employer), class: "custom-table__table-row-wrapper table-row-wrapper link-div") do %>
+        <div class="table-row-wrapper__information w-10">
+          <%= image_tag(@moderator.employer.logo_url, size: "75x75") %>
+        </div>
+        <div class="table-row-wrapper__information">
+          <%= @moderator.employer.label %>
+        </div>
+        <div class="table-row-wrapper__information">
+          <%= @moderator.employer.public_email %>
+        </div>
+        <div class="table-row-wrapper__information">
+          <%= @moderator.employer.phone %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+  
+  
+  
+</div>

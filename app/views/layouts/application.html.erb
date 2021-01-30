@@ -13,8 +13,8 @@
       <% if current_account.present? %>
         <% if current_account.admin? %>
           <%= render 'layouts/admin_header' %>
-        <% elsif current_account.employer? %>
-          <%= render 'layouts/employer_header' %>
+        <% elsif current_account.moderator? %>
+          <%= render 'layouts/moderator_header' %>
         <% elsif current_account.employee? %>
           <%= render 'layouts/employee_header' %>
         <% end %>
