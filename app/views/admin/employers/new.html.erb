@@ -1,7 +1,3 @@
-<%= content_tag :div, id: "groups_data", data: {groups: @groups_data} do %>
-<% end %>
-
-<%= javascript_pack_tag "admin/employers/new.js" %>
 <%= javascript_pack_tag "extra/table-behavior.js" %>
 
 <%= form_with scope: :employer, url: admin_employers_url(@employer), method: :post, class: "model-wrapper" do |employer_form| %>
@@ -30,62 +26,31 @@
       </div>
     </div>
     <div class="model-wrapper__model-info-block">
-      <%= employer_form.fields_for :account_attributes do |account_form| %>
       <div class="model-wrapper__model-info-wrapper input-wrapper">
-        <div class="model-info-wrapper__label">Email:</div>
-        <div class="model-info-wrapper__info"><%= account_form.text_field :email %></div>
-      </div>
-      <div class="model-wrapper__model-info-wrapper input-wrapper">
-        <div class="model-info-wrapper__label">Password:</div>
-        <div class="model-info-wrapper__info"><%= account_form.password_field :password %></div>
-      </div>
-      <div class="model-wrapper__model-info-wrapper input-wrapper">
-        <div class="model-info-wrapper__label">Password confirmation:</div>
-        <div class="model-info-wrapper__info"><%= account_form.password_field :password_confirmation %></div>
-      </div>
-      <% end %>
-    </div>
-  </div>
-  <div class="model-wrapper__model-table-wrapper model-table-wrapper">
-    <div class="model-table-wrapper__label">Companies's groups</div>
-    <div id="listing-table_0" class="model-table-wrapper__table custom-table">
-      <div class="custom-table__table-header-wrapper table-header-wrapper">
-        <div class="table-header-wrapper__table-header-element table-header-element">
-          <div class="table-header-element__label">
-            Label
-          </div>
+        <div class="model-info-wrapper__label">Moderator's nickname:</div>
+        <div class="model-info-wrapper__info">
+          <input type="text" name="employer[moderators_attributes[][nickname]"/>
         </div>
       </div>
-      <div id="add-row_0" class="custom-table__table-row-wrapper table-row-wrapper link-div custom-table__message">
-        <%= inline_svg_tag('plus-sign.svg', class: "svg-plus") %>
-      </div>
+        <div class="model-wrapper__model-info-wrapper input-wrapper">
+          <div class="model-info-wrapper__label">Moderator's email:</div>
+          <div class="model-info-wrapper__info">          
+            <input type="text" name="employer[moderators_attributes[][account_attributes[email]]"/>
+          </div>
+        </div>
+        <div class="model-wrapper__model-info-wrapper input-wrapper">
+          <div class="model-info-wrapper__label">Password:</div>
+          <div class="model-info-wrapper__info">
+            <input type="text" name="employer[moderators_attributes[][account_attributes[password]]"/>
+          </div>
+        </div>
+        <div class="model-wrapper__model-info-wrapper input-wrapper">
+          <div class="model-info-wrapper__label">Password confirmation:</div>
+          <div class="model-info-wrapper__info">
+            <input type="text" name="employer[moderators_attributes[][account_attributes[password_confirmation]]"/>
+          </div>
+        </div>
     </div>
   </div>
-  <div id="current-groups-ids" style="display: none;"></div>
-
-  <%= employer_form.submit "Create employer" %>
-  
+  <%= employer_form.submit "Create employer" %>  
 <% end %>
-
-<div id="modal_0" class="modal-background modal-background--hidden">
-  <div class="modal-content">
-    <div class="modal-content__header-wrapper">
-      <div class="modal-content__header-label">Select groups</div>
-      <div id="modal-close_0" class="modal-content__header-button">
-        <%= inline_svg_tag('cross-sign.svg', class: "svg-cross") %>
-      </div>
-    </div>
-    <div class="modal-content__body">
-      <div id="listing-table_1" class="listing-wrapper__custom-table custom-table">
-        <div class="custom-table__table-header-wrapper table-header-wrapper">
-          <div class="table-header-wrapper__table-header-element table-header-element">
-            <div class="table-header-element__label">
-              Label
-            </div>
-          </div>
-        </div>
-        <!-- Groups data goes here -->
-      </div>
-    </div>
-  </div>
-</div>

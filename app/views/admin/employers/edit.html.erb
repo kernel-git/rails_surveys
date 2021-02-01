@@ -1,0 +1,31 @@
+<%= form_with scope: :employer, url: admin_employer_url(@employer), method: :patch, class: "model-wrapper" do |form| %>
+  <div class="model-wrapper__label">Edit employer information</div>
+  <div class="model-wrapper__model-group">
+    <div class="model-wrapper__model-info-block">
+      <div class="model-wrapper__model-info-wrapper">
+        <div class="model-info-wrapper__label">Nname: </div>
+        <div class="model-info-wrapper__info"><%= form.text_field :label %></div>
+      </div>
+      <div class="model-wrapper__model-info-wrapper">
+        <div class="model-info-wrapper__label">Logo url:</div>
+        <div class="model-info-wrapper__info"><%= form.text_field :logo_url %></div>
+      </div>
+    </div>
+    <div class="model-wrapper__model-info-block">
+      <div class="model-wrapper__model-info-wrapper">
+        <div class="model-info-wrapper__label">Address: </div>
+        <div class="model-info-wrapper__info"><%= form.text_field :address %></div>
+      </div>
+      <div class="model-wrapper__model-info-wrapper">
+        <div class="model-info-wrapper__label">Phone:</div>
+        <div class="model-info-wrapper__info"><%= form.text_field :phone %></div>
+      </div>
+      <div class="model-wrapper__model-info-wrapper">
+        <div class="model-info-wrapper__label">Public email:</div>
+        <div class="model-info-wrapper__info"><%= form.text_field :public_email %></div>
+      </div>
+    </div>
+  </div>
+
+  <%= form.submit "Update employer" %>
+<% end %>

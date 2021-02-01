@@ -2,6 +2,7 @@
 
 class Admin::EmployersController < ApplicationController
   load_and_authorize_resource
+  skip_load_resource only: :create
 
   def index
     @employers = @employers.page(params[:page])
@@ -10,10 +11,26 @@ class Admin::EmployersController < ApplicationController
   def show; end
 
   def new
-    @groups_data = Group.all.collect { |group| [group.id, group.label] }
   end
 
   def create
+    @employer = Employer.new(
+      label: params[:employer][:label],
+      logo_url: params[:employer][:logo_url],
+      public_email: params[:employer][:public_email],
+      address: params[:employer][:address],
+      phone: params[:employer][:phone]
+    )
+    moderator = Moderator.new(
+      nickname: params[:employer][:moderators_attributes][0][:nickname],
+    )
+    moderator.account = Account.new(
+      email: params[:employer][:moderators_attributes][0][:account_attributes][:email],
+      password: params[:employer][:moderators_attributes][0][:account_attributes][:password],
+      password_confirmation: params[:employer][:moderators_attributes][0][:account_attributes][:password_confirmation]
+    )
+    @employer.moderators << moderator
+
     if @employer.save
       redirect_to admin_employer_url(@employer), notice: 'Employer created successfully'
     else
@@ -23,11 +40,15 @@ class Admin::EmployersController < ApplicationController
   end
 
   def edit
-    Rails.logger.debug "Ping from admin/employers#edit with params: #{params}"
   end
 
   def update
-    Rails.logger.debug "Ping from admin/employers#update with params: #{params}"
+    if @employer.update(employer_params)
+      redirect_to admin_employer_url(@employer), notice: 'Employer updated successfully'
+    else
+      log_errors(@employee)
+      redirect_to edit_admin_employer_url(@employer), alert: 'Employer update failed. Check logs...'
+    end
   end
 
   def destroy
@@ -54,21 +75,7 @@ class Admin::EmployersController < ApplicationController
       :label,
       :public_email,
       :address,
-      :phone,
-      group_ids: [],
-      account_attributes: %i[
-        email
-        password
-        password_confirmation
-      ]
-    )
-  end
-
-  def account_params
-    params.require(:employer).permit(
-      :email,
-      :password,
-      :password_confirmation
+      :phone
     )
   end
 end

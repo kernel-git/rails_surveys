@@ -22,8 +22,8 @@ class Account::SessionsController < Devise::SessionsController
     case current_account.account_user_type
     when 'Administrator'
       admin_root_url
-    when 'Employer'
-      employer_root_url
+    when 'Moderator'
+      moderator_root_url
     when 'Employee'
       employee_root_url
     end
