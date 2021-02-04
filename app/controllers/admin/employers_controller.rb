@@ -52,19 +52,11 @@ class Admin::EmployersController < ApplicationController
   end
 
   def destroy
-    Rails.logger.debug "Ping from admin/employers#destroy with params: #{params}"
-  end
-
-  def stats
-    Rails.logger.debug 'Ping from admin/employers#stats'
-  end
-
-  def live
-    Rails.logger.debug 'Ping from admin/employers#live'
-  end
-
-  def historical
-    Rails.logger.debug 'Ping from admin/employers#historical'
+    if @employer.destroy
+      redirect_to admin_employers_url, notice: 'Employer deleted successfully'
+    else
+      redirect_to admin_employer_url(@employer), notice: 'Employer deletion failed. Check logs...'
+    end
   end
 
   protected

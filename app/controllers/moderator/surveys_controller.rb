@@ -8,11 +8,31 @@ class Moderator::SurveysController < ApplicationController
   end
 
   def show
+    @conducted_percents = SurveyEmployeeConnection.filter_by_survey_id(@survey.id).count > 0 ?  
+      SurveyEmployeeConnection.filter_by_survey_id(@survey.id).filter_conducted.count
+        .fdiv(SurveyEmployeeConnection.filter_by_survey_id(@survey.id).count).round(4) * 100
+      : '?'
+    @option_stats_data = {}
+    @survey.question_groups.each do |qgroup|
+      qgroup.questions.each do |question|
+        answers_for_this_question = 0
+        question.options.each { |option| answers_for_this_question += option.answers.count }
+        question.options.each do |option|
+          @option_stats_data[option.id.to_s.to_sym] = answers_for_this_question == 0 ? '?' : 
+            Answer.where(option: option).count.fdiv(answers_for_this_question).round(4) * 100
+        end
+        
+      end
+    end
     @employees_data = []
     @current_assigned_employees_ids = []
     @employees_data = Employee.filter_by_employer_id(@survey.employer.id).collect do |employee|
-      [employee.id, employee.first_name, employee.last_name,
-       employee.account.email, employee.employer.label]
+      unless SurveyEmployeeConnection.where(survey: @survey, employee: employee, is_conducted: true).present?
+        [employee.id, employee.first_name, employee.last_name,
+          employee.account.email, employee.employer.label]
+      else
+        nil
+      end
     end
     Employee.filter_by_employer_id(@survey.employer.id).filter_avaible_by_survey_id(@survey.id).collect do |employee|
       @current_assigned_employees_ids << employee.id
@@ -31,10 +51,6 @@ class Moderator::SurveysController < ApplicationController
     end
   end
 
-  def edit
-    Rails.logger.debug "Ping from employer/surveys#edit with params: #{params}"
-  end
-
   def update
     Employee.filter_conducted_by_survey_id(@survey.id).each do |employee|
       params[:employees_ids] << String(employee.id) unless params[:employees_ids].include?(String(employee.id))
@@ -46,40 +62,14 @@ class Moderator::SurveysController < ApplicationController
       log_errors(@survey)
       redirect_to moderator_survey_url(@survey), alert: 'Survey update failed. Check logs...'
     end
-
-    #   @employees_ids = params.permit(:id, employees_ids: [])[:employees_ids]
-    #   @employees_ids ||= []
-    #   @id = params.require(:id)
-    #   logger.debug @id
-    #   logger.debug @employees_ids
-    # rescue ActionController::ParameterMissing => e
-    #   log_exception(e)
-    #   flash.alert 'Survey update failed. Check logs...'
-    # else
-    #   begin
-    #     @survey = Survey.includes(:employer, :employees, question_groups: [questions: :options]).find(Integer(params[:id]))
-    #     redirect_to(not_found_404_path) if @survey.employer.id != current_account.employer.id
-    #   rescue ActiveRecord::RecordNotFound => e
-    #     redirect_to(not_found_404_path)
-    #   else
-    #     Employee.filter_conducted_by_survey_id(@survey.id).each do |employee|
-    #       params[:employees_ids] << String(employee.id) unless params[:employees_ids].include?(String(employee.id))
-    #     end
-    #     if params[:employees_ids].nil?
-    #       @survey.employees.clear
-    #       return
-    #     end
-    #     @survey.employee_ids = params[:employees_ids]
-    #     params[:employees_ids].each do |employee_id|
-    #       connection = SurveyEmployeeConnection.where(survey_id: @survey.id, employee_id: employee_id).first
-    #       connection.is_conducted = false if connection.is_conducted != true
-    #       connection.save
-    #     end
-    #   end
   end
 
   def destroy
-    Rails.logger.debug "Ping from employer/surveys#destroy with params: #{params}"
+    if @survey.destroy
+      redirect_to moderator_surveys_url, notice: 'Survey deleted successfully'
+    else
+      redirect_to moderator_survey_url(@survey), notice: 'Survey deletion failed. Check logs...'
+    end 
   end
 
   protected

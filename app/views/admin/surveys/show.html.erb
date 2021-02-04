@@ -4,11 +4,16 @@
 <% end %>
 
 <%= javascript_pack_tag "extra/table-behavior.js" %>
-<%= javascript_pack_tag "employer/surveys/show.js" %>
+<%= javascript_pack_tag "moderator/surveys/show.js" %>
 
 
 <div class="model-wrapper">
-  <div class="model-wrapper__label"><%= @survey.label %></div>
+  <div class="model-wrapper__label-wrapper">
+    <div class="model-wrapper__label"><%= @survey.label %></div>
+    <div class="model-wrapper__button-group">
+      <%= button_to "Delete", admin_survey_url(@survey), method: :delete, data: {confirm: "Are you sure?(All associated results will be deleted too)"}, class: 'link-button' %>
+    </div>
+  </div>
   <div class="model-wrapper__model-table-wrapper model-table-wrapper">
     <div class="model-table-wrapper__label">Survey's employer</div>
     <div id="listing-table_0" class="model-table-wrapper__table custom-table">
@@ -51,8 +56,10 @@
     </div>
   </div>
 
+  <div class="model-wrapper__label">Survey was completed by <%= @conducted_percents %>% of assigned employees</div>
+
   <div class="object-group-wrapper">
-    <div class="object-group-wrapper__label">Survey content</div>
+    <div class="object-group-wrapper__label">Survey detailed statistic</div>
     <div class="attempt-wrapper__content-wrapper content-wrapper">
       <% @survey.question_groups.each_with_index do |question_group, qg_index| %>
         <div class="qgroup-wrapper" id="qgroup_<%= qg_index %>">
@@ -68,12 +75,16 @@
               </div>
               <% question.options.each do |option| %>
                 <div class="question-wrapper__answer-option-wrapper answer-option-wrapper">
-                  <div class="answer-option-wrapper__label-wrapper">
-                    <div class="answer-option-wrapper__label">
+                  <div class="answer-option-wrapper__split-wrapper">
+                    <div class="answer-option-wrapper__label-wrapper">
+                      <%= inline_svg_tag('radio-off-button.svg', class: "svg-radio") %>
                       <%= option.text %>
                         <% if option.has_text_field %>
                           (has additional text field)
                         <% end %>
+                    </div>
+                    <div class="answer-option-wrapper__label">
+                      Chosen by <%= @option_stats_data[option.id.to_s.to_sym] %>%
                     </div>
                   </div>
                 </div>

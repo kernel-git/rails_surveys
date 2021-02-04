@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Question < ActiveRecord::Base
-  has_many :options
+  has_many :options, dependent: :destroy
   belongs_to :question_group
 
   accepts_nested_attributes_for :options

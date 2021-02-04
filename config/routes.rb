@@ -19,8 +19,8 @@ Rails.application.routes.draw do
     resources :moderators
     resources :employees
     resources :groups
-    resources :surveys
-    resources :results
+    resources :surveys, except: :edit
+    resources :results, except: %i[edit update]
     resources :employers
     root 'static_pages#show', page: 'home'
     get '/:page', to: 'static_pages#show', as: 'static_pages'
@@ -38,10 +38,10 @@ Rails.application.routes.draw do
   end
   namespace :moderator do
     resources :moderators
-    resources :surveys
+    resources :surveys, except: :edit
     resources :employees
-    resources :groups
-    resources :results
+    resources :groups, except: :destroy
+    resources :results, except: %i[edit update]
     root 'static_pages#show', page: 'home'
     get '/:page', to: 'static_pages#show', as: 'static_pages'
   end

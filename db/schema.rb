@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_30_164757) do
+ActiveRecord::Schema.define(version: 2021_02_02_092927) do
 
   create_table "accounts", force: :cascade do |t|
     t.string "email", default: "", null: false
@@ -43,8 +43,10 @@ ActiveRecord::Schema.define(version: 2021_01_30_164757) do
     t.datetime "updated_at", precision: 6, null: false
     t.integer "option_id"
     t.string "additional_text"
+    t.integer "survey_employee_connection_id"
     t.index ["employee_id"], name: "index_answers_on_employee_id"
     t.index ["option_id"], name: "index_answers_on_option_id"
+    t.index ["survey_employee_connection_id"], name: "index_answers_on_survey_employee_connection_id"
   end
 
   create_table "employees", force: :cascade do |t|

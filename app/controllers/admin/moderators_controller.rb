@@ -48,7 +48,15 @@ class Admin::ModeratorsController < ApplicationController
   end
 
   def destroy
-    Rails.logger.debug "Ping from admin/moderators#destroy with params: #{params}"
+    unless Moderator.filter_by_employer_id(@moderator.employer_id).count > 1
+      redirect_to admin_moderator_url(@moderator), notice: 'You can\'t delete employer\'s last moderator'
+      return
+    end
+    if @moderator.destroy
+      redirect_to admin_moderators_url, notice: 'Moderator deleted successfully'
+    else
+      redirect_to admin_moderator_url(@moderator), notice: 'Moderator deletion failed. Check logs...'
+    end
   end
 
   protected

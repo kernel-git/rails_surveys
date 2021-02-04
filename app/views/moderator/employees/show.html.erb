@@ -1,7 +1,13 @@
 <%= javascript_pack_tag "extra/table-behavior.js" %>
 
 <div class="model-wrapper">
-  <div class="model-wrapper__label">Employee info</div>
+  <div class="model-wrapper__label-wrapper">
+    <div class="model-wrapper__label">Employee information</div>
+    <div class="model-wrapper__button-group">
+      <%= button_to "Edit", edit_moderator_employee_url(@employee), method: :get, class: 'link-button' %>
+      <%= button_to "Delete", moderator_employee_url(@employee), method: :delete, data: {confirm: "Are you sure?(All associated answers will be deleted too)"}, class: 'link-button' %>
+    </div>
+  </div>
   <div class="model-wrapper__model-group">
     <div class="model-wrapper__model-info-block">
       <div class="model-wrapper__model-info-wrapper">

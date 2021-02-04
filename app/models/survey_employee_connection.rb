@@ -3,6 +3,7 @@
 class SurveyEmployeeConnection < ActiveRecord::Base
   belongs_to :survey
   belongs_to :employee
+  has_many :answers, dependent: :destroy
 
   validates :survey_id, :employee_id, presence: true
 

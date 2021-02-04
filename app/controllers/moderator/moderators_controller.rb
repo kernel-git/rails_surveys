@@ -35,7 +35,16 @@ class Moderator::ModeratorsController < ApplicationController
   end
 
   def destroy
-    Rails.logger.debug "Ping from moderator/moderators#destroy with params: #{params}"
+    if current_account.account_user == @moderator
+      redirect_to moderator_moderator_url(@moderator), notice: 'You can\'t delete yourself.'
+      return
+    end
+    
+    if @moderator.destroy
+      redirect_to moderator_moderators_url, notice: 'Moderator deleted successfully'
+    else
+      redirect_to moderator_moderator_url(@moderator), notice: 'Moderator deletion failed. Check logs...'
+    end
   end
 
   protected

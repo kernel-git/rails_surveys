@@ -7,6 +7,7 @@ class ApplicationController < ActionController::Base
   rescue_from ActiveRecord::RecordNotFound, with: :not_found
   rescue_from ActionController::RoutingError, with: :not_found
   rescue_from AbstractController::ActionNotFound, with: :not_found
+  rescue_from ActionController::ParameterMissing, with: :request_invalid
 
   # before_action :configure_permitted_parameters, if: :devise_controller?, only:
 
@@ -46,5 +47,9 @@ class ApplicationController < ActionController::Base
 
   def not_found
     redirect_to(static_pages_url(page: 'not-found-404'))
+  end
+
+  def request_invalid
+    redirect_to(static_pages_url(page: 'request-invalid'))
   end
 end

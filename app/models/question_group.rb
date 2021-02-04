@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class QuestionGroup < ActiveRecord::Base
-  has_many :questions
+  has_many :questions, dependent: :destroy
   belongs_to :survey
 
   accepts_nested_attributes_for :questions

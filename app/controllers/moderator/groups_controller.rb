@@ -14,7 +14,7 @@ class Moderator::GroupsController < ApplicationController
   def new
     @employees_data = Employee.filter_by_employer_id(current_account.account_user.id).collect do |employee|
       [employee.id, employee.first_name, employee.last_name,
-       employee.account.email, employee.account_type]
+        employee.account.email, employee.account_type]
     end
   end
 
@@ -28,15 +28,21 @@ class Moderator::GroupsController < ApplicationController
   end
 
   def edit
-    Rails.logger.debug "Ping from admin/groups#edit with params: #{params}"
+    @employees_data = Employee.filter_by_employer_id(current_account.account_user.id).collect do |employee|
+      [employee.id, employee.first_name, employee.last_name,
+        employee.account.email, employee.account_type]
+    end
+    @employees_init_ids = Employee.filter_by_employer_id(current_account.account_user_id)
+      .filter_by_group_id(@group.id).collect { |employee| employee.id }
   end
 
   def update
-    Rails.logger.debug "Ping from admin/groups#update with params: #{params}"
-  end
-
-  def destroy
-    Rails.logger.debug "Ping from admin/groups#destroy with params: #{params}"
+    if @group.update(group_params)
+      redirect_to moderator_group_url(@group), notice: 'Group updated successfully'
+    else
+      log_errors(@group)
+      redirect_to edit_moderator_group_url(@group), alert: 'Group update failed. Check logs...'
+    end
   end
 
   protected

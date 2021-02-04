@@ -12,12 +12,17 @@ class Employee::SurveysController < ApplicationController
   def attempt; end
 
   def conduct
+    result = SurveyEmployeeConnection.find_by(
+      survey_id: params[:id],
+      employee_id: current_account.account_user_id
+    )
     answers = []
     answers_params[:answers].each_value do |answer_data|
       answers << Answer.new(
         employee: current_account.account_user,
         option_id: answer_data[:option_id],
-        additional_text: (Option.find(answer_data[:option_id]).has_text_field ? answer_data[:additional_text] : '')
+        additional_text: (Option.find(answer_data[:option_id]).has_text_field ? answer_data[:additional_text] : ''),
+        survey_employee_connection: result
       )
       next unless answers.last.invalid?
 
@@ -26,10 +31,6 @@ class Employee::SurveysController < ApplicationController
       return
     end
 
-    result = SurveyEmployeeConnection.find_by(
-      survey_id: params[:id],
-      employee_id: current_account.account_user_id
-    )
     result.assign_attributes(is_conducted: true)
     if answers.each(&:save) && result.save
       redirect_to employee_surveys_url, notice: 'Attempt saved successfully'

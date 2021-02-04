@@ -3,9 +3,9 @@
 class Survey < ActiveRecord::Base
   paginates_per 5
 
-  has_many :question_groups
+  has_many :question_groups, dependent: :destroy
   belongs_to :employer
-  has_many :survey_employee_connections
+  has_many :survey_employee_connections, dependent: :destroy
   has_many :employees, through: :survey_employee_connections
 
   accepts_nested_attributes_for :question_groups

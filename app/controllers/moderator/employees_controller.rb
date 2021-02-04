@@ -40,7 +40,11 @@ class Moderator::EmployeesController < ApplicationController
   end
 
   def destroy
-    Rails.logger.debug "Ping from admin/employees#destroy with params: #{params}"
+    if @employee.destroy
+      redirect_to moderator_employees_url, notice: 'Employee deleted successfully'
+    else
+      redirect_to moderator_employee_url(@employee), notice: 'Employee deletion failed. Check logs...'
+    end
   end
 
   protected

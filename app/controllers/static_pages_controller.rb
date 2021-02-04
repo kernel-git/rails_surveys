@@ -8,7 +8,8 @@ class StaticPagesController < ApplicationController
     'contact-employer': 'contact_employer',
     'contact-support': 'contact_support',
     'not-found-404': 'not_found_404',
-    'access-denied': 'access_denied'
+    'access-denied': 'access_denied',
+    'request-invalid': 'request_invalid'
   }.freeze
 
   def show

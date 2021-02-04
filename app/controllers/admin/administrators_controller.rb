@@ -32,7 +32,16 @@ class Admin::AdministratorsController < ApplicationController
   end
 
   def destroy
-    Rails.logger.debug "Ping from admin/admins#destroy with params: #{params}"
+    if current_account.account_user == @administrator
+      redirect_to admin_administrator_url(@administrator), notice: 'You can\'t delete yourself.'
+      return
+    end
+    
+    if @administrator.destroy
+      redirect_to admin_administrators_url, notice: 'Administrator deleted successfully'
+    else
+      redirect_to admin_administrator_url(@administrator), notice: 'Administrator deletion failed. Check logs...'
+    end
   end
 
   protected

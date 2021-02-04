@@ -2,8 +2,12 @@
 <%= javascript_pack_tag "moderator/results/show.js" %>
 
 <div class="model-wrapper">
-  <div class="model-wrapper__label"><%= @result.survey.label %></div>
-
+  <div class="model-wrapper__label-wrapper">
+    <div class="model-wrapper__label"><%= @result.survey.label %> result</div>
+    <div class="model-wrapper__button-group">
+      <%= button_to "Delete", moderator_result_url(@result), method: :delete, data: {confirm: "Are you sure?"}, class: 'link-button' %>
+    </div>
+  </div>  
   <div class="object-group-wrapper">
     <div class="object-group-wrapper__label">Survey content</div>
 
@@ -24,6 +28,7 @@
                 <div class="question-wrapper__answer-option-wrapper answer-option-wrapper">
                   <% if !@answers[question.id.to_s.to_sym].blank? && option.id == @answers[question.id.to_s.to_sym][0].option.id %>
                     <div class="answer-option-wrapper__label-wrapper">
+                      <%= inline_svg_tag('radio-on-button.svg', class: "svg-radio") %>
                       <div class="answer-option-wrapper__label answer-option-wrapper__label--chosen">
                         <%= option.text %>
                       </div>
@@ -35,6 +40,7 @@
                     <% end %>
                   <% else %>
                     <div class="answer-option-wrapper__label-wrapper">
+                      <%= inline_svg_tag('radio-off-button.svg', class: "svg-radio") %>
                       <div class="answer-option-wrapper__label">
                         <%= option.text %>
                       </div>

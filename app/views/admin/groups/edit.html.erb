@@ -1,11 +1,22 @@
 <%= content_tag :div, id: "employees_data", data: {employees: @employees_data} do %>
 <% end %>
+<%= content_tag :div, id: "employees_init_ids", data: {ids: @employees_init_ids} do %>
+<% end %>
 
-<%= javascript_pack_tag "moderator/groups/new.js" %>
+<%= javascript_pack_tag "moderator/groups/edit.js" %>
 <%= javascript_pack_tag "extra/table-behavior.js" %>
 
-<%= form_with scope: :group, url: moderator_groups_url(@group), method: :post, class: "model-wrapper" do |group_form| %>
-  <%= group_form.text_field :label, placeholder: 'New group', class: 'model-wrapper__label-text-field' %>
+<%= form_with scope: :group, url: admin_group_url(@group), method: :patch, class: "model-wrapper" do |group_form| %>
+  <div class="model-wrapper__label">Edit group</div>
+    <div class="model-wrapper__model-group">
+      <div class="model-wrapper__model-info-block">
+        <div class="model-wrapper__model-info-wrapper">
+          <div class="model-info-wrapper__label">Group name: </div>
+          <div class="model-info-wrapper__info"><%= group_form.text_field :label %></div>
+        </div>
+    </div>
+  </div>
+    
   <div class="model-wrapper__model-table-wrapper model-table-wrapper">
     <div class="model-table-wrapper__label">Employees assigned to this group</div>
     <div id="listing-table_0" class="model-table-wrapper__table custom-table">
@@ -42,7 +53,7 @@
 
   <div id="current-employee-ids" style="display: none;"></div>
 
-  <%= group_form.submit "Create group" %>
+  <%= group_form.submit "Update group" %>
   
 <% end %>
 

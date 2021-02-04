@@ -3,9 +3,9 @@
 class Employer < ActiveRecord::Base
   paginates_per 10
 
-  has_many :employees
-  has_many :surveys
-  has_many :moderators
+  has_many :employees, dependent: :destroy
+  has_many :surveys, dependent: :destroy
+  has_many :moderators, dependent: :destroy
 
   accepts_nested_attributes_for :moderators
 

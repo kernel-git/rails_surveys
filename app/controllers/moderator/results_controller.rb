@@ -2,18 +2,12 @@
 
 class Moderator::ResultsController < ApplicationController
   load_and_authorize_resource class: 'SurveyEmployeeConnection'
-  skip_load_resource only: :show
 
   def index
     @results = @results.page(params[:page])
   end
 
   def show
-    @result = SurveyEmployeeConnection.includes(:employee, survey:
-      [question_groups:
-        [questions:
-          [options: :answers]]]).find(params[:id])
-
     @answers = {}
     @result.survey.question_groups.each do |qgroup|
       qgroup.questions.each do |question|
@@ -22,6 +16,16 @@ class Moderator::ResultsController < ApplicationController
           @answers[question.id.to_s.to_sym] = answer unless answer.empty?
         end
       end
+    end
+  end
+
+  def destroy
+    if Answer.where(survey_employee_connection: @result).destroy_all
+      @result.is_conducted = false
+      @result.save
+      redirect_to moderator_results_url, notice: 'Result deleted successfully. Now employee can conduct survey one more time.'
+    else
+      redirect_to moderator_result_url(@result), notice: 'Result deletion failed. Check logs...'
     end
   end
 end

@@ -1,8 +1,13 @@
 <%= javascript_pack_tag "extra/table-behavior.js" %>
 
 <div class="model-wrapper">
-  <div class="model-wrapper__label"><%= @group.label %></div>
-  
+  <div class="model-wrapper__label-wrapper">
+    <div class="model-wrapper__label"><%= @group.label %></div>
+    <div class="model-wrapper__button-group">
+      <%= button_to "Edit", edit_admin_group_url(@group), method: :get, class: 'link-button' %>
+      <%= button_to "Delete", admin_group_url(@group), method: :delete, data: {confirm: "Are you sure?(Associated employees wouldn't be deleted )"}, class: 'link-button' %>
+    </div>
+  </div>  
   <div class="model-wrapper__model-table-wrapper model-table-wrapper">
     <div class="model-table-wrapper__label">Employees associated with this group</div>
     <div id="listing-table_1" class="model-table-wrapper__table custom-table">
