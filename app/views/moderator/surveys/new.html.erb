@@ -7,7 +7,7 @@
 <%= form_with scope: :survey, url: moderator_surveys_url(@survey), method: :post, class: "model-wrapper" do |survey_form| %>
   <%= survey_form.text_field :label, placeholder: 'New survey', class: 'model-wrapper__label-text-field' %>
   <div class="model-wrapper__model-table-wrapper model-table-wrapper">
-    <div class="model-table-wrapper__label">Creator of this survey</div>
+    <div class="model-table-wrapper__label">Employer associated with this survey</div>
     <div id="listing-table_0" class="model-table-wrapper__table custom-table">
       <div class="custom-table__table-header-wrapper table-header-wrapper">
         <div class="w-10 table-header-wrapper__table-header-element table-header-element">
@@ -28,13 +28,13 @@
       </div>
       <div class="custom-table__table-row-wrapper table-row-wrapper link-div table-row_0">
         <div class="w-10 table-row-wrapper__information">
-          <%= image_tag(@current_account.account_user.logo_url, size: "75x75", alt: "Logo load failed") %>
+          <%= image_tag(@current_account.account_user.employer.logo_url, size: "75x75", alt: "Logo load failed") %>
         </div>
         <div class="table-row-wrapper__information">
-          <%= @current_account.account_user.label %>
+          <%= @current_account.account_user.employer.label %>
         </div>
         <div class="table-row-wrapper__information">
-          <%= @current_account.account_user.public_email %>
+          <%= @current_account.account_user.employer.public_email %>
         </div>
       </div>
       <div id="add_button" class="custom-table__table-row-wrapper table-row-wrapper link-div custom-table__message">
@@ -49,17 +49,9 @@
       Add new question group
     </div>
   </div>
-
   <div id="current_employer_id" style="display: none;"></div>
 
-
-
-
   <%= survey_form.submit "Create survey" %>  
-
-  
-
-
 <% end %>
 
 <div id="modal_0" class="modal-background modal-background--hidden">

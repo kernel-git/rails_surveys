@@ -10,8 +10,7 @@ class Admin::EmployersController < ApplicationController
 
   def show; end
 
-  def new
-  end
+  def new; end
 
   def create
     @employer = Employer.new(
@@ -22,7 +21,7 @@ class Admin::EmployersController < ApplicationController
       phone: params[:employer][:phone]
     )
     moderator = Moderator.new(
-      nickname: params[:employer][:moderators_attributes][0][:nickname],
+      nickname: params[:employer][:moderators_attributes][0][:nickname]
     )
     moderator.account = Account.new(
       email: params[:employer][:moderators_attributes][0][:account_attributes][:email],
@@ -39,8 +38,7 @@ class Admin::EmployersController < ApplicationController
     end
   end
 
-  def edit
-  end
+  def edit; end
 
   def update
     if @employer.update(employer_params)

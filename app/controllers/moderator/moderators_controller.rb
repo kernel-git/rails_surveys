@@ -7,11 +7,9 @@ class Moderator::ModeratorsController < ApplicationController
     @moderators = @moderators.page(params[:page])
   end
 
-  def show
-  end
+  def show; end
 
-  def new
-  end
+  def new; end
 
   def create
     if @moderator.save
@@ -22,8 +20,7 @@ class Moderator::ModeratorsController < ApplicationController
     end
   end
 
-  def edit
-  end
+  def edit; end
 
   def update
     if @moderator.update(moderator_params)
@@ -39,7 +36,7 @@ class Moderator::ModeratorsController < ApplicationController
       redirect_to moderator_moderator_url(@moderator), notice: 'You can\'t delete yourself.'
       return
     end
-    
+
     if @moderator.destroy
       redirect_to moderator_moderators_url, notice: 'Moderator deleted successfully'
     else

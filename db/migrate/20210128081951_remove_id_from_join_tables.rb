@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class RemoveIdFromJoinTables < ActiveRecord::Migration[6.0]
   def self.up
     remove_column :employees_groups, :id

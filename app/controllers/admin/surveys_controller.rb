@@ -8,18 +8,25 @@ class Admin::SurveysController < ApplicationController
   end
 
   def show
-    @conducted_percents = SurveyEmployeeConnection.filter_by_survey_id(@survey.id).count > 0 ?  
-      SurveyEmployeeConnection.filter_by_survey_id(@survey.id).filter_conducted.count
-        .fdiv(SurveyEmployeeConnection.filter_by_survey_id(@survey.id).count).round(4) * 100
-      : '?'
+    @conducted_percents = if SurveyEmployeeConnection.filter_by_survey_id(@survey.id).count.positive?
+                            (SurveyEmployeeConnection.filter_by_survey_id(@survey.id).filter_conducted.count
+                                                    .fdiv(SurveyEmployeeConnection.filter_by_survey_id(@survey.id)
+                                                      .count) * 100).round(2)
+                          else
+                            '?'
+                          end
     @option_stats_data = {}
     @survey.question_groups.each do |qgroup|
       qgroup.questions.each do |question|
         answers_for_this_question = 0
         question.options.each { |option| answers_for_this_question += option.answers.count }
         question.options.each do |option|
-          @option_stats_data[option.id.to_s.to_sym] = answers_for_this_question == 0 ? '?' : 
-            Answer.where(option: option).count.fdiv(answers_for_this_question).round(4) * 100
+          @option_stats_data[option.id.to_s.to_sym] = if answers_for_this_question.zero?
+                                                        '?'
+                                                      else
+                                                        (Answer.where(option: option).count.fdiv(
+                                                          answers_for_this_question) * 100).round(2)
+                                                      end
         end
       end
     end
@@ -28,9 +35,7 @@ class Admin::SurveysController < ApplicationController
     @employees_data = Employee.filter_by_employer_id(@survey.employer.id).collect do |employee|
       unless SurveyEmployeeConnection.where(survey: @survey, employee: employee, is_conducted: true).present?
         [employee.id, employee.first_name, employee.last_name,
-          employee.account.email, employee.employer.label]
-      else
-        nil
+         employee.account.email, employee.employer.label]
       end
     end
     Employee.filter_by_employer_id(@survey.employer.id).filter_avaible_by_survey_id(@survey.id).collect do |employee|
@@ -72,10 +77,10 @@ class Admin::SurveysController < ApplicationController
 
   def destroy
     if @survey.destroy
-      redirect_to moderator_surveys_url, notice: 'Survey deleted successfully'
+      redirect_to admin_surveys_url, notice: 'Survey deleted successfully'
     else
-      redirect_to moderator_survey_url(@survey), notice: 'Survey deletion failed. Check logs...'
-    end 
+      redirect_to admin_survey_url(@survey), notice: 'Survey deletion failed. Check logs...'
+    end
   end
 
   protected

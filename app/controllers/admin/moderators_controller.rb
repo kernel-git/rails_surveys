@@ -7,8 +7,7 @@ class Admin::ModeratorsController < ApplicationController
     @moderators = @moderators.page(params[:page])
   end
 
-  def show
-  end
+  def show; end
 
   def new
     @employers_data = Employer.all.collect do |employer|

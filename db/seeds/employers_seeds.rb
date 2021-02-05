@@ -44,7 +44,7 @@ class EmployersSeeds
       @employer = Employer.new(hash)
       2.times do
         moderator = Moderator.new(
-          nickname: Faker::Lorem.word,
+          nickname: Faker::Lorem.word
         )
         moderator.build_account(
           account_user_type: 'Moderator',

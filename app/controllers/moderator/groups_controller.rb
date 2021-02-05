@@ -14,7 +14,7 @@ class Moderator::GroupsController < ApplicationController
   def new
     @employees_data = Employee.filter_by_employer_id(current_account.account_user.id).collect do |employee|
       [employee.id, employee.first_name, employee.last_name,
-        employee.account.email, employee.account_type]
+       employee.account.email, employee.account_type]
     end
   end
 
@@ -30,10 +30,10 @@ class Moderator::GroupsController < ApplicationController
   def edit
     @employees_data = Employee.filter_by_employer_id(current_account.account_user.id).collect do |employee|
       [employee.id, employee.first_name, employee.last_name,
-        employee.account.email, employee.account_type]
+       employee.account.email, employee.account_type]
     end
     @employees_init_ids = Employee.filter_by_employer_id(current_account.account_user_id)
-      .filter_by_group_id(@group.id).collect { |employee| employee.id }
+                                  .filter_by_group_id(@group.id).collect { |employee| employee.id }
   end
 
   def update

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class RemoveManyToManyConnectionBetweenEmployersAndGroups < ActiveRecord::Migration[6.0]
   def self.up
     drop_table :employers_groups

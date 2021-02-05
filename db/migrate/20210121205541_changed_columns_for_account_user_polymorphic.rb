@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ChangedColumnsForAccountUserPolymorphic < ActiveRecord::Migration[6.0]
   def self.up
     remove_index :administrators, :account_id

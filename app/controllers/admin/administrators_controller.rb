@@ -36,7 +36,7 @@ class Admin::AdministratorsController < ApplicationController
       redirect_to admin_administrator_url(@administrator), notice: 'You can\'t delete yourself.'
       return
     end
-    
+
     if @administrator.destroy
       redirect_to admin_administrators_url, notice: 'Administrator deleted successfully'
     else

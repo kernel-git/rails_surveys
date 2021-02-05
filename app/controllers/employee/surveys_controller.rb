@@ -24,11 +24,11 @@ class Employee::SurveysController < ApplicationController
         additional_text: (Option.find(answer_data[:option_id]).has_text_field ? answer_data[:additional_text] : ''),
         survey_employee_connection: result
       )
-      next unless answers.last.invalid?
-
-      log_errors(answers.last)
-      redirect_to attempt_employee_survey_url(params[:id]), alert: 'Attempt save failed. Check logs...'
-      return
+      unless answers.last.valid?
+        log_errors(answers.last)
+        redirect_to attempt_employee_survey_url(params[:id]), alert: 'Attempt save failed. Check logs...'
+        return
+      end
     end
 
     result.assign_attributes(is_conducted: true)

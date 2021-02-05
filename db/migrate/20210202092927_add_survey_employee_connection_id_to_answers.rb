@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddSurveyEmployeeConnectionIdToAnswers < ActiveRecord::Migration[6.0]
   def change
     change_table :answers do |t|
