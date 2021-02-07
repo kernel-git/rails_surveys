@@ -29,12 +29,12 @@ class Account::RegistrationsController < Devise::RegistrationsController
       password: params[:account][:password]
     )
     employee.employer = Employer.find(params[:employee][:employer_id])
-    employee.save!
-  rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotSaved, ActiveRecord::RecordNotFound => e
-    log_exception(e)
-    redirect_to root_url, alert: 'Employee creation failed. Check logs...'
-  else
-    redirect_to employee_root_url, alert: 'Employee created successfully'
+    
+    if employee.save!
+      redirect_to employee_root_url, notice: 'Employee created successfully'    
+    else
+      log_errors(employee)
+      redirect_to root_url, alert: 'Employee creation failed. Check logs...'
   end
 
   # GET /resource/edit
@@ -83,9 +83,9 @@ class Account::RegistrationsController < Devise::RegistrationsController
   # end
 
   # The path used after sign up.
-  def after_sign_up_path_for(_resource)
-    '/employee/home'
-  end
+  # def after_sign_up_path_for(_resource)
+  #   '/employee/home'
+  # end
 
   # The path used after sign up for inactive accounts.
   # def after_inactive_sign_up_path_for(resource)

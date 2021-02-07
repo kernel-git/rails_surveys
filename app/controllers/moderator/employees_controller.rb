@@ -47,6 +47,21 @@ class Moderator::EmployeesController < ApplicationController
     end
   end
 
+  def search
+    if params[:search].blank?
+      redirect_to moderator_surveys_url, alert: 'Search field empty'
+    else
+      @search_results = Employee.filter_by_employer_id(current_account.account_user.employer.id).joins(:account)
+        .where('lower(first_name) LIKE :search_text OR 
+                  lower(last_name) LIKE :search_text OR
+                  lower(account_type) LIKE :search_text OR
+                  lower(age) LIKE :search_text OR
+                  lower(position_age) LIKE :search_text OR
+                  lower(accounts.email) LIKE :search_text', 
+                  search_text: "%#{params[:search].downcase}%").page(params[:page])
+    end
+  end
+
   protected
 
   def employee_params

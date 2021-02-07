@@ -2,6 +2,7 @@
 
 class Moderator::SurveysController < ApplicationController
   load_and_authorize_resource
+  skip_load_resource only: :search
 
   def index
     @surveys = @surveys.page(params[:page])
@@ -19,13 +20,14 @@ class Moderator::SurveysController < ApplicationController
     @survey.question_groups.each do |qgroup|
       qgroup.questions.each do |question|
         answers_for_this_question = 0
+        # answers_for_this_question += question.options.each(&:answers.count)
         question.options.each { |option| answers_for_this_question += option.answers.count }
         question.options.each do |option|
           @option_stats_data[option.id.to_s.to_sym] = if answers_for_this_question.zero?
                                                         '?'
                                                       else
-                                                        (Answer.where(option: option).count.fdiv(
-                                                          answers_for_this_question) * 100).round(2)
+                                                        (Answer.where(option: option)
+                                                          .count.fdiv(answers_for_this_question) * 100).round(2)
                                                       end
         end
       end
@@ -73,6 +75,15 @@ class Moderator::SurveysController < ApplicationController
       redirect_to moderator_surveys_url, notice: 'Survey deleted successfully'
     else
       redirect_to moderator_survey_url(@survey), notice: 'Survey deletion failed. Check logs...'
+    end
+  end
+
+  def search
+    if params[:search].blank?
+      redirect_to moderator_surveys_url, alert: 'Search field empty'
+    else
+      @search_results = Survey.filter_by_employer_id(current_account.account_user.employer.id)
+        .where('lower(label) LIKE :search_text', search_text: "%#{params[:search].downcase}%").page(params[:page])
     end
   end
 

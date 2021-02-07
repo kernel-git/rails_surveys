@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Employee < ActiveRecord::Base
-  paginates_per 20
+  paginates_per 15
 
   belongs_to :employer
   has_and_belongs_to_many :groups, -> { distinct }

@@ -57,3 +57,22 @@
     margin-right: 10px;
   }
 }
+
+.search {
+  &__form {
+    display: flex;
+    align-items: center;
+  }
+  &__input {
+    width: 100%;
+    padding: 10px;
+    border-width: 0;
+    border-radius: 10px 0 0 10px;
+    border-style: none;
+  }
+  &__button {
+    padding: 11.4px;
+    border-radius: 0 10px 10px 0;
+    background-color: $lavendar-color;
+  }
+}

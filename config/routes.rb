@@ -17,9 +17,13 @@ Rails.application.routes.draw do
   namespace :admin do
     resources :administrators
     resources :moderators
-    resources :employees
+    resources :employees do
+      get 'search', on: :collection
+    end
     resources :groups
-    resources :surveys, except: :edit
+    resources :surveys, except: :edit do
+      get 'search', on: :collection
+    end
     resources :results, except: %i[edit update]
     resources :employers
     root 'static_pages#show', page: 'home'
@@ -38,8 +42,12 @@ Rails.application.routes.draw do
   end
   namespace :moderator do
     resources :moderators
-    resources :surveys, except: :edit
-    resources :employees
+    resources :surveys, except: :edit do
+      get 'search', on: :collection
+    end
+    resources :employees do
+      get 'search', on: :collection
+    end
     resources :groups, except: :destroy
     resources :results, except: %i[edit update]
     root 'static_pages#show', page: 'home'

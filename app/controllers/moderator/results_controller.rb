@@ -23,7 +23,8 @@ class Moderator::ResultsController < ApplicationController
     if Answer.where(survey_employee_connection: @result).destroy_all
       @result.is_conducted = false
       @result.save
-      redirect_to moderator_results_url, notice: 'Result deleted successfully. Now employee can conduct survey one more time.'
+      redirect_to moderator_results_url, 
+        notice: 'Result deleted successfully. Now employee can conduct survey one more time.'
     else
       redirect_to moderator_result_url(@result), notice: 'Result deletion failed. Check logs...'
     end

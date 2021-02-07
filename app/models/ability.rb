@@ -31,31 +31,30 @@ class Ability
     # See the wiki for details:
     # https://github.com/CanCanCommunity/cancancan/wiki/Defining-Abilities
 
-    if account.present?
-      if account.admin?
-        can :manage, [Administrator, Employee, Employer, Group, Survey, Moderator]
-        can :manage, SurveyEmployeeConnection, is_conducted: true
-      elsif account.moderator?
-        can :manage, Moderator, employer_id: account.account_user.employer.id
-        can :manage, Employee, employer_id: account.account_user.employer.id
-        can %i[index show destroy], SurveyEmployeeConnection,
-            is_conducted: true,
-            employee: { employer: { id: account.account_user.employer.id } }
-        can :manage, Group
-        can :manage, Survey, employer_id: account.account_user.employer.id
-        cannot :manage, Employer
-      elsif account.employee?
-        can %i[index show], SurveyEmployeeConnection,
-            is_conducted: true,
-            employee_id: account.account_user.id
-        can [:index, :attempt, :conduct], Survey do |survey|
-          survey.employer_id == account.account_user.employer.id &&
-            SurveyEmployeeConnection.find_by(
-              employee_id: account.account_user.id,
-              survey_id: survey.id,
-              is_conducted: false
-            ).present?
-        end
+    return unless account.present?
+    if account.admin?
+      can :manage, [Administrator, Employee, Employer, Group, Survey, Moderator]
+      can :manage, SurveyEmployeeConnection, is_conducted: true
+    elsif account.moderator?
+      can :manage, Moderator, employer_id: account.account_user.employer.id
+      can :manage, Employee, employer_id: account.account_user.employer.id
+      can %i[index show destroy], SurveyEmployeeConnection,
+          is_conducted: true,
+          employee: { employer: { id: account.account_user.employer.id } }
+      can :manage, Group
+      can :manage, Survey, employer_id: account.account_user.employer.id
+      cannot :manage, Employer
+    elsif account.employee?
+      can %i[index show], SurveyEmployeeConnection,
+          is_conducted: true,
+          employee_id: account.account_user.id
+      can [:index, :attempt, :conduct], Survey do |survey|
+        survey.employer_id == account.account_user.employer.id &&
+          SurveyEmployeeConnection.find_by(
+            employee_id: account.account_user.id,
+            survey_id: survey.id,
+            is_conducted: false
+          ).present?
       end
     end
   end
