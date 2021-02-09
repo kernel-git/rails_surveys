@@ -1,0 +1,83 @@
+<%= javascript_pack_tag "moderator/surveys/statistic.js" %>
+
+<div class="object-group-wrapper">
+  <div class="object-group-wrapper__label"><%= @survey.label %> survey completion statistic</div>
+  <div class="attempt-wrapper__content-wrapper content-wrapper">
+      <div class="qgroup-wrapper" id="qgroup_0">
+        <div class="qgroup-wrapper__qgroup-label-wrapper qgroup-label-wrapper">
+          <div class="qgroup-label-wrapper__label font-big">
+            Statistic for last month
+          </div>
+        </div>
+        <div class="qgroup-wrapper__question-wrapper question-wrapper">
+          <div class="question-wrapper__text font-big">
+            Assigned employees: <%= @survey_statistic.month_assigned %>
+          </div>
+          <div class="question-wrapper__text font-big">
+            Conducted employees: <%= @survey_statistic.month_conducted %>
+          </div>
+        </div>
+      </div>
+      <div class="qgroup-wrapper" id="qgroup_1">
+        <div class="qgroup-wrapper__qgroup-label-wrapper qgroup-label-wrapper">
+          <div class="qgroup-label-wrapper__label font-big">
+            Statistic for last week
+          </div>
+        </div>
+        <div class="qgroup-wrapper__question-wrapper question-wrapper">
+          <div class="question-wrapper__text font-big">
+            Assigned employees: <%= @survey_statistic.week_assigned %>
+          </div>
+          <div class="question-wrapper__text font-big">
+            Conducted employees: <%= @survey_statistic.week_conducted %>
+          </div>
+        </div>
+      </div>
+      <div class="qgroup-wrapper" id="qgroup_2">
+        <div class="qgroup-wrapper__qgroup-label-wrapper qgroup-label-wrapper">
+          <div class="qgroup-label-wrapper__label font-big">
+            Statistic for last day
+          </div>
+        </div>
+        <div class="qgroup-wrapper__question-wrapper question-wrapper">
+          <div class="question-wrapper__text font-big">
+            Assigned employees: <%= @survey_statistic.day_assigned %>
+          </div>
+          <div class="question-wrapper__text font-big">
+            Conducted employees: <%= @survey_statistic.day_conducted %>
+          </div>
+        </div>
+      </div>
+      <div class="qgroup-wrapper" id="qgroup_3">
+        <div class="qgroup-wrapper__qgroup-label-wrapper qgroup-label-wrapper">
+          <div class="qgroup-label-wrapper__label font-big">
+            Statistic for last hour
+          </div>
+        </div>
+        <div class="qgroup-wrapper__question-wrapper question-wrapper">
+          <div class="question-wrapper__text font-big">
+            Assigned employees: <%= @survey_statistic.hour_assigned %>
+          </div>
+          <div class="question-wrapper__text font-big">
+            Conducted employees: <%= @survey_statistic.hour_conducted %>
+          </div>
+        </div>
+      </div>
+    <div class="content-wrapper__content-footer content-footer">
+      <div class="progress__wrapper">
+        <div class="progress__element link-div" id="qgroup-button_0">
+          Month
+        </div>
+        <div class="progress__element link-div" id="qgroup-button_1">
+          Week
+        </div>
+        <div class="progress__element link-div" id="qgroup-button_2">
+          Day
+        </div>
+        <div class="progress__element link-div" id="qgroup-button_3">
+          Hour
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

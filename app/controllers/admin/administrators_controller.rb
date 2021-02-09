@@ -7,7 +7,9 @@ class Admin::AdministratorsController < ApplicationController
     @administrators = @administrators.page(params[:page])
   end
 
-  def show; end
+  def show
+    TestJob.perform_async("Test text")
+  end
 
   def new; end
 

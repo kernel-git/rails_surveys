@@ -34,6 +34,10 @@
     padding: 20px 0 10px;
     font-size: 32px;
   }
+  &__button-group {
+    display: flex;
+    align-items: center;
+  }
 }
 .model-wrapper {
   margin-left: 10px;

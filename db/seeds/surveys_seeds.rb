@@ -22,6 +22,9 @@ class SurveysSeeds
                             label: SURVEYS[index],
                             employer_id: Employer.find_by(label: EMPLOYERS[index]).id
                           })
+      survey.build_survey_statistic(
+        survey: survey
+      )
       log_errors(survey) unless survey.save(validate: false)
     end
   end

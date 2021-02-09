@@ -1,0 +1,35 @@
+<%= javascript_pack_tag "moderator/surveys/statistic.js" %>
+
+<div class="object-group-wrapper">
+  <div class="object-group-wrapper__label">
+    All surveys completion statistic</div>
+    <div class="attempt-wrapper__content-wrapper content-wrapper">
+      <% @statistic_data.each_with_index do |(key, value), index| %>
+        <div class="qgroup-wrapper" id="qgroup_<%= index %>">
+          <div class="qgroup-wrapper__qgroup-label-wrapper qgroup-label-wrapper">
+            <div class="qgroup-label-wrapper__label font-big">
+              Statistic for last <%= key %>
+            </div>
+          </div>
+          <div class="qgroup-wrapper__question-wrapper question-wrapper">
+            <div class="question-wrapper__text font-big">
+              Assigned employees: <%= value[:assigned] %>
+            </div>
+            <div class="question-wrapper__text font-big">
+              Conducted employees: <%= value[:conducted] %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+    <div class="content-wrapper__content-footer content-footer">
+      <div class="progress__wrapper">
+        <% @statistic_data.each_with_index do |(key, value), index| %>
+          <div class="progress__element link-div" id="qgroup-button_<%= index %>">
+            <%= key.capitalize %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

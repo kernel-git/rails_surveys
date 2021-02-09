@@ -11,6 +11,7 @@
   <div class="model-wrapper__label-wrapper">
     <div class="model-wrapper__label"><%= @survey.label %></div>
     <div class="model-wrapper__button-group">
+      <%= button_to "Statistic", statistic_admin_survey_url(@survey), method: :get, class: 'link-button' %>
       <%= button_to "Delete", admin_survey_url(@survey), method: :delete, data: {confirm: "Are you sure?(All associated results will be deleted too)"}, class: 'link-button' %>
     </div>
   </div>

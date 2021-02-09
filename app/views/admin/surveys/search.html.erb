@@ -1,6 +1,11 @@
 <%= javascript_pack_tag "extra/table-behavior.js" %>
 
 <div class="listing-wrapper">
+  <%= form_tag(search_admin_surveys_url, method: :get, class: 'search__form') do %>
+    <%= search_field_tag 'search', '', placeholder: 'Search', class: 'search__input' %>
+    <%= image_submit_tag("loupe.svg", class: 'search__button svg-search', alt: 'Find') %>
+  <% end %>
+
   <div class="label-wrapper__label">Search result</div>
   <div id="listing-table_0" class="listing-wrapper__custom-table custom-table">
     <div class="custom-table__table-header-wrapper table-header-wrapper">

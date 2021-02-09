@@ -1,0 +1,3 @@
+StatisticWorker:
+  every: '1m'
+  queue: default

@@ -92,10 +92,36 @@ class Admin::SurveysController < ApplicationController
     end
   end
 
+  def statistic
+    if @survey.present?
+      @survey_statistic = @survey.survey_statistic
+      render 'statistic'
+    else
+      @statistic_data = {
+        month: { assigned: 0, conducted: 0 },
+        week: { assigned: 0, conducted: 0 },
+        day: { assigned: 0, conducted: 0 },
+        hour: { assigned: 0, conducted: 0 }
+      }
+      SurveyStatistic.find_each do |survey_stat|
+        @statistic_data[:month][:assigned] += survey_stat.month_assigned
+        @statistic_data[:month][:conducted] += survey_stat.month_conducted
+        @statistic_data[:week][:assigned] += survey_stat.week_assigned
+        @statistic_data[:week][:conducted] += survey_stat.week_conducted
+        @statistic_data[:day][:assigned] += survey_stat.day_assigned
+        @statistic_data[:day][:conducted] += survey_stat.day_conducted
+        @statistic_data[:hour][:assigned] += survey_stat.hour_assigned
+        @statistic_data[:hour][:conducted] += survey_stat.hour_conducted
+      end
+      render 'statistic_all'
+    end
+  end
+
   protected
 
   def survey_params
     params[:survey][:employer_id] = current_account.account_user_id
+    params[:survey][:survey_statistic_attributes] = {}
     params.require(:survey).permit(
       :label,
       :employer_id,
