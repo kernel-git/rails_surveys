@@ -88,51 +88,27 @@ class Moderator::SurveysController < ApplicationController
   end
 
   def statistic
-    # update_survey_statistics
-    @survey_statistic = @survey.survey_statistic
-  end
-
-
-  def update_survey_statistics
-    SurveyStatistic.find_each do |survey_stat|
-      survey_stat.update!(
-        month_assigned: SurveyEmployeeConnection.where(
-          survey: survey_stat.survey,
-          updated_at: (DateTime.current - 30.days)..DateTime.current 
-        ).count,
-        month_conducted: SurveyEmployeeConnection.where(
-          survey: survey_stat.survey,
-          is_conducted: true,
-          updated_at: (DateTime.current - 30.days)..DateTime.current 
-        ).count,
-        week_assigned: SurveyEmployeeConnection.where(
-          survey: survey_stat.survey,
-          updated_at: (DateTime.current - 7.days)..DateTime.current 
-        ).count,
-        week_conducted: SurveyEmployeeConnection.where(
-          survey: survey_stat.survey,
-          is_conducted: true,
-          updated_at: (DateTime.current - 7.days)..DateTime.current 
-        ).count,
-        day_assigned: SurveyEmployeeConnection.where(
-          survey: survey_stat.survey,
-          updated_at: (DateTime.current - 1.days)..DateTime.current 
-        ).count,
-        day_conducted: SurveyEmployeeConnection.where(
-          survey: survey_stat.survey,
-          is_conducted: true,
-          updated_at: (DateTime.current - 1.days)..DateTime.current 
-        ).count,
-        hour_assigned: SurveyEmployeeConnection.where(
-          survey: survey_stat.survey,
-          updated_at: (DateTime.current - 1.hours)..DateTime.current 
-        ).count,
-        hour_conducted: SurveyEmployeeConnection.where(
-          survey: survey_stat.survey,
-          is_conducted: true,
-          updated_at: (DateTime.current - 1.hours)..DateTime.current 
-        ).count
-      )
+    if @survey.present?
+      @survey_statistic = @survey.survey_statistic
+      render 'statistic'
+    else
+      @statistic_data = {
+        month: { assigned: 0, conducted: 0 },
+        week: { assigned: 0, conducted: 0 },
+        day: { assigned: 0, conducted: 0 },
+        hour: { assigned: 0, conducted: 0 }
+      }
+      SurveyStatistic.find_each do |survey_stat|
+        @statistic_data[:month][:assigned] += survey_stat.month_assigned
+        @statistic_data[:month][:conducted] += survey_stat.month_conducted
+        @statistic_data[:week][:assigned] += survey_stat.week_assigned
+        @statistic_data[:week][:conducted] += survey_stat.week_conducted
+        @statistic_data[:day][:assigned] += survey_stat.day_assigned
+        @statistic_data[:day][:conducted] += survey_stat.day_conducted
+        @statistic_data[:hour][:assigned] += survey_stat.hour_assigned
+        @statistic_data[:hour][:conducted] += survey_stat.hour_conducted
+      end
+      render 'statistic_all'
     end
   end
 
