@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_09_104451) do
+ActiveRecord::Schema.define(version: 2021_02_10_103427) do
 
   create_table "accounts", force: :cascade do |t|
     t.string "email", default: "", null: false
@@ -93,6 +93,12 @@ ActiveRecord::Schema.define(version: 2021_02_09_104451) do
     t.index ["employer_id"], name: "index_moderators_on_employer_id"
   end
 
+  create_table "option_statistics", force: :cascade do |t|
+    t.integer "option_id"
+    t.float "chosen_percent", default: -1.0
+    t.index ["option_id"], name: "index_option_statistics_on_option_id"
+  end
+
   create_table "options", force: :cascade do |t|
     t.integer "question_id"
     t.string "text"
@@ -140,6 +146,7 @@ ActiveRecord::Schema.define(version: 2021_02_09_104451) do
     t.integer "day_conducted", default: 0
     t.integer "hour_assigned", default: 0
     t.integer "hour_conducted", default: 0
+    t.float "conducted_percent", default: -1.0
     t.index ["survey_id"], name: "index_survey_statistics_on_survey_id"
   end
 

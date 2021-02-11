@@ -2,7 +2,10 @@
 
 class Option < ApplicationRecord
   has_many :answers, dependent: :destroy
+  has_one :option_statistic
   belongs_to :question
+
+  accepts_nested_attributes_for :option_statistic
 
   after_initialize :init
 

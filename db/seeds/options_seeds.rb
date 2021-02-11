@@ -200,6 +200,9 @@ class OptionsSeeds
                             text: OPTIONS[index]
                           })
       option.has_text_field = OPTIONS[index] == 'Other'
+      option.build_option_statistic(
+        chosen_percent: -1
+      )
       options << option
     end
 

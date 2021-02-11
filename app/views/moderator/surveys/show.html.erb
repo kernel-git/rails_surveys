@@ -16,10 +16,8 @@
     </div>
   </div>
 
-  <div class="model-wrapper__label">Survey was completed by <%= @conducted_percents %>% of assigned employees</div>
-
   <div class="object-group-wrapper">
-    <div class="object-group-wrapper__label">Survey detailed statistic</div>
+    <div class="object-group-wrapper__label">Survey content</div>
     <div class="attempt-wrapper__content-wrapper content-wrapper">
       <% @survey.question_groups.each_with_index do |question_group, qg_index| %>
         <div class="qgroup-wrapper" id="qgroup_<%= qg_index %>">
@@ -42,9 +40,6 @@
                         <% if option.has_text_field %>
                           (has additional text field)
                         <% end %>
-                    </div>
-                    <div class="answer-option-wrapper__label">
-                      Chosen by <%= @option_stats_data[option.id.to_s.to_sym] %>%
                     </div>
                   </div>
                 </div>

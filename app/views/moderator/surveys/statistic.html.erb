@@ -1,83 +1,122 @@
 <%= javascript_pack_tag "moderator/surveys/statistic.js" %>
 
-<div class="object-group-wrapper">
-  <div class="object-group-wrapper__label"><%= @survey.label %> survey completion statistic</div>
-  <div class="attempt-wrapper__content-wrapper content-wrapper">
-      <div class="qgroup-wrapper" id="qgroup_0">
-        <div class="qgroup-wrapper__qgroup-label-wrapper qgroup-label-wrapper">
-          <div class="qgroup-label-wrapper__label font-big">
-            Statistic for last month
-          </div>
+<div class="model-wrapper">
+
+  <div class="object-group-wrapper">
+    <div class="object-group-wrapper__label"><%= @survey.label %> survey completion statistic</div>
+    <div class="model-wrapper__model-group">
+      <div class="model-wrapper__model-info-block">
+        <div class="model-wrapper__model-info-wrapper">
+          <div class="model-info-wrapper__label">Statistic for last month</div>
         </div>
-        <div class="qgroup-wrapper__question-wrapper question-wrapper">
-          <div class="question-wrapper__text font-big">
-            Assigned employees: <%= @survey_statistic.month_assigned %>
-          </div>
-          <div class="question-wrapper__text font-big">
-            Conducted employees: <%= @survey_statistic.month_conducted %>
-          </div>
+        <div class="model-wrapper__model-info-wrapper">
+          <div class="model-info-wrapper__label">Assigned employees:</div>
+          <div class="model-info-wrapper__info"><%= @survey_statistic.month_assigned %></div>
         </div>
-      </div>
-      <div class="qgroup-wrapper" id="qgroup_1">
-        <div class="qgroup-wrapper__qgroup-label-wrapper qgroup-label-wrapper">
-          <div class="qgroup-label-wrapper__label font-big">
-            Statistic for last week
-          </div>
-        </div>
-        <div class="qgroup-wrapper__question-wrapper question-wrapper">
-          <div class="question-wrapper__text font-big">
-            Assigned employees: <%= @survey_statistic.week_assigned %>
-          </div>
-          <div class="question-wrapper__text font-big">
-            Conducted employees: <%= @survey_statistic.week_conducted %>
-          </div>
+        <div class="model-wrapper__model-info-wrapper">
+          <div class="model-info-wrapper__label">Conducted employees:</div>
+          <div class="model-info-wrapper__info"><%= @survey_statistic.month_conducted %></div>
         </div>
       </div>
-      <div class="qgroup-wrapper" id="qgroup_2">
-        <div class="qgroup-wrapper__qgroup-label-wrapper qgroup-label-wrapper">
-          <div class="qgroup-label-wrapper__label font-big">
-            Statistic for last day
-          </div>
+      <div class="model-wrapper__model-info-block">
+        <div class="model-wrapper__model-info-wrapper">
+          <div class="model-info-wrapper__label">Statistic for last week</div>
         </div>
-        <div class="qgroup-wrapper__question-wrapper question-wrapper">
-          <div class="question-wrapper__text font-big">
-            Assigned employees: <%= @survey_statistic.day_assigned %>
-          </div>
-          <div class="question-wrapper__text font-big">
-            Conducted employees: <%= @survey_statistic.day_conducted %>
-          </div>
+        <div class="model-wrapper__model-info-wrapper">
+          <div class="model-info-wrapper__label">Assigned employees:</div>
+          <div class="model-info-wrapper__info"><%= @survey_statistic.week_assigned %></div>
+        </div>
+        <div class="model-wrapper__model-info-wrapper">
+          <div class="model-info-wrapper__label">Conducted employees:</div>
+          <div class="model-info-wrapper__info"><%= @survey_statistic.week_conducted %></div>
         </div>
       </div>
-      <div class="qgroup-wrapper" id="qgroup_3">
-        <div class="qgroup-wrapper__qgroup-label-wrapper qgroup-label-wrapper">
-          <div class="qgroup-label-wrapper__label font-big">
-            Statistic for last hour
-          </div>
+      <div class="model-wrapper__model-info-block">
+        <div class="model-wrapper__model-info-wrapper">
+          <div class="model-info-wrapper__label">Statistic for last day</div>
         </div>
-        <div class="qgroup-wrapper__question-wrapper question-wrapper">
-          <div class="question-wrapper__text font-big">
-            Assigned employees: <%= @survey_statistic.hour_assigned %>
-          </div>
-          <div class="question-wrapper__text font-big">
-            Conducted employees: <%= @survey_statistic.hour_conducted %>
-          </div>
+        <div class="model-wrapper__model-info-wrapper">
+          <div class="model-info-wrapper__label">Assigned employees:</div>
+          <div class="model-info-wrapper__info"><%= @survey_statistic.day_assigned %></div>
+        </div>
+        <div class="model-wrapper__model-info-wrapper">
+          <div class="model-info-wrapper__label">Conducted employees:</div>
+          <div class="model-info-wrapper__info"><%= @survey_statistic.day_conducted %></div>
         </div>
       </div>
-    <div class="content-wrapper__content-footer content-footer">
-      <div class="progress__wrapper">
-        <div class="progress__element link-div" id="qgroup-button_0">
-          Month
+      <div class="model-wrapper__model-info-block">
+        <div class="model-wrapper__model-info-wrapper">
+          <div class="model-info-wrapper__label">Statistic for last hour</div>
         </div>
-        <div class="progress__element link-div" id="qgroup-button_1">
-          Week
+        <div class="model-wrapper__model-info-wrapper">
+          <div class="model-info-wrapper__label">Assigned employees:</div>
+          <div class="model-info-wrapper__info"><%= @survey_statistic.hour_assigned %></div>
         </div>
-        <div class="progress__element link-div" id="qgroup-button_2">
-          Day
-        </div>
-        <div class="progress__element link-div" id="qgroup-button_3">
-          Hour
+        <div class="model-wrapper__model-info-wrapper">
+          <div class="model-info-wrapper__label">Conducted employees:</div>
+          <div class="model-info-wrapper__info"><%= @survey_statistic.hour_conducted %></div>
         </div>
       </div>
     </div>
   </div>
+
+  <div class="model-wrapper__label">
+    <% unless @survey_statistic.conducted_percent == -1 %> 
+      Survey was completed by <%= @survey_statistic.conducted_percent %>% of assigned employees
+    <% else %>
+      Survey was completed by ?% of assigned employees
+    <% end %>
+  </div>
+
+  <div class="object-group-wrapper">
+    <div class="object-group-wrapper__label">Survey detailed statistic</div>
+    <div class="attempt-wrapper__content-wrapper content-wrapper">
+      <% @survey.question_groups.each_with_index do |question_group, qg_index| %>
+        <div class="qgroup-wrapper" id="qgroup_<%= qg_index %>">
+          <div class="qgroup-wrapper__qgroup-label-wrapper qgroup-label-wrapper">
+            <div class="qgroup-label-wrapper__label font-big">
+              <%= question_group.label %>
+            </div>
+          </div>
+          <% question_group.questions.each do |question| %>
+            <div class="qgroup-wrapper__question-wrapper question-wrapper">
+              <div class="question-wrapper__text font-big">
+                <%= question.question_type %>
+              </div>
+              <% question.options.each do |option| %>
+                <div class="question-wrapper__answer-option-wrapper answer-option-wrapper">
+                  <div class="answer-option-wrapper__split-wrapper">
+                    <div class="answer-option-wrapper__label-wrapper">
+                      <%= inline_svg_tag('radio-off-button.svg', class: "svg-radio") %>
+                      <%= option.text %>
+                        <% if option.has_text_field %>
+                          (has additional text field)
+                        <% end %>
+                    </div>
+                    <div class="answer-option-wrapper__label">
+                      <% unless option.option_statistic.chosen_percent == -1 %>
+                        Chosen by <%= option.option_statistic.chosen_percent %>%
+                      <% else %>
+                        Chosen by ?%
+                      <% end %>
+                    </div>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+      <div class="content-wrapper__content-footer content-footer">
+        <div class="progress__wrapper">
+          <% @survey.question_groups.each_with_index do |question_group, qg_index| %>
+            <div class="progress__element link-div" id="qgroup-button_<%= qg_index %>">
+              <%= qg_index + 1 %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div>

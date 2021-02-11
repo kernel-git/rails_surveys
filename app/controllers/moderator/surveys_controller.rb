@@ -9,29 +9,6 @@ class Moderator::SurveysController < ApplicationController
   end
 
   def show
-    @conducted_percents = if SurveyEmployeeConnection.filter_by_survey_id(@survey.id).count.positive?
-                            (SurveyEmployeeConnection.filter_by_survey_id(@survey.id).filter_conducted.count
-                                                    .fdiv(SurveyEmployeeConnection.filter_by_survey_id(@survey.id)
-                                                      .count) * 100).round(2)
-                          else
-                            '?'
-                          end
-    @option_stats_data = {}
-    @survey.question_groups.each do |qgroup|
-      qgroup.questions.each do |question|
-        answers_for_this_question = 0
-        # answers_for_this_question += question.options.each(&:answers.count)
-        question.options.each { |option| answers_for_this_question += option.answers.count }
-        question.options.each do |option|
-          @option_stats_data[option.id.to_s.to_sym] = if answers_for_this_question.zero?
-                                                        '?'
-                                                      else
-                                                        (Answer.where(option: option)
-                                                          .count.fdiv(answers_for_this_question) * 100).round(2)
-                                                      end
-        end
-      end
-    end
     @employees_data = []
     @current_assigned_employees_ids = []
     @employees_data = Employee.filter_by_employer_id(@survey.employer.id).collect do |employee|
