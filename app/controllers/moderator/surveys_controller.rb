@@ -59,8 +59,12 @@ class Moderator::SurveysController < ApplicationController
     if params[:search].blank?
       redirect_to moderator_surveys_url, alert: 'Search field empty'
     else
-      @search_results = Survey.filter_by_employer_id(current_account.account_user.employer.id)
-        .where('lower(label) LIKE :search_text', search_text: "%#{params[:search].downcase}%").page(params[:page])
+      @search_results = SearchRecordsQuery.new({
+          columns: [:label],
+          search_text: params[:search]
+        },
+        Survey.filter_by_employer_id(current_account.account_user.employer.id)
+      ).all.page(params[:page])
     end
   end
 

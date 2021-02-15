@@ -69,14 +69,12 @@ class Admin::EmployeesController < ApplicationController
     if params[:search].blank?
       redirect_to admin_surveys_url, alert: 'Search field empty'
     else
-      @search_results = Employee.all.joins(:account)
-        .where('lower(first_name) LIKE :search_text OR 
-                  lower(last_name) LIKE :search_text OR
-                  lower(account_type) LIKE :search_text OR
-                  lower(age) LIKE :search_text OR
-                  lower(position_age) LIKE :search_text OR
-                  lower(accounts.email) LIKE :search_text', 
-                  search_text: "%#{params[:search].downcase}%").page(params[:page])
+      @search_results = SearchRecordsQuery.new({
+          columns: [:first_name, :last_name, :account_type, :age, :position_age],
+          search_text: params[:search]
+        },
+        Employee.includes(:account)
+      ).all.page(params[:page])
     end
   end
 

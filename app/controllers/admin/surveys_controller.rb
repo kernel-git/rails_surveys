@@ -87,8 +87,12 @@ class Admin::SurveysController < ApplicationController
     if params[:search].blank?
       redirect_to admin_surveys_url, alert: 'Search field empty'
     else
-      @search_results = Survey.all
-        .where('lower(label) LIKE :search_text', search_text: "%#{params[:search].downcase}%").page(params[:page])
+      @search_results = SearchRecordsQuery.new({
+          columns: [:label],
+          search_text: params[:search]
+        },
+        Survey
+      ).all.page(params[:page])
     end
   end
 
