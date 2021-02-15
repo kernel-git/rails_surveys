@@ -1,40 +1,42 @@
 # frozen_string_literal: true
 
 class Account::RegistrationsController < Devise::RegistrationsController
-  before_action :configure_sign_up_params, only: [:create]
+  # before_action :configure_sign_up_params, only: [:create]
   # before_action :configure_account_update_params, only: [:update]
 
   # GET /resource/sign_up
   def new
-    @account = Account.new
+    logger.debug session["devise.facebook_data"]
+    @init_data = {}
+    if session["devise.facebook_data"].present?
+      @init_data[:provider] = session["devise.facebook_data"]['provider']
+      @init_data[:uid] = session["devise.facebook_data"]['uid']
+      @init_data[:email] = session["devise.facebook_data"]['info']['email']
+      @init_data[:password] = session["devise.facebook_data"]['info']['password']
+      @init_data[:first_name] = session["devise.facebook_data"]['info']['first_name']
+      @init_data[:last_name] = session["devise.facebook_data"]['info']['last_name']
+    end
+
+    @account = Account.new()
+
+    logger.debug @init_data
+
     @employers_data = Employer.all.collect do |employer|
       [employer.id, employer.logo_url, employer.label, employer.public_email]
     end
-    super
   end
 
   # POST /resource
   def create
-    employee = Employee.new({
-                              first_name: params[:employee][:first_name],
-                              last_name: params[:employee][:last_name],
-                              account_type: params[:employee][:account_type],
-                              age: params[:employee][:age],
-                              position_age: params[:employee][:position_age],
-                              opt_out: false
-                            })
-    employee.build_account(
-      account_user_type: 'Employee',
-      email: params[:account][:email],
-      password: params[:account][:password]
-    )
-    employee.employer = Employer.find(params[:employee][:employer_id])
-    
-    if employee.save!
+    @employee = Employee.new(employee_params)
+
+    if @employee.save!
+      sign_in @employee.account, event: :authentication
       redirect_to employee_root_url, notice: 'Employee created successfully'    
     else
-      log_errors(employee)
+      log_errors(@employee)
       redirect_to root_url, alert: 'Employee creation failed. Check logs...'
+    end
   end
 
   # GET /resource/edit
@@ -63,19 +65,39 @@ class Account::RegistrationsController < Devise::RegistrationsController
 
   protected
 
-  # If you have extra params to permit, append them to the sanitizer.
-  def configure_sign_up_params
-    case params[:account][:account_type]
-    when 'admin'
-      devise_parameter_sanitizer.permit(:sign_up, keys: [:nickname])
-    when 'employer'
-      devise_parameter_sanitizer.permit(:sign_up, keys: [:nickname])
-    when 'employee'
-      devise_parameter_sanitizer.permit(:sign_up, keys:
-        %i[first_name last_name age
-           position_age account_type employer_id])
-    end
+  def employee_params
+    params.require(:employee).permit(
+      :first_name,
+      :last_name,
+      :account_type,
+      :age,
+      :position_age,
+      :opt_out,
+      :employer_id,
+      account_attributes: [
+        :account_user_type,
+        :email,
+        :password,
+        :password_confirmation,
+        :provider,
+        :uid
+      ]
+    )
   end
+
+  # If you have extra params to permit, append them to the sanitizer.
+  # def configure_sign_up_params
+  #   case params[:account][:account_type]
+  #   when 'admin'
+  #     devise_parameter_sanitizer.permit(:sign_up, keys: [:nickname])
+  #   when 'employer'
+  #     devise_parameter_sanitizer.permit(:sign_up, keys: [:nickname])
+  #   when 'employee'
+  #     devise_parameter_sanitizer.permit(:sign_up, keys:
+  #       %i[first_name last_name age
+  #          position_age account_type employer_id])
+  #   end
+  # end
 
   # If you have extra params to permit, append them to the sanitizer.
   # def configure_account_update_params

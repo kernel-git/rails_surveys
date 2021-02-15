@@ -6,12 +6,13 @@
     <%= csp_meta_tag %>
     <%= stylesheet_link_tag "page_global" %>
     <%= javascript_pack_tag "application" %>
+    <%= javascript_pack_tag "facebook" %>
   </head>
 
   <body>
     <div class="wrapper">
       <% if current_account.present? %>
-        <% if current_account.admin? %>
+        <% if current_account.administrator? %>
           <%= render 'layouts/admin_header' %>
         <% elsif current_account.moderator? %>
           <%= render 'layouts/moderator_header' %>
@@ -21,6 +22,8 @@
       <% else %>
         <%= render 'layouts/unauthorized_header' %>
       <% end %>
+
+      <div class="fb-login-button" data-width="" data-size="large" data-button-type="continue_with" data-layout="default" data-auto-logout-link="false" data-use-continue-as="false"></div>
 
       <p class="notice"><%= notice %></p>
       <p class="alert"><%= alert %></p>

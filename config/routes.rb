@@ -6,7 +6,8 @@ Rails.application.routes.draw do
     passwords: 'account/passwords',
     registrations: 'account/registrations',
     sessions: 'account/sessions',
-    unlocks: 'account/unlocks'
+    unlocks: 'account/unlocks',
+    omniauth_callbacks: 'account/omniauth_callbacks'
   }
 
   namespace :account do

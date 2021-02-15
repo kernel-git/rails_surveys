@@ -6,49 +6,81 @@
 <div class="wrapper">
   <h2>Sign up as employee</h2>
 
-  <%= form_with(model: @account, url: account_registration_path) do |f| %>
+  <%= form_with scope: :employee, url: account_registration_path do |employee_form| %>
     <%= render "devise/shared/error_messages", resource: resource %>
     
-    <div class="field">
-      <%= f.label :email %><br />
-      <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
-    </div>
+    <%= employee_form.fields_for :account_attributes do |account_form| %>
 
-    <div class="field">
-      <%= f.label :password %>
-      <% if @minimum_password_length %>
-      <em>(<%= @minimum_password_length %> characters minimum)</em>
-      <% end %><br />
-      <%= f.password_field :password, autocomplete: "new-password" %>
-    </div>
 
-    <div class="field">
-      <%= f.label :password_confirmation %><br />
-      <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
-    </div>
+      <% if @init_data[:provider].present? %>
+        <%= account_form.hidden_field :provider,value: @init_data[:provider] %>
+      <% end %>
+      <% if @init_data[:uid].present? %>
+        <%= account_form.hidden_field :uid,value: @init_data[:uid] %>
+      <% end %>
 
-    <%= fields_for :employee, @account.account_user do |e_f| %>
+      <% if @init_data[:email].nil? %>
+        <div class="field">
+          <%= account_form.label :email %><br />
+          <%= account_form.email_field :email, autofocus: true, autocomplete: "email" %>
+        </div>
+      <% else %>
+        <%= account_form.hidden_field :email, value: @init_data[:email] %>
+      <% end %>
 
+      <% if @init_data[:password].nil? %>
+        <div class="field">
+          <%= account_form.label :password %>
+          <% if @minimum_password_length %>
+          <em>(<%= @minimum_password_length %> characters minimum)</em>
+          <% end %><br />
+          <%= account_form.password_field :password, autocomplete: "new-password" %>
+        </div>
+
+        <div class="field">
+          <%= account_form.label :password_confirmation %><br />
+          <%= account_form.password_field :password_confirmation, autocomplete: "new-password" %>
+        </div>
+      <% else %>
+        <%= account_form.hidden_field :password, value: @init_data[:password] %>
+        <%= account_form.hidden_field :password_confirmation, value: @init_data[:password] %>
+      <% end %>
+    <% end %>
+
+
+      <% if @init_data[:first_name].nil? %>
+        <div class="field">
+          <%= employee_form.label :first_name %><br />
+          <%= employee_form.text_field :first_name, autocomplete: "first_name" %>
+        </div>
+      <% else %>
+        <%= employee_form.hidden_field :first_name, value: @init_data[:first_name] %>
+      <% end %>
+      <% if @init_data[:last_name].nil? %>
+        <div class="field">
+          <%= employee_form.label :last_name %><br />
+          <%= employee_form.text_field :last_name, autocomplete: "last_name" %>
+        </div>
+      <% else %>
+        <%= employee_form.hidden_field :last_name, value: @init_data[:last_name] %>
+      <% end %>      
       <div class="field">
-        <%= e_f.label :first_name %><br />
-        <%= e_f.text_field :first_name, autocomplete: "first_name" %>
+        <%= employee_form.label :age %><br />
+        <%= employee_form.number_field :age, autocomplete: "age" %>
       </div>
       <div class="field">
-        <%= e_f.label :last_name %><br />
-        <%= e_f.text_field :last_name, autocomplete: "last_name" %>
-      </div>
-      <div class="field">
-        <%= e_f.label :age %><br />
-        <%= e_f.number_field :age, autocomplete: "age" %>
-      </div>
-      <div class="field">
-        <%= e_f.label :years_of_service %><br />
-        <%= e_f.number_field :position_age, autocomplete: "position_age" %>
+        <%= employee_form.label :years_of_service %><br />
+        <%= employee_form.number_field :position_age, autocomplete: "position_age" %>
       </div>
 
       <div class="select">
-        <%= e_f.label :account_type %><br />
-      <%= e_f.select :account_type, [["Bronze", "bronze"], ["Silver", "silver"], ["Gold", "gold"]] %>
+        <%= employee_form.label :account_type %><br />
+        <%= employee_form.select :account_type, [["Bronze", "bronze"], ["Silver", "silver"], ["Gold", "gold"]] %>
+      </div>
+
+      <div class="model-wrapper__model-info-wrapper input-wrapper">
+        <div class="model-info-wrapper__label">Is unsubscribed from new surveys:</div>
+        <div class="model-info-wrapper__info model-info-wrapper__info--selectable"><%= employee_form.check_box :opt_out %></div>
       </div>
 
       <div class="model-wrapper__model-table-wrapper model-table-wrapper">
@@ -81,10 +113,9 @@
         </div>
       </div>
       <div id="current-employer-id" style="display: none;"></div>
-    <% end %>
 
     <div class="actions">
-      <%= f.submit "Sign up" %>
+      <%= employee_form.submit "Sign up" %>
     </div>
   <% end %>
 

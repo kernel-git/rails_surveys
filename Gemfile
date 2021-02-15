@@ -9,8 +9,12 @@ ruby '2.7.2'
 gem 'rails', '~> 6.0.3', '>= 6.0.3.4'
 # Use sqlite3 as the database for Active Record
 gem 'sqlite3', '~> 1.4'
-# Use the devise gem as the seccion and account manager for the application
-gem 'devise'
+
+# For setting up enviromental variables
+gem 'dotenv-rails', groups: [:development, :test]
+
+# Use the devise gem as the seccion and account manager for the application(branch for fixing bug with omniauth-devise)
+gem 'devise', github: 'heartcombo/devise', branch: 'ca-omniauth-2'
 # Use Puma as the app server
 gem 'puma', '~> 4.1'
 # Use SCSS for stylesheets
@@ -44,9 +48,15 @@ gem 'kaminari'
 
 gem 'cancancan'
 
-gem 'sidekiq'
+# Sidekiq for running background tasks
 
+gem 'sidekiq'
 gem 'sidekiq-scheduler'
+
+# Omniauth gems
+
+gem 'omniauth-facebook'
+gem 'omniauth-rails_csrf_protection'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

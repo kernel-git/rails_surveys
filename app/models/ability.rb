@@ -7,7 +7,7 @@ class Ability
     # Define abilities for the passed in user here. For example:
     #
     #   user ||= User.new # guest user (not logged in)
-    #   if user.admin?
+    #   if user.administrator?
     #     can :manage, :all
     #   else
     #     can :read, :all
@@ -32,7 +32,7 @@ class Ability
     # https://github.com/CanCanCommunity/cancancan/wiki/Defining-Abilities
 
     return unless account.present?
-    if account.admin?
+    if account.administrator?
       can :manage, [Administrator, Employee, Employer, Group, Survey, Moderator]
       can :manage, SurveyEmployeeConnection, is_conducted: true
     elsif account.moderator?
