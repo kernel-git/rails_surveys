@@ -6,7 +6,7 @@ class Account < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
   
-  devise :omniauthable, omniauth_providers: %i[facebook]
+  devise :omniauthable, omniauth_providers: %i[facebook google_oauth2]
 
   belongs_to :account_user, polymorphic: true, autosave: true
 
@@ -56,14 +56,14 @@ class Account < ApplicationRecord
   #   end
   # end
 
-  def self.from_facebook_auth(auth)
-    where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
-      user.email = auth.info.email
-      user.password = Devise.friendly_token[0,20]
-    end
-  end
+  # def self.from_facebook_auth(auth)
+  #   where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
+  #     user.email = auth.info.email
+  #     user.password = Devise.friendly_token[0,20]
+  #   end
+  # end
 
-  # scope :find_by_facebook_auth(auth), ->(auth) { find_by(provider: auth.provider, uid: auth.uid) }
+  scope :filter_by_auth, ->(auth) { where(provider: auth.provider, uid: auth.uid) }
 
   validates_presence_of :account_user_type
 end

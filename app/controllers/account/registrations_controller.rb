@@ -6,15 +6,15 @@ class Account::RegistrationsController < Devise::RegistrationsController
 
   # GET /resource/sign_up
   def new
-    logger.debug session["devise.facebook_data"]
+    logger.debug session["devise.omniauth_data"]
     @init_data = {}
-    if session["devise.facebook_data"].present?
-      @init_data[:provider] = session["devise.facebook_data"]['provider']
-      @init_data[:uid] = session["devise.facebook_data"]['uid']
-      @init_data[:email] = session["devise.facebook_data"]['info']['email']
-      @init_data[:password] = session["devise.facebook_data"]['info']['password']
-      @init_data[:first_name] = session["devise.facebook_data"]['info']['first_name']
-      @init_data[:last_name] = session["devise.facebook_data"]['info']['last_name']
+    if session["devise.omniauth_data"].present?
+      @init_data[:provider] = session["devise.omniauth_data"]['provider']
+      @init_data[:uid] = session["devise.omniauth_data"]['uid']
+      @init_data[:email] = session["devise.omniauth_data"]['email']
+      @init_data[:password] = session["devise.omniauth_data"]['password']
+      @init_data[:first_name] = session["devise.omniauth_data"]['first_name']
+      @init_data[:last_name] = session["devise.omniauth_data"]['last_name']
     end
 
     @account = Account.new()
