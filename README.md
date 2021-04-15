@@ -2,7 +2,7 @@
 
 ### Application Setup
 
-* Type ` git clone https://github.com/boss078/rails_surveys ` to clone this repo
+* Type ` git clone https://github.com/kernel-git/rails_surveys ` to clone this repo
 * Then you should update Yarn packages with ` yarn install --check-files `
 * Run all migrations by typing ` rails db:migrate `
 * To populate databse with initial data type ` rails db:seed `
